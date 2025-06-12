@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hartford Rummage Checklist</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2322c55e'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1zm-1.5-6.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5z'/%3E%3C/svg%3E">
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for a modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .filter-btn.active { background-color: #22c55e; color: white; }
+        .achievement-modal { display: none; }
+        .achievement-modal.show { display: flex; }
+        .achievement-icon { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4)); }
+        .achievement-card { opacity: 0.3; filter: grayscale(80%); }
+        .achievement-card.unlocked { opacity: 1; filter: grayscale(0%); }
+        #toast-notification {
+            transform: translateY(200%);
+            transition: transform 0.3s ease-in-out;
+        }
+        #toast-notification.show {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div id="app" class="p-4">
+        <header class="text-center mb-6">
+            <div class="mb-4">
+                <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto">
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">
+                Hartford Rummage Checklist
+            </h1>
+            <p class="text-base text-gray-400">
+                Your guide to the 2025 city-wide sales.
+            </p>
+            <div class="mt-4 space-y-1">
+                <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
+                <div id="visitor-counter" class="text-sm font-medium text-cyan-400"><span class="animate-pulse">Connecting...</span></div>
+            </div>
+        </header>
+
+        <!-- Achievements Section -->
+        <div id="achievements-section" class="mb-8 text-center">
+             <h2 class="text-xl font-bold text-white mb-3">Your Awards</h2>
+             <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6">
+                 <!-- Achievement icons will be inserted here -->
+             </div>
+        </div>
+
+        <!-- Filter buttons -->
+        <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap">
+            <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
+            <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
+            <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
+            <button id="sort-by-distance-btn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Sort by Nearest</button>
+            <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
+        </div>
+        
+        <div id="loading-indicator" class="text-center text-xl text-gray-400">Loading your checklist...</div>
+
+        <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <!-- Rummage sale cards will be injected here -->
+        </main>
+
+        <!-- Google Map Section -->
+        <div id="map-container" class="my-8">
+            <h2 class="text-2xl font-bold text-white text-center mb-4">Sale Locations Map</h2>
+            <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
+                <p class="text-gray-500">Loading Map...</p>
+            </div>
+        </div>
+        
+        <footer class="text-center mt-12 text-gray-500 text-xs">
+            <p>Your progress is saved automatically to this device.</p>
+        </footer>
+    </div>
+
+    <!-- Achievement Unlocked Modal -->
+    <div id="achievement-modal" class="achievement-modal fixed inset-0 bg-black bg-opacity-70 items-center justify-center p-4 z-50">
+        <div class="bg-gray-800 border-2 border-yellow-400 rounded-xl p-6 text-center max-w-sm w-full transform transition-all scale-95 opacity-0">
+            <h2 class="text-2xl font-bold text-yellow-300 mb-2">Achievement Unlocked!</h2>
+            <div id="modal-achievement-icon" class="text-6xl my-4"></div>
+            <h3 id="modal-achievement-name" class="text-xl font-semibold text-white"></h3>
+            <p id="modal-achievement-message" class="text-gray-400 mt-2 mb-6"></p>
+            <button id="close-modal-btn" class="bg-green-500 text-white font-bold py-2 px-6 rounded-full hover:bg-green-600 transition-colors">Awesome!</button>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast-notification" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg">
+        <!-- Toast message here -->
+    </div>
+
+
+    <!-- Firebase and App Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+        // --- Data with Geolocation ---
+        const rummageSalesData = [
+            { id: 1, address: "301 w 7th st", lat: 43.6230, lng: -96.9452, days: "Friday, Saturday", thursday: "N/a", friday: "8 am", saturday: "8 am", additionalDays: "N/a", items: "Porcelain Dolls, kids clothes, kids toys, household items, men's camo clothing" },
+            { id: 2, address: "512 S. Main Ave, Hartford", lat: 43.6190, lng: -96.9439, days: "Thursday, Friday, Saturday", thursday: "1 PM", friday: "8 AM", saturday: "8 AM", additionalDays: "N/A", items: "Antique dishes & items, household items, TV's, outdoor decor, kitchen gadgets, photo & scrapbook albums, many more items too numerous to list" },
+            { id: 3, address: "804 Par Tee Dr. Hartford SD 57033", lat: 43.6268, lng: -96.9587, days: "Thursday, Friday, Saturday", thursday: "4pm", friday: "8:30am", saturday: "8:00 AM", additionalDays: "NA", items: "Adult clothing, teen clothing, boys clothing sz8-10, lots of miscellaneous- home decor, toys etc" },
+            { id: 4, address: "817 Ruud ln 26", lat: 43.6289, lng: -96.9535, days: "Thursday, Friday, Saturday", thursday: "8am", friday: "8am", saturday: "8am", additionalDays: "Wednesday 3pm-8pm", items: "Fishing/ice fishing equipment, Tools, Namebrand shoes/clothes, A little bit of everything" },
+            { id: 5, address: "203 Mary Ln", lat: 43.6253, lng: -96.9379, days: "Thursday, Friday, Saturday", thursday: "12-8", friday: "12-8", saturday: "8-12", additionalDays: "NA", items: "Multi family, many household items, women and men’s clothing, and home decor" },
+            { id: 6, address: "46514 Kloxin Drive Hartford SD", lat: 43.6214, lng: -96.9213, days: "Thursday, Friday", thursday: "8:00am - 5:00pm", friday: "8:00am - 5:00pm", saturday: "N/A", additionalDays: "N/A", items: "Clothing, krumkake iron, 4 counter stools, toys, lamp, misc." },
+            { id: 7, address: "408 S Western Ave (St.George Catholic Church)", lat: 43.6201, lng: -96.9482, days: "Friday, Saturday", thursday: "N/A", friday: "8:00 am", saturday: "8:00 am", additionalDays: "N/A", items: "Baby items, childrens clothing, furnature, glassware, antiques adult and teenage clothing." },
+            { id: 8, address: "26126 462nd Ave, Hartford", lat: 43.6429, lng: -96.9555, days: "Thursday, Friday, Saturday", thursday: "10-5", friday: "10-6", saturday: "10-2", additionalDays: "NA", items: "NEIGHBOR COUNTRY RUMMAGE - worth the 1.25 gravel drive! 2 Couches, Outdoor furniture, Dewalt Scroll Saw + Stand, Name Brand Kitchen items, Large baby items (swing, pac n play, bumbo seat, pumps), Tan garage door (9'W x 8'H), Men, women, and baby clothing and coats, lots more." },
+            { id: 9, address: "810 Ruud Lane garage #8", lat: 43.6289, lng: -96.9535, days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Name brand men’s, women’s clothes and shoes, household items, twin mattress/box spring and frame, end tables, coffee table, lamps, plastic storage shelves, toys, lots of miscellaneous. Good prices, something for everyone." },
+            { id: 10, address: "506 W Opal Ln", lat: 43.6320, lng: -96.9490, days: "Thursday, Friday, Saturday", thursday: "3PM", friday: "8AM", saturday: "8AM", additionalDays: "N/A", items: "LOTS of clothes! Girls NB - 7/8, Womens XL - 3X, Men's XL - 3X. Priced to sell! Toys Galore! Small to Big. Bigger items: Bumper cars, electric car, scooters, toy organizer, book shelf, kitchen, wagon, bikes" },
+            { id: 11, address: "208 Elm Rd", lat: 43.6240, lng: -96.9400, days: "Thursday, Friday, Saturday", thursday: "8 am", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Tools,house items,fishing ,clothing" },
+            { id: 12, address: "511 N Main Ave", lat: 43.6270, lng: -96.9440, days: "Friday, Saturday", thursday: "N/A", friday: "8:00am", saturday: "8:00am", additionalDays: "N/A", items: "Poker table w/ cards and chips, metal wall art poker decor, girl toys for all ages, pack-n-play & other baby items, shoes, other misc items" },
+            { id: 13, address: "704 Turtle Creek", lat: 43.6310, lng: -96.9580, days: "Thursday, Friday, Saturday", thursday: "5:00pm", friday: "12:00pm", saturday: "8:00am", additionalDays: "N/A", items: "Girls NB-4T, Boy NB-2T, Toys, Home Decor, Desk, Entry Table, Kitchen Items, Women’s Dresses" },
+            { id: 14, address: "501 Ironwood Dr", lat: 43.6290, lng: -96.9500, days: "Thursday, Friday, Saturday", thursday: "5pm-8pm", friday: "8am-8pm", saturday: "8am-noon", additionalDays: "N/A", items: "College/starter home items, Men’s L-XXL name brand clothing, Home decor, Small kitchen appliances" },
+            { id: 15, address: "310 N Colton Rd", lat: 43.6300, lng: -96.9200, days: "Thursday, Friday, Saturday", thursday: "4-7pm", friday: "1-6pm", saturday: "10am-12pm", additionalDays: "PM for early sales", items: "Boys clothes (all sizes), sports equipment, Christmas items. Home decor" },
+            { id: 16, address: "305 West 4th Street", lat: 43.6240, lng: -96.9460, days: "Thursday, Friday, Saturday", thursday: "10 am", friday: "8 am", saturday: "8 am", additionalDays: "NA", items: "Power Tools, household, painting contractor supplies , 5th wheel camper hitch, furniture, Minnkota trolling motor , fishing poles" },
+            { id: 17, address: "102 Kalvin Dr", lat: 43.6260, lng: -96.9290, days: "Thursday, Friday, Saturday", thursday: "0800", friday: "0800", saturday: "0800", additionalDays: "Possibly open Wednesday evening!", items: "Clothes of ALL Gender/Sizes, TONS of womens business casual clothes, Western novels, Home decor, shoes, GUARANTEED to be the BIGGEST and BEST rummage in HARTFORD." },
+            { id: 18, address: "1007 Duck Circle", lat: 43.6330, lng: -96.9600, days: "Thursday, Friday, Saturday", thursday: "9", friday: "9", saturday: "9", additionalDays: "N/A", items: "Couch, loveseat, large glass display cabinet, generator, canning supplies, sewing machines" },
+            { id: 19, address: "900 Ruud lane unit 2", lat: 43.6289, lng: -96.9535, days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", additionalDays: "NA", items: "Limited parking. WWII US army military items, combat helmets, US army stretcher, old military bayonets" },
+            { id: 20, address: "508 S Main Ave", lat: 43.6190, lng: -96.9439, days: "Thursday, Friday, Saturday", thursday: "8 am - 7 pm", friday: "8 am - 7 pm", saturday: "8 am-noon", additionalDays: "Na", items: "Boys and girls clothing, kids toys, home decor" },
+            { id: 21, address: "306 east 6th street", lat: 43.6220, lng: -96.9400, days: "Friday, Saturday", thursday: "n/A", friday: "8:00 am", saturday: "8:00 am", additionalDays: "N/A", items: "Back pack, snow blower, pressure washer, 10’x20’ easy up, ice cream maker" },
+            { id: 22, address: "26391 463rd Ave Hartford sd", lat: 43.6060, lng: -96.9680, days: "Friday, Saturday", thursday: "NA", friday: "12:00", saturday: "9:00", additionalDays: "Possible? 11:00", items: "Mass fishing gear, anchors, stands, dressers, trane furnaces & AC units" },
+            { id: 23, address: "409 S Tessa Ave", lat: 43.6190, lng: -96.9380, days: "Thursday, Friday, Saturday", thursday: "830", friday: "830", saturday: "830", additionalDays: "Wednesday 4pm", items: "Multi-family sale! Women's Boutique clothes size M to XL, patio furniture, Kitchenaid mixer, legos, boys bike, pokemon cards! Something for everyone!" },
+            { id: 24, address: "813 Trojan Ave", lat: 43.6280, lng: -96.9420, days: "Thursday, Friday, Saturday", thursday: "9am", friday: "9am", saturday: "9am", additionalDays: "Na", items: "Home decor, name brand xl men’s clothing, Harley Davidson clothing, electronics, women’s clothing, jewelry and so much more" },
+            { id: 25, address: "45967 263rd Street Hartford SD 57033", lat: 43.6150, lng: -96.9950, days: "Thursday, Friday", thursday: "9 am", friday: "9 am", saturday: "NA", additionalDays: "NA", items: "Moving Sale: Furniture, Outdoor furniture, Grill, Thirty-One Bags, Wagon, Bikes, Pokemon Cards, come take a look!!" },
+            { id: 26, address: "504 Shamrock Drive", lat: 43.6280, lng: -96.9320, days: "Friday, Saturday", thursday: "5PM", friday: "8 Am", saturday: "8 Am", additionalDays: "N/A", items: "Down sizing. Especially garage items" },
+            { id: 27, address: "26163 461st Ave. (sw of Hartford)", lat: 43.6380, lng: -96.9800, days: "Friday, Saturday", thursday: "n/a", friday: "8-6", saturday: "8-6", additionalDays: "n/a", items: "Retired daycare. Play n packs, trikes, jungle gyms, activity saucers, high chairs, BB hoops, toys, crafts, much more." },
+            { id: 28, address: "508 Crystal Drive", lat: 43.6290, lng: -96.9350, days: "Friday, Saturday", thursday: "N/A", friday: "9-5", saturday: "8-5", additionalDays: "N/A", items: "Stove/Oven, New crib, new Bluey toddler bed, Dryer, lots of boys gently used toys. Kitchen table and chairs. Fridge. Many more items added daily!" },
+            { id: 29, address: "508 Connie Circle. Hartford, Sd", lat: 43.6270, lng: -96.9300, days: "Thursday, Friday, Saturday", thursday: "8am", friday: "8am", saturday: "8am", additionalDays: "n/a", items: "Post moving sale, 3+ family. Clothes, kitchen, etc...Something for everyone." },
+            { id: 30, address: "46506 SD Hwy 38", lat: 43.6220, lng: -96.9240, days: "Friday, Saturday", thursday: "N/A", friday: "4:00pm", saturday: "8:00am", additionalDays: "N/A", items: "Portable fish house, Old Duck Decoys, Vintage jars & Canning equip, Loads of Puzzles, DVD Movies, Cedar Chest, Turkey Fryer, Gun Cabinet Swedish Death Cleaning..ALL Must GO!" },
+            { id: 31, address: "26126 462nd Ave, Hartford, SD", lat: 43.6429, lng: -96.9555, days: "Thursday, Friday, Saturday", thursday: "10-4", friday: "10-4", saturday: "10-2", additionalDays: "NA", items: "Couches, queen size bed frame, baby and kids clothes, large baby items, final inventory from Prairie Boutique (brand new women’s clothing), ice shack, left handed golf clubs, more." },
+            { id: 32, address: "703 N Mundt Ave. #3", lat: 43.6310, lng: -96.9370, days: "Thursday, Friday, Saturday", thursday: "4pm-7pm", friday: "8am-7pm?", saturday: "8am-3pm?", additionalDays: "N/A", items: "Kids' Clothes/Jackets (Sizes 4-14), Medium to Plus Sized Adult Clothes/Scrubs/Jeans (Rock Revival, Silvers, Miss Me), Jewelry, Home Decor, Beats Flex Wireless Earphones, Books & DVDs, Pet Items (Auto Food Feeder), & Misc." },
+            { id: 33, address: "509 Patrick Ave, Hartford", lat: 43.6280, lng: -96.9390, days: "Thursday, Friday, Saturday", thursday: "5pm - 8pm", friday: "8am - 7pm", saturday: "8am - 2pm?", additionalDays: "N/A", items: "child's desk, child's rocker, Strider bike (like new), Radio Flyer tricycle, Budweiser beer steins, patio swing" },
+            { id: 34, address: "301 West Opal Lane Unit C", lat: 43.6320, lng: -96.9490, days: "Thursday, Friday", thursday: "3:30 pm", friday: "8:00", saturday: "Na", additionalDays: "Na", items: "Clothes, table and chairs, desk, kitchen items , mirrors, bedding" },
+            { id: 35, address: "200 N Colton Rd. Hartford, S.D.", lat: 43.6300, lng: -96.9200, days: "Thursday, Friday, Saturday", thursday: "8:00 am", friday: "8:00 am", saturday: "8:00 am", additionalDays: "NA", items: "fishing equipment, vintage toys, matchbox cars, household items, bicycles,vintage household and much more misc." },
+            { id: 36, address: "401 E. 6th St.", lat: 43.6220, lng: -96.9400, days: "Friday, Saturday", thursday: "N/A", friday: "8:00 AM", saturday: "8: AM", additionalDays: "N/A", items: "Girls Clothes 18 mos-3T; Toys, Baby Items, Household Items, Men's and Women's Clothing Size S-XL, Snowblower, mower. Make Offer on Saturday!" },
+            { id: 37, address: "103 E 1st Street Hartford SD 57035", lat: 43.6260, lng: -96.9430, days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Men’s & women’s Clothing, small appliances. Toys. Misc" },
+            { id: 38, address: "205 Kalvin Dr", lat: 43.6260, lng: -96.9290, days: "Thursday, Friday, Saturday", thursday: "8:00 AM", friday: "8:00AM", saturday: "8:00AM", additionalDays: "N/A", items: "Womens clothes 3x/yard & garden/canning/embroidery supplies/small appliances/decor/office chairs/furniture" },
+            { id: 39, address: "101 W Opal Ln Hartford, SD 57033", lat: 43.6320, lng: -96.9490, days: "Thursday, Friday, Saturday", thursday: "4pm", friday: "9am", saturday: "8am", additionalDays: "n/a", items: "Toys, books, Barbie’s, dollhouse, home decor" },
+            { id: 40, address: "401 E 6th St", lat: 43.6220, lng: -96.9400, days: "Friday, Saturday", thursday: "N/A", friday: "9:00 am", saturday: "9:00 am", additionalDays: "N/A", items: "Children/adult Clothing, Children Toys, Utility Trailer, Snow Blower, Misc" },
+            { id: 41, address: "206 S. Main Ave", lat: 43.6190, lng: -96.9439, days: "Friday, Saturday", thursday: "N/A", friday: "8", saturday: "8", additionalDays: "N/A", items: "Live Band & DJ equipment. Lights, PA, amps, instruments & accessories, CDs. Tools (hand, power & yard). Other household items" },
+            { id: 42, address: "207 W 5th St Unit 106", lat: 43.6230, lng: -96.9450, days: "Thursday, Friday", thursday: "3:00 pm", friday: "8:00 am", saturday: "N/A", additionalDays: "N/A", items: "Women’s Clothing XS-3X, men’s clothing M-L, books, furniture, much miscellaneous, Tri-Valley clothing, Tri-Valley bleacher chairs" },
+            { id: 43, address: "100 E 9th lot37", lat: 43.6200, lng: -96.9430, days: "Friday, Saturday", thursday: "NA", friday: "10:00", saturday: "10", additionalDays: "Na", items: "Power tools, miterbox w/ stand, misc concrete finishing tools, lots of small tools, 24\" bike" },
+            { id: 44, address: "502 N vandemark ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/a", friday: "8am-8pm", saturday: "8am-8pm", additionalDays: "n/a", items: "3 family rummage must see!! Water tables, girl clothes 24mo-women plus sized & boys clothes 6mo-8yr most clothes under $2, shoes/boots, autographed minnesota viking jerseys, coffee kitchen shelf, TV entertainment set, entry table, bucktail fishing gigs" },
+            { id: 45, address: "903 Nordic Cir Hartford SD", lat: 43.6340, lng: -96.9550, days: "Thursday, Friday, Saturday", thursday: "4:00 pm", friday: "10 am", saturday: "10 am", additionalDays: "Na", items: "Free Furniture, new boutique items, women’s clothing, boys L/XL clothing, sporting equipment, etc. Cash, Venmo or Credit/Debit Cards accepted." },
+            { id: 46, address: "508 Kia Drive", lat: 43.6290, lng: -96.9280, days: "Thursday, Friday, Saturday", thursday: "8am to 6pm", friday: "8am to 6pm", saturday: "8am to 12pm", additionalDays: "N/A", items: "HUGE Rummage Sale!!! Men's, women's & maternity clothes. Baby items: girl clothes size Newborn to 12 Months, baby bottles, car seat covers, activity mat, stroller, walker and toys. Radio Flyer wagon new in box, Radio Flyer used tricycle. Leaf blower, Chest freezer. Purses. DVDs. Household & seasonal decor including Ninja pressure cooker, canning jars various sizes, curtains, misc." },
+            { id: 47, address: "506 N Mundt Ave", lat: 43.6310, lng: -96.9370, days: "Thursday, Friday, Saturday", thursday: "9", friday: "9", saturday: "9", additionalDays: "N/A", items: "Home Decor, Kids Clothing, Radio Flyer Trike and Wagon, Kids Toys/Puzzles/Books, Coleman Campstove, Lantern, Cooler, Tent, Camping Pots and Pans" },
+            { id: 48, address: "209 w 7th", lat: 43.6230, lng: -96.9452, days: "Thursday, Friday, Saturday", thursday: "Thursday 5-8", friday: "12-8", saturday: "8-4", additionalDays: "N/A", items: "Household stuff, counter top conventional oven, scrubs, vintage furniture, kids bikes, blankets, strollers , lamps, xbox & PlayStation games , TVs" },
+            { id: 49, address: "500 S Feyder Ave", lat: 43.6190, lng: -96.9530, days: "Thursday, Friday, Saturday", thursday: "4", friday: "10", saturday: "9", additionalDays: "N/A", items: "Baby Boy clothing, toys, furniture, handmade wood paintings." },
+            { id: 50, address: "405 Mulligan Cir", lat: 43.6250, lng: -96.9600, days: "Friday, Saturday", thursday: "N/A", friday: "9am", saturday: "9am", additionalDays: "N/A", items: "Lots of kids clothes, boys 0m-YM, Girls 0m-4T, couch, baby crib, toys and books, Men’s and Women’s brand name clothing, stroller, walker, baby bouncer, shoes of all sizes, home decor, housewares and knick knacks, coach purses, Therabody Red Light face mask." },
+            { id: 51, address: "520 Kia Drive", lat: 43.6290, lng: -96.9280, days: "Saturday", thursday: "N/A", friday: "N/A", saturday: "8:00 am", additionalDays: "N\\A", items: "House decor, clothing, furniture, pet items" },
+            { id: 52, address: "108 N. Oaks Ave.", lat: 43.6260, lng: -96.9500, days: "Thursday, Friday, Saturday", thursday: "7am", friday: "7am", saturday: "7am", additionalDays: "N/A", items: "China (including Limoges and Homer Laughlin), 2015 21” iMac, bookshelf, wire baker’s rack, Marvel wall art, purses/bags, toys, craft supplies, fabric. All shoes and clothes $1 or less! Open until 6pm every night!" },
+            { id: 53, address: "910 Par Tee Dr", lat: 43.6268, lng: -96.9587, days: "Thursday, Friday", thursday: "9:00", friday: "9:00", saturday: "N/A", additionalDays: "N/A", items: "Multi-Family. Area rugs, name brand women and men’s clothing, household items, some baby clothing/items. Clean and organized rummage." },
+            { id: 54, address: "208 N Kingsbury Ave", lat: 43.6280, lng: -96.9400, days: "Friday, Saturday", thursday: "N/A", friday: "9:00 AM", saturday: "8:30 AM", additionalDays: "N/A", items: "Baby items: pack-n-play; high chair; travel stroller; Lots of toys- Little Peoples; home decor items; Christmas decor (new in boxes); silverware great for camping or crafting; sewing machine; Clothes- Boys 2T-4T and women’s variety of sizes; Plenty more for Everyone!" },
+            { id: 55, address: "504 N. Oaks Ave.", lat: 43.6260, lng: -96.9500, days: "Thursday, Friday", thursday: "Noon", friday: "9 AM", saturday: "NA", additionalDays: "NA", items: "Inteck Queen size Inflatable Bed, Hostas and Hybrid white Iris, Outdoor/ camper rug, Motorcycle Rain suit ( medium). Misc." },
+            { id: 56, address: "306 W Ramona Street", lat: 43.6330, lng: -96.9460, days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Furniture, clothing, household items, sporting goods, plants, boys and girls clothing, decor, moving sale, multi family!" },
+            { id: 57, address: "805 N. Sagehorn Drive, Hartford SD", lat: 43.6300, lng: -96.9550, days: "Thursday, Friday, Saturday", thursday: "8 am", friday: "8 am", saturday: "8 am", additionalDays: "n/a", items: "Large 7 Family Rummage. Kids, College/Dorm, Vintage records, Outdoor/adventure, Teacher supplies, Furniture, Planters, Clothing, Household, Decor and more." },
+            { id: 58, address: "306 W Ramona St", lat: 43.6330, lng: -96.9460, days: "Friday, Saturday", thursday: "N/A", friday: "9:00 AM", saturday: "8:00 AM", additionalDays: "N/A", items: "Furniture, Hunting, Fishing, Motorcycle, Adult & Children clothing, & home decor" },
+            { id: 59, address: "46050 259th st Hartford, SD", lat: 43.6100, lng: -97.0000, days: "Thursday, Friday, Saturday", thursday: "7:30am", friday: "7:30am", saturday: "7:30am", additionalDays: "na", items: "hunting stuff, lots of guy stuff, breyer horses, scrubs xs-xl, men and women's clothes, collectables, china and crystal bowls, Nikken Health Magnets" },
+            { id: 60, address: "507 S Feyder", lat: 43.6190, lng: -96.9530, days: "Thursday, Friday, Saturday", thursday: "4-7 (depending on whether)", friday: "8-7", saturday: "8-4", additionalDays: "N/A", items: "Baby furniture/items - Dressers & Bedroom sets - Saddle bags for horses - Misc household and electronic items - Misc tools" },
+            { id: 61, address: "1106 N Vandemark Ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
+        ];
+        
+        // --- Achievements Data ---
+        const achievements = [
+            { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
+            { id: 2, name: "Seasoned Scavenger", threshold: 15, icon: '🥈', message: "You've got a keen eye for deals!" },
+            { id: 3, name: "Treasure Tracker", threshold: 30, icon: '🥇', message: "A true master of the rummage arts!" },
+            { id: 4, name: "Rummage Royalty", threshold: 61, icon: '🏆', message: "You've conquered them all! Behold, the ultimate rummager!" }
+        ];
+
+        // --- Firebase Configuration ---
+        const firebaseConfig = {
+          apiKey: "AIzaSyCb-wQlQ8yBEH5QyG9q4F0poFbL3G_LLOk", // This key seems invalid, but using it as provided
+          authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
+          databaseURL: "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com",
+          projectId: "hartford-rummage2025-fe0f3",
+          storageBucket: "hartford-rummage2025-fe0f3.appspot.com",
+          messagingSenderId: "520958147494",
+          appId: "1:520958147494:web:96a455852f231f35a3ad67",
+          measurementId: "G-50YZMDWQH8"
+        };
+        
+        // --- App State ---
+        let completedLocations = [];
+        let verifiedLocations = []; // For achievements
+        let unlockedAchievements = [];
+        let currentFilter = 'all';
+        let currentSalesData = [...rummageSalesData];
+        let map, markers = [];
+
+        // --- DOM Elements ---
+        const salesContainer = document.getElementById('sales-container');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const progressCounter = document.getElementById('progress-counter');
+        const filterContainer = document.getElementById('filter-container');
+        const visitorCounter = document.getElementById('visitor-counter');
+        const achievementsContainer = document.getElementById('achievements-container');
+        const modal = document.getElementById('achievement-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const toast = document.getElementById('toast-notification');
+        const sortByDistanceBtn = document.getElementById('sort-by-distance-btn');
+        const resetSortBtn = document.getElementById('reset-sort-btn');
+        
+        // --- Helper Functions ---
+        const isSaleOpenToday = (sale) => {
+            const dayMap = { 0: 'sunday', 1: 'monday', 2: 'tuesday', 3: 'wednesday', 4: 'thursday', 5: 'friday', 6: 'saturday' };
+            const today = new Date();
+            const todayName = dayMap[today.getDay()];
+            const saleDays = (sale.days || '').toLowerCase();
+            const additional = (sale.additionalDays || '').toLowerCase();
+            return saleDays.includes(todayName) || additional.includes(todayName);
+        };
+        
+        function getDistanceInMeters(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // metres
+            const φ1 = lat1 * Math.PI/180;
+            const φ2 = lat2 * Math.PI/180;
+            const Δφ = (lat2-lat1) * Math.PI/180;
+            const Δλ = (lon2-lon1) * Math.PI/180;
+
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+            return R * c; // in metres
+        }
+        
+        function showToast(message, isError = false) {
+            toast.textContent = message;
+            toast.className = `fixed bottom-5 left-1/2 -translate-x-1/2 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg ${isError ? 'bg-red-500' : 'bg-blue-500'}`;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // --- Achievements Logic ---
+        function renderAchievements() {
+            achievementsContainer.innerHTML = '';
+            achievements.forEach(ach => {
+                const isUnlocked = unlockedAchievements.includes(ach.id);
+                const card = document.createElement('div');
+                card.className = `achievement-card p-2 rounded-lg transition-all duration-300 ${isUnlocked ? 'unlocked' : ''}`;
+                card.innerHTML = `
+                    <div class="text-4xl achievement-icon">${ach.icon}</div>
+                    <div class="text-xs font-semibold mt-1">${ach.name}</div>
+                `;
+                achievementsContainer.appendChild(card);
+            });
+        }
+
+        function showAchievementModal(achievement) {
+             document.getElementById('modal-achievement-icon').textContent = achievement.icon;
+             document.getElementById('modal-achievement-name').textContent = achievement.name;
+             document.getElementById('modal-achievement-message').textContent = achievement.message;
+             modal.classList.add('show');
+             setTimeout(() => modal.querySelector('.transform').classList.remove('scale-95', 'opacity-0'), 10);
+        }
+
+        function hideAchievementModal() {
+             modal.querySelector('.transform').classList.add('scale-95', 'opacity-0');
+             setTimeout(() => modal.classList.remove('show'), 200);
+        }
+
+        function checkAchievements() {
+            const verifiedCount = verifiedLocations.length;
+            const newlyUnlocked = achievements.find(ach => 
+                verifiedCount >= ach.threshold && !unlockedAchievements.includes(ach.id)
+            );
+
+            if (newlyUnlocked) {
+                unlockedAchievements.push(newlyUnlocked.id);
+                localStorage.setItem('hartfordRummageAchievements2025', JSON.stringify(unlockedAchievements));
+                renderAchievements();
+                showAchievementModal(newlyUnlocked);
+            }
+        }
+        
+        // --- Core Application Logic ---
+        function renderSales() {
+            const filteredSales = currentSalesData.filter(sale => {
+                if (currentFilter === 'not_visited') return !completedLocations.includes(sale.id);
+                if (currentFilter === 'open') return isSaleOpenToday(sale);
+                return true;
+            });
+            salesContainer.innerHTML = '';
+            loadingIndicator.style.display = 'none';
+            filteredSales.forEach(sale => {
+                const isCompleted = completedLocations.includes(sale.id);
+                const card = document.createElement('div');
+                card.className = `relative bg-gray-800 border border-gray-700 rounded-lg p-4 transition-all duration-300 flex flex-col ${isCompleted ? 'opacity-50' : 'opacity-100'}`;
+                card.innerHTML = `
+                    <div class="absolute top-3 right-3">
+                        <button data-id="${sale.id}" class="toggle-complete w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 z-10 ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-700 hover:bg-green-600 text-gray-400'}" aria-label="Mark ${sale.address} as visited">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </button>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="font-bold text-lg mb-2 text-green-400 pr-10 ${isCompleted ? 'line-through' : ''}">${sale.address}</h3>
+                        ${isSaleOpenToday(sale) ? `<div class="absolute top-3 left-3 bg-yellow-500 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">OPEN TODAY</div>` : ''}
+                        <p class="text-gray-400 text-sm mb-3"><strong>Sale Days:</strong> ${sale.days}</p>
+                        <div class="grid grid-cols-3 gap-2 text-center mb-4 text-xs sm:text-sm">
+                            <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Thursday</p><p class="text-gray-400">${sale.thursday}</p></div>
+                            <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Friday</p><p class="text-gray-400">${sale.friday}</p></div>
+                            <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Saturday</p><p class="text-gray-400">${sale.saturday}</p></div>
+                        </div>
+                        ${(sale.additionalDays && !['na', 'n/a'].includes(sale.additionalDays.toLowerCase())) ? `<p class="text-xs sm:text-sm text-yellow-400 mb-3"><strong>Extra Days:</strong> ${sale.additionalDays}</p>` : ''}
+                        <div class="bg-gray-900/70 p-3 rounded-md mt-auto">
+                            <p class="text-gray-300 font-semibold mb-1 text-sm">Items for Sale:</p>
+                            <p class="text-gray-400 text-xs sm:text-sm">${sale.items}</p>
+                        </div>
+                    </div>`;
+                salesContainer.appendChild(card);
+            });
+            updateProgressCounter();
+            renderMapMarkers();
+        }
+
+        function updateProgressCounter() {
+            progressCounter.textContent = `${completedLocations.length} / ${rummageSalesData.length} Visited`;
+        }
+
+        function handleToggleComplete(locationId) {
+            if (!completedLocations.includes(locationId)) {
+                completedLocations.push(locationId);
+            } else {
+                completedLocations = completedLocations.filter(id => id !== locationId);
+                verifiedLocations = verifiedLocations.filter(id => id !== locationId);
+                localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
+                localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
+                renderSales();
+                return;
+            }
+            localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
+            renderSales();
+
+            const sale = rummageSalesData.find(s => s.id === locationId);
+            if (!sale || !sale.lat || !sale.lng) {
+                showToast("Location data not available for this sale.", true);
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
+                    if (distance < 805) { 
+                        if (!verifiedLocations.includes(locationId)) {
+                             verifiedLocations.push(locationId);
+                             localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
+                             showToast("Visit Verified!", false);
+                             checkAchievements();
+                        }
+                    } else {
+                        showToast("Too far away to verify for award.", true);
+                    }
+                },
+                (error) => { showToast("Could not get location. Visit not verified for award.", true); }
+            );
+        }
+        
+        function setupPresenceSystem(auth) {
+             onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    const rtdb = getDatabase();
+                    const appId = firebaseConfig.projectId;
+                    const uid = user.uid;
+                    const userStatusDatabaseRef = ref(rtdb, `/artifacts/${appId}/public/presence/users/${uid}`);
+                    const connectedRef = ref(rtdb, '.info/connected');
+                    const allUsersRef = ref(rtdb, `/artifacts/${appId}/public/presence/users`);
+
+                    onValue(connectedRef, (snap) => {
+                        if (snap.val() === true) { set(userStatusDatabaseRef, true); onDisconnect(userStatusDatabaseRef).remove(); }
+                    });
+                    
+                    onValue(allUsersRef, (snap) => {
+                        const count = snap.size; 
+                        visitorCounter.innerHTML = `<span class="flex items-center justify-center"><span class="relative flex h-3 w-3 mr-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span></span>${count} Live Visitor${count === 1 ? '' : 's'}</span>`;
+                    });
+                }
+            });
+        }
+        
+        // --- Google Maps Logic ---
+        function initMap() {
+            const mapOptions = {
+                center: { lat: 43.625, lng: -96.945 },
+                zoom: 13,
+                mapId: 'RUMMAGE_MAP_ID', // Can be any string
+                 disableDefaultUI: true,
+            };
+            map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            renderMapMarkers();
+        }
+
+        function renderMapMarkers() {
+            if (!map) return;
+            // Clear existing markers
+            markers.forEach(marker => marker.setMap(null));
+            markers = [];
+
+            const infoWindow = new google.maps.InfoWindow();
+
+            rummageSalesData.forEach(sale => {
+                if (sale.lat && sale.lng) {
+                    const isCompleted = completedLocations.includes(sale.id);
+                    const marker = new google.maps.Marker({
+                        position: { lat: sale.lat, lng: sale.lng },
+                        map,
+                        title: sale.address,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 8,
+                            fillColor: isCompleted ? '#22c55e' : '#ef4444',
+                            fillOpacity: 1,
+                            strokeWeight: 2,
+                            strokeColor: '#ffffff'
+                        }
+                    });
+
+                    marker.addListener('click', () => {
+                        const content = `<div class="p-1 font-sans text-gray-800"><h3 class="font-bold">${sale.address}</h3><p class="text-xs">${sale.items}</p></div>`;
+                        infoWindow.setContent(content);
+                        infoWindow.open(map, marker);
+                    });
+
+                    markers.push(marker);
+                }
+            });
+        }
+
+        function loadGoogleMaps() {
+            const GOOGLE_MAPS_API_KEY = "AIzaSyCb-wQlQ8yBEH5QyG9q4F0poFbL3G_LLOk";
+            if (!window.google) {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap`;
+                script.async = true;
+                script.defer = true;
+                window.initMap = initMap; // Make initMap globally available
+                document.head.appendChild(script);
+            } else {
+                initMap();
+            }
+        }
+
+
+        // --- Event Listeners ---
+        filterContainer.addEventListener('click', (e) => {
+            if (e.target.matches('.filter-btn')) {
+                const filterType = e.target.dataset.filter;
+                if (filterType === currentFilter) return;
+                filterContainer.querySelector('.active').classList.remove('active');
+                e.target.classList.add('active');
+                currentFilter = filterType;
+                renderSales();
+            }
+        });
+        
+        sortByDistanceBtn.addEventListener('click', () => {
+            showToast("Finding your location to sort...", false);
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const sortedData = [...rummageSalesData];
+                    sortedData.forEach(sale => {
+                        if(sale.lat && sale.lng) {
+                            sale.distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
+                        } else {
+                            sale.distance = Infinity; // Put sales without location data at the end
+                        }
+                    });
+                    sortedData.sort((a,b) => a.distance - b.distance);
+                    currentSalesData = sortedData;
+                    renderSales();
+                    showToast("Sales sorted by nearest!", false);
+                    sortByDistanceBtn.classList.add('hidden');
+                    resetSortBtn.classList.remove('hidden');
+                },
+                (error) => {
+                    showToast("Could not get your location to sort.", true);
+                }
+            );
+        });
+
+        resetSortBtn.addEventListener('click', () => {
+            currentSalesData = [...rummageSalesData];
+            renderSales();
+            showToast("Sort has been reset.", false);
+            sortByDistanceBtn.classList.remove('hidden');
+            resetSortBtn.classList.add('hidden');
+        });
+
+        salesContainer.addEventListener('click', (e) => {
+            const button = e.target.closest('.toggle-complete');
+            if (button) {
+                handleToggleComplete(parseInt(button.dataset.id, 10));
+            }
+        });
+        closeModalBtn.addEventListener('click', hideAchievementModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) hideAchievementModal(); });
+
+        // --- Initialization ---
+        function main() {
+            try {
+                const savedChecklist = localStorage.getItem('hartfordRummageChecklist2025');
+                if (savedChecklist) completedLocations = JSON.parse(savedChecklist);
+                const savedVerified = localStorage.getItem('hartfordRummageVerified2025');
+                if (savedVerified) verifiedLocations = JSON.parse(savedVerified);
+                const savedAchievements = localStorage.getItem('hartfordRummageAchievements2025');
+                if (savedAchievements) unlockedAchievements = JSON.parse(savedAchievements);
+            } catch (e) { console.error("Could not parse saved data", e); }
+            
+            renderSales();
+            renderAchievements();
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                setupPresenceSystem(auth);
+                signInAnonymously(auth).catch(err => {
+                    console.error("Anonymous sign-in for visitor counter failed:", err);
+                    visitorCounter.textContent = "Visitor count disabled";
+                });
+            } catch (error) {
+                console.error("Firebase Initialization for visitor counter failed:", error);
+                visitorCounter.textContent = "Offline";
+            }
+            loadGoogleMaps();
+        }
+        
+        main();
+    </script>
+</body>
+</html>
