@@ -27,12 +27,27 @@
         #toast-notification.show {
             transform: translateY(0);
         }
+        /* Full Screen Map Styles */
+        #map-container.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 40;
+            padding: 0;
+            margin: 0;
+        }
+        #map-container.fullscreen #map {
+            height: 100%;
+            border-radius: 0;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
 
-    <div id="app" class="p-4">
-        <header class="text-center mb-6">
+    <div id="main-content">
+        <header class="text-center mb-6 pt-4 px-4">
             <div class="mb-4">
                 <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto">
             </div>
@@ -49,7 +64,7 @@
         </header>
 
         <!-- Achievements Section -->
-        <div id="achievements-section" class="mb-8 text-center">
+        <div id="achievements-section" class="mb-8 text-center px-4">
              <h2 class="text-xl font-bold text-white mb-3">Your Awards</h2>
              <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6">
                  <!-- Achievement icons will be inserted here -->
@@ -57,7 +72,7 @@
         </div>
 
         <!-- Filter buttons -->
-        <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap">
+        <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap px-4">
             <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
             <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
             <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
@@ -65,24 +80,30 @@
             <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
         </div>
         
-        <div id="loading-indicator" class="text-center text-xl text-gray-400">Loading your checklist...</div>
+        <div id="loading-indicator" class="text-center text-xl text-gray-400 px-4">Loading your checklist...</div>
 
-        <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4">
             <!-- Rummage sale cards will be injected here -->
         </main>
+    </div>
 
-        <!-- Google Map Section -->
-        <div id="map-container" class="my-8">
-            <h2 class="text-2xl font-bold text-white text-center mb-4">Sale Locations Map</h2>
+    <!-- Google Map Section -->
+    <div id="map-container" class="my-8 px-4">
+        <h2 id="map-title" class="text-2xl font-bold text-white text-center mb-4">Sale Locations Map</h2>
+        <div class="relative">
             <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
                 <p class="text-gray-500">Loading Map...</p>
             </div>
+            <button id="fullscreen-map-btn" class="absolute top-2 left-2 bg-gray-900 bg-opacity-70 text-white rounded-md p-2 text-xs font-semibold hover:bg-opacity-90">Full Screen</button>
+            <button id="close-fullscreen-map-btn" class="hidden absolute top-2 right-2 bg-gray-900 bg-opacity-70 text-white rounded-full p-2 hover:bg-opacity-90 z-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
         </div>
-        
-        <footer class="text-center mt-12 text-gray-500 text-xs">
-            <p>Your progress is saved automatically to this device.</p>
-        </footer>
     </div>
+    
+    <footer id="main-footer" class="text-center mt-12 mb-4 text-gray-500 text-xs px-4">
+        <p>Your progress is saved automatically to this device.</p>
+    </footer>
 
     <!-- Achievement Unlocked Modal -->
     <div id="achievement-modal" class="achievement-modal fixed inset-0 bg-black bg-opacity-70 items-center justify-center p-4 z-50">
@@ -96,7 +117,7 @@
     </div>
     
     <!-- Toast Notification -->
-    <div id="toast-notification" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg">
+    <div id="toast-notification" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg z-50">
         <!-- Toast message here -->
     </div>
 
@@ -171,36 +192,17 @@
             { id: 60, address: "507 S Feyder", lat: 43.6190, lng: -96.9530, days: "Thursday, Friday, Saturday", thursday: "4-7 (depending on whether)", friday: "8-7", saturday: "8-4", additionalDays: "N/A", items: "Baby furniture/items - Dressers & Bedroom sets - Saddle bags for horses - Misc household and electronic items - Misc tools" },
             { id: 61, address: "1106 N Vandemark Ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
         ];
-        
-        // --- Achievements Data ---
-        const achievements = [
-            { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
-            { id: 2, name: "Seasoned Scavenger", threshold: 15, icon: '🥈', message: "You've got a keen eye for deals!" },
-            { id: 3, name: "Treasure Tracker", threshold: 30, icon: '🥇', message: "A true master of the rummage arts!" },
-            { id: 4, name: "Rummage Royalty", threshold: 61, icon: '🏆', message: "You've conquered them all! Behold, the ultimate rummager!" }
-        ];
 
-        // --- Firebase Configuration ---
-        const firebaseConfig = {
-          apiKey: "AIzaSyCb-wQlQ8yBEH5QyG9q4F0poFbL3G_LLOk", // This key seems invalid, but using it as provided
-          authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
-          databaseURL: "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com",
-          projectId: "hartford-rummage2025-fe0f3",
-          storageBucket: "hartford-rummage2025-fe0f3.appspot.com",
-          messagingSenderId: "520958147494",
-          appId: "1:520958147494:web:96a455852f231f35a3ad67",
-          measurementId: "G-50YZMDWQH8"
-        };
-        
         // --- App State ---
         let completedLocations = [];
         let verifiedLocations = []; // For achievements
         let unlockedAchievements = [];
         let currentFilter = 'all';
         let currentSalesData = [...rummageSalesData];
-        let map, markers = [];
+        let map, markers = [], infoWindow;
 
         // --- DOM Elements ---
+        const mainContent = document.getElementById('main-content');
         const salesContainer = document.getElementById('sales-container');
         const loadingIndicator = document.getElementById('loading-indicator');
         const progressCounter = document.getElementById('progress-counter');
@@ -212,6 +214,9 @@
         const toast = document.getElementById('toast-notification');
         const sortByDistanceBtn = document.getElementById('sort-by-distance-btn');
         const resetSortBtn = document.getElementById('reset-sort-btn');
+        const mapContainer = document.getElementById('map-container');
+        const fullscreenMapBtn = document.getElementById('fullscreen-map-btn');
+        const closeFullscreenMapBtn = document.getElementById('close-fullscreen-map-btn');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -229,22 +234,16 @@
             const φ2 = lat2 * Math.PI/180;
             const Δφ = (lat2-lat1) * Math.PI/180;
             const Δλ = (lon2-lon1) * Math.PI/180;
-
-            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                      Math.cos(φ1) * Math.cos(φ2) *
-                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) * Math.sin(Δλ/2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
             return R * c; // in metres
         }
         
         function showToast(message, isError = false) {
             toast.textContent = message;
-            toast.className = `fixed bottom-5 left-1/2 -translate-x-1/2 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg ${isError ? 'bg-red-500' : 'bg-blue-500'}`;
+            toast.className = `fixed bottom-5 left-1/2 -translate-x-1/2 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg z-50 ${isError ? 'bg-red-500' : 'bg-blue-500'}`;
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
         // --- Achievements Logic ---
@@ -254,10 +253,7 @@
                 const isUnlocked = unlockedAchievements.includes(ach.id);
                 const card = document.createElement('div');
                 card.className = `achievement-card p-2 rounded-lg transition-all duration-300 ${isUnlocked ? 'unlocked' : ''}`;
-                card.innerHTML = `
-                    <div class="text-4xl achievement-icon">${ach.icon}</div>
-                    <div class="text-xs font-semibold mt-1">${ach.name}</div>
-                `;
+                card.innerHTML = `<div class="text-4xl achievement-icon">${ach.icon}</div><div class="text-xs font-semibold mt-1">${ach.name}</div>`;
                 achievementsContainer.appendChild(card);
             });
         }
@@ -277,10 +273,7 @@
 
         function checkAchievements() {
             const verifiedCount = verifiedLocations.length;
-            const newlyUnlocked = achievements.find(ach => 
-                verifiedCount >= ach.threshold && !unlockedAchievements.includes(ach.id)
-            );
-
+            const newlyUnlocked = achievements.find(ach => verifiedCount >= ach.threshold && !unlockedAchievements.includes(ach.id));
             if (newlyUnlocked) {
                 unlockedAchievements.push(newlyUnlocked.id);
                 localStorage.setItem('hartfordRummageAchievements2025', JSON.stringify(unlockedAchievements));
@@ -334,29 +327,33 @@
         }
 
         function handleToggleComplete(locationId) {
+            const sale = rummageSalesData.find(s => s.id === locationId);
+            if (!sale) return;
+
             if (!completedLocations.includes(locationId)) {
                 completedLocations.push(locationId);
+                localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
+                renderSales();
+                if (sale.lat && sale.lng) {
+                     verifyLocationForAchievement(locationId);
+                } else {
+                     showToast("Location data not available for this sale. Cannot verify for award.", true);
+                }
             } else {
                 completedLocations = completedLocations.filter(id => id !== locationId);
                 verifiedLocations = verifiedLocations.filter(id => id !== locationId);
                 localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
                 localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
                 renderSales();
-                return;
             }
-            localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
-            renderSales();
-
+        }
+        
+        function verifyLocationForAchievement(locationId) {
             const sale = rummageSalesData.find(s => s.id === locationId);
-            if (!sale || !sale.lat || !sale.lng) {
-                showToast("Location data not available for this sale.", true);
-                return;
-            }
-
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
-                    if (distance < 805) { 
+                    if (distance < 805) { // ~half a mile
                         if (!verifiedLocations.includes(locationId)) {
                              verifiedLocations.push(locationId);
                              localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
@@ -398,21 +395,19 @@
             const mapOptions = {
                 center: { lat: 43.625, lng: -96.945 },
                 zoom: 13,
-                mapId: 'RUMMAGE_MAP_ID', // Can be any string
-                 disableDefaultUI: true,
+                mapId: 'RUMMAGE_MAP_ID',
+                disableDefaultUI: true,
+                zoomControl: true
             };
             map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            infoWindow = new google.maps.InfoWindow();
             renderMapMarkers();
         }
 
         function renderMapMarkers() {
             if (!map) return;
-            // Clear existing markers
             markers.forEach(marker => marker.setMap(null));
             markers = [];
-
-            const infoWindow = new google.maps.InfoWindow();
-
             rummageSalesData.forEach(sale => {
                 if (sale.lat && sale.lng) {
                     const isCompleted = completedLocations.includes(sale.id);
@@ -429,20 +424,22 @@
                             strokeColor: '#ffffff'
                         }
                     });
-
                     marker.addListener('click', () => {
-                        const content = `<div class="p-1 font-sans text-gray-800"><h3 class="font-bold">${sale.address}</h3><p class="text-xs">${sale.items}</p></div>`;
+                        const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
+                                            <h3 class="font-bold">${sale.address}</h3>
+                                            <p class="text-xs mb-2">${sale.items}</p>
+                                            <button class="map-mark-done bg-green-500 text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">Mark as Done</button>
+                                       </div>`;
                         infoWindow.setContent(content);
                         infoWindow.open(map, marker);
                     });
-
                     markers.push(marker);
                 }
             });
         }
 
         function loadGoogleMaps() {
-            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
+            const GOOGLE_MAPS_API_KEY = "AIzaSyCb-wQlQ8yBEH5QyG9q4F0poFbL3G_LLOk";
             if (!window.google) {
                 const script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap`;
@@ -454,7 +451,6 @@
                 initMap();
             }
         }
-
 
         // --- Event Listeners ---
         filterContainer.addEventListener('click', (e) => {
@@ -472,24 +468,20 @@
             showToast("Finding your location to sort...", false);
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    const sortedData = [...rummageSalesData];
-                    sortedData.forEach(sale => {
+                    currentSalesData.forEach(sale => {
                         if(sale.lat && sale.lng) {
                             sale.distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
                         } else {
-                            sale.distance = Infinity; // Put sales without location data at the end
+                            sale.distance = Infinity;
                         }
                     });
-                    sortedData.sort((a,b) => a.distance - b.distance);
-                    currentSalesData = sortedData;
+                    currentSalesData.sort((a,b) => a.distance - b.distance);
                     renderSales();
                     showToast("Sales sorted by nearest!", false);
                     sortByDistanceBtn.classList.add('hidden');
                     resetSortBtn.classList.remove('hidden');
                 },
-                (error) => {
-                    showToast("Could not get your location to sort.", true);
-                }
+                (error) => { showToast("Could not get your location to sort.", true); }
             );
         });
 
@@ -507,8 +499,33 @@
                 handleToggleComplete(parseInt(button.dataset.id, 10));
             }
         });
+        
+        document.getElementById('map').addEventListener('click', (e) => {
+            if(e.target.classList.contains('map-mark-done')) {
+                const locationId = parseInt(e.target.dataset.id, 10);
+                if(!completedLocations.includes(locationId)) {
+                     handleToggleComplete(locationId);
+                }
+                infoWindow.close();
+            }
+        });
+
         closeModalBtn.addEventListener('click', hideAchievementModal);
         modal.addEventListener('click', (e) => { if (e.target === modal) hideAchievementModal(); });
+        
+        fullscreenMapBtn.addEventListener('click', () => {
+            mainContent.classList.add('hidden');
+            mapContainer.classList.add('fullscreen');
+            closeFullscreenMapBtn.classList.remove('hidden');
+            google.maps.event.trigger(map, "resize");
+        });
+
+        closeFullscreenMapBtn.addEventListener('click', () => {
+            mainContent.classList.remove('hidden');
+            mapContainer.classList.remove('fullscreen');
+            closeFullscreenMapBtn.classList.add('hidden');
+            google.maps.event.trigger(map, "resize");
+        });
 
         // --- Initialization ---
         function main() {
