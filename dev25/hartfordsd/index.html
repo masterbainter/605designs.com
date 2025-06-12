@@ -412,18 +412,18 @@
         }
         
         // --- Google Maps Logic ---
-//        function initMap() {
-//            const mapOptions = {
-//                center: { lat: 43.625, lng: -96.945 },
-//                zoom: 13,
-//                mapId: 'RUMMAGE_MAP_ID',
-//                disableDefaultUI: true,
-//                zoomControl: true
-//            };
-//            map = new google.maps.Map(document.getElementById("map"), mapOptions);
-//            infoWindow = new google.maps.InfoWindow();
-//            renderMapMarkers();
-//        }
+        function initMap() {
+            const mapOptions = {
+                center: { lat: 43.625, lng: -96.945 },
+                zoom: 13,
+                mapId: 'RUMMAGE_MAP_ID',
+                disableDefaultUI: true,
+                zoomControl: true
+            };
+            map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            infoWindow = new google.maps.InfoWindow();
+            renderMapMarkers();
+        }
 
         function renderMapMarkers() {
             if (!map) return;
