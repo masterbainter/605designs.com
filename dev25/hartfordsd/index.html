@@ -27,6 +27,21 @@
         #toast-notification.show {
             transform: translateY(0);
         }
+        /* Full Screen Map Styles */
+        #map-container.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 40;
+            padding: 0;
+            margin: 0;
+        }
+        #map-container.fullscreen #map {
+            height: 100%;
+            border-radius: 0;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -64,6 +79,7 @@
                 <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
                 <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
                 <button id="sort-by-distance-btn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Sort by Nearest</button>
+                <button id="update-position-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Update Position</button>
                 <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
             </div>
             
@@ -81,6 +97,10 @@
                 <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
                     <p class="text-gray-500">Loading Map...</p>
                 </div>
+                <button id="fullscreen-map-btn" class="absolute top-2 left-2 bg-gray-900 bg-opacity-70 text-white rounded-md p-2 text-xs font-semibold hover:bg-opacity-90">Full Screen</button>
+                <button id="close-fullscreen-map-btn" class="hidden absolute top-2 right-2 bg-gray-900 bg-opacity-70 text-white rounded-full p-2 hover:bg-opacity-90 z-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
             </div>
         </div>
         
@@ -306,23 +326,24 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         </button>
                     </div>
-                    <div class="flex-grow">
-                        <h3 class="font-bold text-lg mb-1 text-green-400 pr-10 ${isCompleted ? 'line-through' : ''}">${sale.address}</h3>
-                        ${isSaleOpenToday(sale) ? `<div class="text-xs font-bold text-yellow-400 mb-2">OPEN TODAY</div>` : ''}
-                        <p class="text-gray-400 text-sm mb-3"><strong>Sale Days:</strong> ${sale.days}</p>
-                        <div class="grid grid-cols-3 gap-2 text-center mb-4 text-xs sm:text-sm">
-                            <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Thursday</p><p class="text-gray-400">${sale.thursday}</p></div>
-                            <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Friday</p><p class="text-gray-400">${sale.friday}</p></div>
-                            <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Saturday</p><p class="text-gray-400">${sale.saturday}</p></div>
+                    <div class="flex-grow flex flex-col">
+                        <div>
+                            <h3 class="font-bold text-lg mb-1 text-green-400 pr-10 ${isCompleted ? 'line-through' : ''}">${sale.address}</h3>
+                            ${isSaleOpenToday(sale) ? `<div class="text-xs font-bold text-yellow-400 mb-2">OPEN TODAY</div>` : ''}
+                            <p class="text-gray-400 text-sm mb-3"><strong>Sale Days:</strong> ${sale.days}</p>
+                            <div class="grid grid-cols-3 gap-2 text-center mb-4 text-xs sm:text-sm">
+                                <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Thursday</p><p class="text-gray-400">${sale.thursday}</p></div>
+                                <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Friday</p><p class="text-gray-400">${sale.friday}</p></div>
+                                <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Saturday</p><p class="text-gray-400">${sale.saturday}</p></div>
+                            </div>
+                            ${(sale.additionalDays && !['na', 'n/a'].includes(sale.additionalDays.toLowerCase())) ? `<p class="text-xs sm:text-sm text-yellow-400 mb-3"><strong>Extra Days:</strong> ${sale.additionalDays}</p>` : ''}
+                            <div class="bg-gray-900/70 p-3 rounded-md">
+                                <p class="text-gray-300 font-semibold mb-1 text-sm">Items for Sale:</p>
+                                <p class="text-gray-400 text-xs sm:text-sm">${sale.items}</p>
+                            </div>
                         </div>
-                        ${(sale.additionalDays && !['na', 'n/a'].includes(sale.additionalDays.toLowerCase())) ? `<p class="text-xs sm:text-sm text-yellow-400 mb-3"><strong>Extra Days:</strong> ${sale.additionalDays}</p>` : ''}
-                        <div class="bg-gray-900/70 p-3 rounded-md mt-auto">
-                            <p class="text-gray-300 font-semibold mb-1 text-sm">Items for Sale:</p>
-                            <p class="text-gray-400 text-xs sm:text-sm">${sale.items}</p>
-                        </div>
-                    </div>
-                    ${sale.lat && sale.lng ? `<a href="https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}" target="_blank" class="mt-4 text-center bg-blue-500 text-white text-sm font-bold py-2 px-3 rounded-full hover:bg-blue-600 transition-colors w-full">Navigate</a>` : ''}
-                `;
+                        ${sale.lat && sale.lng ? `<a href="https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}" target="_blank" class="mt-4 text-center bg-blue-500 text-white text-sm font-bold py-2 px-3 rounded-full hover:bg-blue-600 transition-colors w-full">Navigate</a>` : ''}
+                    </div>`;
                 salesContainer.appendChild(card);
             });
             updateProgressCounter();
@@ -461,7 +482,7 @@
         }
 
         function loadGoogleMaps() {
-            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
+            const GOOGLE_MAPS_API_KEY = "AIzaSyCb-wQlQ8yBEH5QyG9q4F0poFbL3G_LLOk";
             if (!window.google) {
                 const script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap`;
@@ -502,6 +523,26 @@
                     showToast("Sales sorted by nearest!", false);
                     sortByDistanceBtn.classList.add('hidden');
                     resetSortBtn.classList.remove('hidden');
+                    document.getElementById('update-position-btn').classList.remove('hidden');
+                },
+                (error) => { showToast("Could not get your location to sort.", true); }
+            );
+        });
+
+        updatePositionBtn.addEventListener('click', () => {
+            showToast("Finding your location to re-sort...", false);
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    currentSalesData.forEach(sale => {
+                        if(sale.lat && sale.lng) {
+                            sale.distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
+                        } else {
+                            sale.distance = Infinity;
+                        }
+                    });
+                    currentSalesData.sort((a,b) => a.distance - b.distance);
+                    renderSales();
+                    showToast("List updated to your new location!", false);
                 },
                 (error) => { showToast("Could not get your location to sort.", true); }
             );
@@ -513,6 +554,7 @@
             showToast("Sort has been reset.", false);
             sortByDistanceBtn.classList.remove('hidden');
             resetSortBtn.classList.add('hidden');
+            document.getElementById('update-position-btn').classList.add('hidden');
         });
 
         salesContainer.addEventListener('click', (e) => {
@@ -535,6 +577,21 @@
         closeModalBtn.addEventListener('click', hideAchievementModal);
         modal.addEventListener('click', (e) => { if (e.target === modal) hideAchievementModal(); });
         
+        fullscreenMapBtn.addEventListener('click', () => {
+            if (!map) return; // Prevent action if map isn't loaded
+            appDiv.classList.add('hidden');
+            mapContainer.classList.add('fullscreen');
+            closeFullscreenMapBtn.classList.remove('hidden');
+            google.maps.event.trigger(map, "resize");
+        });
+
+        closeFullscreenMapBtn.addEventListener('click', () => {
+            appDiv.classList.remove('hidden');
+            mapContainer.classList.remove('fullscreen');
+            closeFullscreenMapBtn.classList.add('hidden');
+            google.maps.event.trigger(map, "resize");
+        });
+
         // --- Initialization ---
         function main() {
             try {
