@@ -125,6 +125,12 @@
 
     <!-- Firebase and App Logic -->
     <script type="module">
+        // we need to import one new function from Firebase.
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        // This is the new import: 'runTransaction'
+        import { getDatabase, ref, onValue, set, onDisconnect, runTransaction } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getDatabase, ref, onValue, set, onDisconnect, runTransaction } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
