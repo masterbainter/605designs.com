@@ -548,25 +548,35 @@
         });
 
         // --- Initialization ---
-// --- Initialization ---
-function main() {
-    // ... other initialization code ...
+        function main() {
+            try {
+                const savedChecklist = localStorage.getItem('hartfordRummageChecklist2025');
+                if (savedChecklist) completedLocations = JSON.parse(savedChecklist);
+                const savedVerified = localStorage.getItem('hartfordRummageVerified2025');
+                if (savedVerified) verifiedLocations = JSON.parse(savedVerified);
+                const savedAchievements = localStorage.getItem('hartfordRummageAchievements2025');
+                if (savedAchievements) unlockedAchievements = JSON.parse(savedAchievements);
+            } catch (e) { console.error("Could not parse saved data", e); }
+            
+            renderSales();
+            renderAchievements();
 
-    try {
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        setupPresenceSystem(auth);
-        signInAnonymously(auth).catch(err => {
-            console.error("Anonymous sign-in for visitor counter failed:", err);
-            visitorCounter.textContent = "Visitor count disabled";
-        });
-    } catch (error) {
-        console.error("Firebase Initialization for visitor counter failed:", error);
-        visitorCounter.textContent = "Offline";
-    }
-}
-
-main();
+            try {
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                setupPresenceSystem(auth);
+                signInAnonymously(auth).catch(err => {
+                    console.error("Anonymous sign-in for visitor counter failed:", err);
+                    visitorCounter.textContent = "Visitor count disabled";
+                });
+            } catch (error) {
+                console.error("Firebase Initialization for visitor counter failed:", error);
+                visitorCounter.textContent = "Offline";
+            }
+            loadGoogleMaps();
+        }
+        
+        main();
     </script>
 </body>
 </html>
