@@ -389,7 +389,7 @@
         }
         
         function setupPresenceSystem(auth) {
-            onAuthStateChanged(auth, (user) => {
+             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const rtdb = getDatabase();
                     const appId = firebaseConfig.projectId;
