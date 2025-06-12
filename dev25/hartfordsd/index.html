@@ -209,7 +209,7 @@
         const achievements = [
             { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
             { id: 2, name: "Seasoned Scavenger", threshold: 15, icon: '🥈', message: "You've got a keen eye for deals!" },
-            { id: 3, name: "Treasure Tracker", threshold: 30, icon: '�', message: "A true master of the rummage arts!" },
+            { id: 3, name: "Treasure Tracker", threshold: 30, icon: '🥇', message: "A true master of the rummage arts!" },
             { id: 4, name: "Rummage Royalty", threshold: 61, icon: '🏆', message: "You've conquered them all! Behold, the ultimate rummager!" }
         ];
 
@@ -237,6 +237,7 @@
         const mapContainer = document.getElementById('map-container');
         const fullscreenMapBtn = document.getElementById('fullscreen-map-btn');
         const closeFullscreenMapBtn = document.getElementById('close-fullscreen-map-btn');
+        const mainFooter = document.getElementById('main-footer');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -534,7 +535,9 @@
         modal.addEventListener('click', (e) => { if (e.target === modal) hideAchievementModal(); });
         
         fullscreenMapBtn.addEventListener('click', () => {
+            if (!map) return; // Prevent action if map isn't loaded
             mainContent.classList.add('hidden');
+            mainFooter.classList.add('hidden');
             mapContainer.classList.add('fullscreen');
             closeFullscreenMapBtn.classList.remove('hidden');
             google.maps.event.trigger(map, "resize");
@@ -542,6 +545,7 @@
 
         closeFullscreenMapBtn.addEventListener('click', () => {
             mainContent.classList.remove('hidden');
+            mainFooter.classList.remove('hidden');
             mapContainer.classList.remove('fullscreen');
             closeFullscreenMapBtn.classList.add('hidden');
             google.maps.event.trigger(map, "resize");
@@ -579,4 +583,4 @@
         main();
     </script>
 </body>
-</html>
+</ht
