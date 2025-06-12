@@ -239,6 +239,7 @@
         const toast = document.getElementById('toast-notification');
         const sortByDistanceBtn = document.getElementById('sort-by-distance-btn');
         const resetSortBtn = document.getElementById('reset-sort-btn');
+        const updatePositionBtn = document.getElementById('update-position-btn');
         const mapContainer = document.getElementById('map-container');
         const fullscreenMapBtn = document.getElementById('fullscreen-map-btn');
         const closeFullscreenMapBtn = document.getElementById('close-fullscreen-map-btn');
@@ -522,15 +523,15 @@
                     renderSales();
                     showToast("Sales sorted by nearest!", false);
                     sortByDistanceBtn.classList.add('hidden');
+                    updatePositionBtn.classList.remove('hidden');
                     resetSortBtn.classList.remove('hidden');
-                    document.getElementById('update-position-btn').classList.remove('hidden');
                 },
                 (error) => { showToast("Could not get your location to sort.", true); }
             );
         });
 
         updatePositionBtn.addEventListener('click', () => {
-            showToast("Finding your location to re-sort...", false);
+             showToast("Finding your location to re-sort...", false);
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     currentSalesData.forEach(sale => {
@@ -553,8 +554,8 @@
             renderSales();
             showToast("Sort has been reset.", false);
             sortByDistanceBtn.classList.remove('hidden');
+            updatePositionBtn.classList.add('hidden');
             resetSortBtn.classList.add('hidden');
-            document.getElementById('update-position-btn').classList.add('hidden');
         });
 
         salesContainer.addEventListener('click', (e) => {
@@ -579,14 +580,14 @@
         
         fullscreenMapBtn.addEventListener('click', () => {
             if (!map) return; // Prevent action if map isn't loaded
-            appDiv.classList.add('hidden');
+            mainContent.classList.add('hidden');
             mapContainer.classList.add('fullscreen');
             closeFullscreenMapBtn.classList.remove('hidden');
             google.maps.event.trigger(map, "resize");
         });
 
         closeFullscreenMapBtn.addEventListener('click', () => {
-            appDiv.classList.remove('hidden');
+            mainContent.classList.remove('hidden');
             mapContainer.classList.remove('fullscreen');
             closeFullscreenMapBtn.classList.add('hidden');
             google.maps.event.trigger(map, "resize");
