@@ -339,7 +339,9 @@
                             <p class="text-gray-300 font-semibold mb-1 text-sm">Items for Sale:</p>
                             <p class="text-gray-400 text-xs sm:text-sm">${sale.items}</p>
                         </div>
-                    </div>`;
+                    </div>
+                    ${sale.lat && sale.lng ? `<a href="https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}" target="_blank" class="mt-4 text-center bg-blue-500 text-white text-sm font-bold py-2 px-3 rounded-full hover:bg-blue-600 transition-colors w-full">Navigate</a>` : ''}
+                `;
                 salesContainer.appendChild(card);
             });
             updateProgressCounter();
@@ -554,14 +556,14 @@
         
         fullscreenMapBtn.addEventListener('click', () => {
             if (!map) return; // Prevent action if map isn't loaded
-            appDiv.classList.add('hidden');
+            mainContent.classList.add('hidden');
             mapContainer.classList.add('fullscreen');
             closeFullscreenMapBtn.classList.remove('hidden');
             google.maps.event.trigger(map, "resize");
         });
 
         closeFullscreenMapBtn.addEventListener('click', () => {
-            appDiv.classList.remove('hidden');
+            mainContent.classList.remove('hidden');
             mapContainer.classList.remove('fullscreen');
             closeFullscreenMapBtn.classList.add('hidden');
             google.maps.event.trigger(map, "resize");
