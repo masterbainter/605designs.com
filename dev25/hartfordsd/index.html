@@ -60,8 +60,6 @@
                 </p>
                 <div class="mt-4 space-y-1">
                     <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
-                    <div id="visitor-counter" class="text-sm font-medium text-cyan-400"><span class="animate-pulse">Connecting...</span></div>
-                    <div id="peak-visitor-counter" class="text-sm font-medium text-purple-400">Peak Visitors: ...</div>
                 </div>
             </header>
 
@@ -126,12 +124,8 @@
     </div>
 
 
-    <!-- Firebase and App Logic -->
+    <!-- App Logic -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getDatabase, ref, onValue, set, onDisconnect, runTransaction } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
         // --- Data with Geolocation ---
         const rummageSalesData = [
@@ -483,7 +477,7 @@
         }
 
         function loadGoogleMaps() {
-            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
+            const GOOGLE_MAPS_API_KEY = "AIzaSyCb-wQlQ8yBEH5QyG9q4F0poFbL3G_LLOk";
             if (!window.google) {
                 const script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap`;
@@ -580,14 +574,14 @@
         
         fullscreenMapBtn.addEventListener('click', () => {
             if (!map) return; // Prevent action if map isn't loaded
-            mainContent.classList.add('hidden');
+            appDiv.classList.add('hidden');
             mapContainer.classList.add('fullscreen');
             closeFullscreenMapBtn.classList.remove('hidden');
             google.maps.event.trigger(map, "resize");
         });
 
         closeFullscreenMapBtn.addEventListener('click', () => {
-            mainContent.classList.remove('hidden');
+            appDiv.classList.remove('hidden');
             mapContainer.classList.remove('fullscreen');
             closeFullscreenMapBtn.classList.add('hidden');
             google.maps.event.trigger(map, "resize");
