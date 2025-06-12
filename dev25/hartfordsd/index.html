@@ -28,7 +28,7 @@
             transform: translateY(0);
         }
         /* Full Screen Map Styles */
-/*        #map-container.fullscreen {
+        #map-container.fullscreen {
             position: fixed;
             top: 0;
             left: 0;
@@ -41,7 +41,7 @@
         #map-container.fullscreen #map {
             height: 100%;
             border-radius: 0;
-        }*/
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -60,6 +60,7 @@
             <div class="mt-4 space-y-1">
                 <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
                 <div id="visitor-counter" class="text-sm font-medium text-cyan-400"><span class="animate-pulse">Connecting...</span></div>
+                <div id="peak-visitor-counter" class="text-sm font-medium text-purple-400">Peak Visitors: ...</div>
             </div>
         </header>
 
@@ -94,10 +95,10 @@
             <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
                 <p class="text-gray-500">Loading Map...</p>
             </div>
-<!--            <button id="fullscreen-map-btn" class="absolute top-2 left-2 bg-gray-900 bg-opacity-70 text-white rounded-md p-2 text-xs font-semibold hover:bg-opacity-90">Full Screen</button>
+            <button id="fullscreen-map-btn" class="absolute top-2 left-2 bg-gray-900 bg-opacity-70 text-white rounded-md p-2 text-xs font-semibold hover:bg-opacity-90">Full Screen</button>
             <button id="close-fullscreen-map-btn" class="hidden absolute top-2 right-2 bg-gray-900 bg-opacity-70 text-white rounded-full p-2 hover:bg-opacity-90 z-50">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>-->
+            </button>
         </div>
     </div>
     
@@ -126,7 +127,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        import { getDatabase, ref, onValue, set, onDisconnect, runTransaction } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
         // --- Data with Geolocation ---
         const rummageSalesData = [
@@ -222,7 +223,7 @@
         let map, markers = [], infoWindow;
 
         // --- DOM Elements ---
-        const mainContent = document.getElementById('main-content');
+        const appDiv = document.getElementById('app');
         const salesContainer = document.getElementById('sales-container');
         const loadingIndicator = document.getElementById('loading-indicator');
         const progressCounter = document.getElementById('progress-counter');
@@ -237,7 +238,6 @@
         const mapContainer = document.getElementById('map-container');
         const fullscreenMapBtn = document.getElementById('fullscreen-map-btn');
         const closeFullscreenMapBtn = document.getElementById('close-fullscreen-map-btn');
-        const mainFooter = document.getElementById('main-footer');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -398,6 +398,7 @@
                     const userStatusDatabaseRef = ref(rtdb, `/artifacts/${appId}/public/presence/users/${uid}`);
                     const connectedRef = ref(rtdb, '.info/connected');
                     const allUsersRef = ref(rtdb, `/artifacts/${appId}/public/presence/users`);
+                    const peakCountRef = ref(rtdb, `/artifacts/${appId}/public/presence/peakVisitorCount`);
 
                     onValue(connectedRef, (snap) => {
                         if (snap.val() === true) { set(userStatusDatabaseRef, true); onDisconnect(userStatusDatabaseRef).remove(); }
@@ -406,6 +407,17 @@
                     onValue(allUsersRef, (snap) => {
                         const count = snap.size; 
                         visitorCounter.innerHTML = `<span class="flex items-center justify-center"><span class="relative flex h-3 w-3 mr-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span></span>${count} Live Visitor${count === 1 ? '' : 's'}</span>`;
+                        runTransaction(peakCountRef, (currentPeak) => {
+                            if (currentPeak === null || count > currentPeak) {
+                                return count;
+                            }
+                            return; // Abort transaction
+                        });
+                    });
+
+                    onValue(peakCountRef, (snap) => {
+                         const peakCount = snap.val() || 0;
+                         document.getElementById('peak-visitor-counter').textContent = `Peak Visitors: ${peakCount}`;
                     });
                 }
             });
@@ -460,7 +472,7 @@
         }
 
         function loadGoogleMaps() {
-            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
+            const GOOGLE_MAPS_API_KEY = "AIzaSyCb-wQlQ8yBEH5QyG9q4F0poFbL3G_LLOk";
             if (!window.google) {
                 const script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap`;
@@ -534,22 +546,20 @@
         closeModalBtn.addEventListener('click', hideAchievementModal);
         modal.addEventListener('click', (e) => { if (e.target === modal) hideAchievementModal(); });
         
-//        fullscreenMapBtn.addEventListener('click', () => {
-//            if (!map) return; // Prevent action if map isn't loaded
-//            mainContent.classList.add('hidden');
-//            mainFooter.classList.add('hidden');
-//            mapContainer.classList.add('fullscreen');
-//            closeFullscreenMapBtn.classList.remove('hidden');
-//            google.maps.event.trigger(map, "resize");
-//        });
+        fullscreenMapBtn.addEventListener('click', () => {
+            if (!map) return; // Prevent action if map isn't loaded
+            appDiv.classList.add('hidden');
+            mapContainer.classList.add('fullscreen');
+            closeFullscreenMapBtn.classList.remove('hidden');
+            google.maps.event.trigger(map, "resize");
+        });
 
-//        closeFullscreenMapBtn.addEventListener('click', () => {
-//            mainContent.classList.remove('hidden');
-//            mainFooter.classList.remove('hidden');
-//            mapContainer.classList.remove('fullscreen');
-//            closeFullscreenMapBtn.classList.add('hidden');
-//            google.maps.event.trigger(map, "resize");
-//        });
+        closeFullscreenMapBtn.addEventListener('click', () => {
+            appDiv.classList.remove('hidden');
+            mapContainer.classList.remove('fullscreen');
+            closeFullscreenMapBtn.classList.add('hidden');
+            google.maps.event.trigger(map, "resize");
+        });
 
         // --- Initialization ---
         function main() {
