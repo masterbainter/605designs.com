@@ -27,49 +27,82 @@
         #toast-notification.show {
             transform: translateY(0);
         }
+        /* Full Screen Map Styles */
+/*        #map-container.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 40;
+            padding: 0;
+            margin: 0;
+        }
+        #map-container.fullscreen #map {
+            height: 100%;
+            border-radius: 0;
+        } */
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
 
-    <div id="app" class="p-4">
-        <header class="text-center mb-6">
-            <div class="mb-4">
-                <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto">
-            </div>
-            <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">
-                Hartford Rummage Checklist
-            </h1>
-            <p class="text-base text-gray-400">
-                Your guide to the 2025 city-wide sales.
-            </p>
-            <div class="mt-4 space-y-1">
-                <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
-                <div id="visitor-counter" class="text-sm font-medium text-cyan-400"><span class="animate-pulse">Connecting...</span></div>
-            </div>
-        </header>
+    <div id="app">
+        <div id="main-content">
+            <header class="text-center mb-6 pt-4 px-4">
+                <div class="mb-4">
+                    <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto">
+                </div>
+                <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">
+                    Hartford Rummage Checklist
+                </h1>
+                <p class="text-base text-gray-400">
+                    Your guide to the 2025 city-wide sales.
+                </p>
+                <div class="mt-4 space-y-1">
+                    <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
+                    <div id="visitor-counter" class="text-sm font-medium text-cyan-400"><span class="animate-pulse">Connecting...</span></div>
+                </div>
+            </header>
 
-        <!-- Achievements Section -->
-        <div id="achievements-section" class="mb-8 text-center">
-             <h2 class="text-xl font-bold text-white mb-3">Your Awards</h2>
-             <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6">
-                 <!-- Achievement icons will be inserted here -->
-             </div>
+            <!-- Achievements Section -->
+            <div id="achievements-section" class="mb-8 text-center px-4">
+                 <h2 class="text-xl font-bold text-white mb-3">Your Awards</h2>
+                 <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6">
+                     <!-- Achievement icons will be inserted here -->
+                 </div>
+            </div>
+
+            <!-- Filter buttons -->
+            <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap px-4">
+                <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
+                <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
+                <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
+                <button id="sort-by-distance-btn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Sort by Nearest</button>
+                <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
+            </div>
+            
+            <div id="loading-indicator" class="text-center text-xl text-gray-400 px-4">Loading your checklist...</div>
+
+            <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4">
+                <!-- Rummage sale cards will be injected here -->
+            </main>
         </div>
 
-        <!-- Filter buttons -->
-        <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap">
-            <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
-            <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
-            <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
+        <!-- Google Map Section -->
+        <div id="map-container" class="my-8 px-4">
+            <h2 id="map-title" class="text-2xl font-bold text-white text-center mb-4">Sale Locations Map</h2>
+            <div class="relative">
+                <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
+                    <p class="text-gray-500">Loading Map...</p>
+                </div>
+                <!--<button id="fullscreen-map-btn" class="absolute top-2 left-2 bg-gray-900 bg-opacity-70 text-white rounded-md p-2 text-xs font-semibold hover:bg-opacity-90">Full Screen</button>
+                <button id="close-fullscreen-map-btn" class="hidden absolute top-2 right-2 bg-gray-900 bg-opacity-70 text-white rounded-full p-2 hover:bg-opacity-90 z-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>-->
+            </div>
         </div>
         
-        <div id="loading-indicator" class="text-center text-xl text-gray-400">Loading your checklist...</div>
-
-        <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            <!-- Rummage sale cards will be injected here -->
-        </main>
-        
-        <footer class="text-center mt-12 text-gray-500 text-xs">
+        <footer id="main-footer" class="text-center mt-12 mb-4 text-gray-500 text-xs px-4">
             <p>Your progress is saved automatically to this device.</p>
         </footer>
     </div>
@@ -86,7 +119,7 @@
     </div>
     
     <!-- Toast Notification -->
-    <div id="toast-notification" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg">
+    <div id="toast-notification" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg z-50">
         <!-- Toast message here -->
     </div>
 
@@ -187,8 +220,11 @@
         let verifiedLocations = []; // For achievements
         let unlockedAchievements = [];
         let currentFilter = 'all';
+        let currentSalesData = [...rummageSalesData];
+        let map, markers = [], infoWindow;
 
         // --- DOM Elements ---
+        const appDiv = document.getElementById('app');
         const salesContainer = document.getElementById('sales-container');
         const loadingIndicator = document.getElementById('loading-indicator');
         const progressCounter = document.getElementById('progress-counter');
@@ -198,6 +234,11 @@
         const modal = document.getElementById('achievement-modal');
         const closeModalBtn = document.getElementById('close-modal-btn');
         const toast = document.getElementById('toast-notification');
+        const sortByDistanceBtn = document.getElementById('sort-by-distance-btn');
+        const resetSortBtn = document.getElementById('reset-sort-btn');
+        const mapContainer = document.getElementById('map-container');
+        const fullscreenMapBtn = document.getElementById('fullscreen-map-btn');
+        const closeFullscreenMapBtn = document.getElementById('close-fullscreen-map-btn');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -215,22 +256,16 @@
             const φ2 = lat2 * Math.PI/180;
             const Δφ = (lat2-lat1) * Math.PI/180;
             const Δλ = (lon2-lon1) * Math.PI/180;
-
-            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                      Math.cos(φ1) * Math.cos(φ2) *
-                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) * Math.sin(Δλ/2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
             return R * c; // in metres
         }
         
         function showToast(message, isError = false) {
             toast.textContent = message;
-            toast.className = `fixed bottom-5 left-1/2 -translate-x-1/2 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg ${isError ? 'bg-red-500' : 'bg-blue-500'}`;
+            toast.className = `fixed bottom-5 left-1/2 -translate-x-1/2 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg z-50 ${isError ? 'bg-red-500' : 'bg-blue-500'}`;
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
         // --- Achievements Logic ---
@@ -240,10 +275,7 @@
                 const isUnlocked = unlockedAchievements.includes(ach.id);
                 const card = document.createElement('div');
                 card.className = `achievement-card p-2 rounded-lg transition-all duration-300 ${isUnlocked ? 'unlocked' : ''}`;
-                card.innerHTML = `
-                    <div class="text-4xl achievement-icon">${ach.icon}</div>
-                    <div class="text-xs font-semibold mt-1">${ach.name}</div>
-                `;
+                card.innerHTML = `<div class="text-4xl achievement-icon">${ach.icon}</div><div class="text-xs font-semibold mt-1">${ach.name}</div>`;
                 achievementsContainer.appendChild(card);
             });
         }
@@ -263,10 +295,7 @@
 
         function checkAchievements() {
             const verifiedCount = verifiedLocations.length;
-            const newlyUnlocked = achievements.find(ach => 
-                verifiedCount >= ach.threshold && !unlockedAchievements.includes(ach.id)
-            );
-
+            const newlyUnlocked = achievements.find(ach => verifiedCount >= ach.threshold && !unlockedAchievements.includes(ach.id));
             if (newlyUnlocked) {
                 unlockedAchievements.push(newlyUnlocked.id);
                 localStorage.setItem('hartfordRummageAchievements2025', JSON.stringify(unlockedAchievements));
@@ -277,7 +306,7 @@
         
         // --- Core Application Logic ---
         function renderSales() {
-            const filteredSales = rummageSalesData.filter(sale => {
+            const filteredSales = currentSalesData.filter(sale => {
                 if (currentFilter === 'not_visited') return !completedLocations.includes(sale.id);
                 if (currentFilter === 'open') return isSaleOpenToday(sale);
                 return true;
@@ -312,6 +341,7 @@
                 salesContainer.appendChild(card);
             });
             updateProgressCounter();
+            renderMapMarkers();
         }
 
         function updateProgressCounter() {
@@ -319,29 +349,33 @@
         }
 
         function handleToggleComplete(locationId) {
+            const sale = rummageSalesData.find(s => s.id === locationId);
+            if (!sale) return;
+
             if (!completedLocations.includes(locationId)) {
                 completedLocations.push(locationId);
+                localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
+                renderSales();
+                if (sale.lat && sale.lng) {
+                     verifyLocationForAchievement(locationId);
+                } else {
+                     showToast("Location data not available for this sale. Cannot verify for award.", true);
+                }
             } else {
                 completedLocations = completedLocations.filter(id => id !== locationId);
                 verifiedLocations = verifiedLocations.filter(id => id !== locationId);
                 localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
                 localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
                 renderSales();
-                return;
             }
-            localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
-            renderSales();
-
+        }
+        
+        function verifyLocationForAchievement(locationId) {
             const sale = rummageSalesData.find(s => s.id === locationId);
-            if (!sale || !sale.lat || !sale.lng) {
-                showToast("Location data not available for this sale.", true);
-                return;
-            }
-
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
-                    if (distance < 805) { 
+                    if (distance < 805) { // ~half a mile
                         if (!verifiedLocations.includes(locationId)) {
                              verifiedLocations.push(locationId);
                              localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
@@ -377,6 +411,68 @@
                 }
             });
         }
+        
+        // --- Google Maps Logic ---
+        function initMap() {
+            const mapOptions = {
+                center: { lat: 43.625, lng: -96.945 },
+                zoom: 13,
+                mapId: 'RUMMAGE_MAP_ID',
+                disableDefaultUI: true,
+                zoomControl: true
+            };
+            map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            infoWindow = new google.maps.InfoWindow();
+            renderMapMarkers();
+        }
+
+        function renderMapMarkers() {
+            if (!map) return;
+            markers.forEach(marker => marker.setMap(null));
+            markers = [];
+            rummageSalesData.forEach(sale => {
+                if (sale.lat && sale.lng) {
+                    const isCompleted = completedLocations.includes(sale.id);
+                    const marker = new google.maps.Marker({
+                        position: { lat: sale.lat, lng: sale.lng },
+                        map,
+                        title: sale.address,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 8,
+                            fillColor: isCompleted ? '#22c55e' : '#ef4444',
+                            fillOpacity: 1,
+                            strokeWeight: 2,
+                            strokeColor: '#ffffff'
+                        }
+                    });
+                    marker.addListener('click', () => {
+                        const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
+                                            <h3 class="font-bold">${sale.address}</h3>
+                                            <p class="text-xs mb-2">${sale.items}</p>
+                                            <button class="map-mark-done bg-green-500 text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">Mark as Done</button>
+                                       </div>`;
+                        infoWindow.setContent(content);
+                        infoWindow.open(map, marker);
+                    });
+                    markers.push(marker);
+                }
+            });
+        }
+
+        function loadGoogleMaps() {
+            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
+            if (!window.google) {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap`;
+                script.async = true;
+                script.defer = true;
+                window.initMap = initMap; // Make initMap globally available
+                document.head.appendChild(script);
+            } else {
+                initMap();
+            }
+        }
 
         // --- Event Listeners ---
         filterContainer.addEventListener('click', (e) => {
@@ -389,14 +485,70 @@
                 renderSales();
             }
         });
+        
+        sortByDistanceBtn.addEventListener('click', () => {
+            showToast("Finding your location to sort...", false);
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    currentSalesData.forEach(sale => {
+                        if(sale.lat && sale.lng) {
+                            sale.distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
+                        } else {
+                            sale.distance = Infinity;
+                        }
+                    });
+                    currentSalesData.sort((a,b) => a.distance - b.distance);
+                    renderSales();
+                    showToast("Sales sorted by nearest!", false);
+                    sortByDistanceBtn.classList.add('hidden');
+                    resetSortBtn.classList.remove('hidden');
+                },
+                (error) => { showToast("Could not get your location to sort.", true); }
+            );
+        });
+
+        resetSortBtn.addEventListener('click', () => {
+            currentSalesData = [...rummageSalesData];
+            renderSales();
+            showToast("Sort has been reset.", false);
+            sortByDistanceBtn.classList.remove('hidden');
+            resetSortBtn.classList.add('hidden');
+        });
+
         salesContainer.addEventListener('click', (e) => {
             const button = e.target.closest('.toggle-complete');
             if (button) {
                 handleToggleComplete(parseInt(button.dataset.id, 10));
             }
         });
+        
+        document.getElementById('map').addEventListener('click', (e) => {
+            if(e.target.classList.contains('map-mark-done')) {
+                const locationId = parseInt(e.target.dataset.id, 10);
+                if(!completedLocations.includes(locationId)) {
+                     handleToggleComplete(locationId);
+                }
+                infoWindow.close();
+            }
+        });
+
         closeModalBtn.addEventListener('click', hideAchievementModal);
         modal.addEventListener('click', (e) => { if (e.target === modal) hideAchievementModal(); });
+        
+//        fullscreenMapBtn.addEventListener('click', () => {
+//            if (!map) return; // Prevent action if map isn't loaded
+//            appDiv.classList.add('hidden');
+//            mapContainer.classList.add('fullscreen');
+//            closeFullscreenMapBtn.classList.remove('hidden');
+//            google.maps.event.trigger(map, "resize");
+//        });
+
+//        closeFullscreenMapBtn.addEventListener('click', () => {
+//            appDiv.classList.remove('hidden');
+//            mapContainer.classList.remove('fullscreen');
+//            closeFullscreenMapBtn.classList.add('hidden');
+//            google.maps.event.trigger(map, "resize");
+//        });
 
         // --- Initialization ---
         function main() {
@@ -424,6 +576,7 @@
                 console.error("Firebase Initialization for visitor counter failed:", error);
                 visitorCounter.textContent = "Offline";
             }
+            loadGoogleMaps();
         }
         
         main();
