@@ -28,7 +28,7 @@
             transform: translateY(0);
         }
         /* Full Screen Map Styles */
-        #map-container.fullscreen {
+/*        #map-container.fullscreen {
             position: fixed;
             top: 0;
             left: 0;
@@ -41,7 +41,7 @@
         #map-container.fullscreen #map {
             height: 100%;
             border-radius: 0;
-        }
+        }*/
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -550,20 +550,20 @@
         closeModalBtn.addEventListener('click', hideAchievementModal);
         modal.addEventListener('click', (e) => { if (e.target === modal) hideAchievementModal(); });
         
-        fullscreenMapBtn.addEventListener('click', () => {
-            if (!map) return; // Prevent action if map isn't loaded
-            appDiv.classList.add('hidden');
-            mapContainer.classList.add('fullscreen');
-            closeFullscreenMapBtn.classList.remove('hidden');
-            google.maps.event.trigger(map, "resize");
-        });
+//        fullscreenMapBtn.addEventListener('click', () => {
+//            if (!map) return; // Prevent action if map isn't loaded
+//            appDiv.classList.add('hidden');
+//            mapContainer.classList.add('fullscreen');
+//            closeFullscreenMapBtn.classList.remove('hidden');
+//            google.maps.event.trigger(map, "resize");
+//        });
 
-        closeFullscreenMapBtn.addEventListener('click', () => {
-            appDiv.classList.remove('hidden');
-            mapContainer.classList.remove('fullscreen');
-            closeFullscreenMapBtn.classList.add('hidden');
-            google.maps.event.trigger(map, "resize");
-        });
+//        closeFullscreenMapBtn.addEventListener('click', () => {
+//            appDiv.classList.remove('hidden');
+//            mapContainer.classList.remove('fullscreen');
+//            closeFullscreenMapBtn.classList.add('hidden');
+//            google.maps.event.trigger(map, "resize");
+//        });
 
         // --- Initialization ---
         function main() {
