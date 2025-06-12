@@ -193,6 +193,26 @@
             { id: 61, address: "1106 N Vandemark Ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
         ];
 
+        // --- Firebase Configuration ---
+        const firebaseConfig = {
+          apiKey: "AIzaSyBp3vJ3R4xFtG7UHfv7CbSUl-bZE-5ik0E",
+          authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
+          databaseURL: "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com",
+          projectId: "hartford-rummage2025-fe0f3",
+          storageBucket: "hartford-rummage2025-fe0f3.appspot.com",
+          messagingSenderId: "520958147494",
+          appId: "1:520958147494:web:96a455852f231f35a3ad67",
+          measurementId: "G-50YZMDWQH8"
+        };
+        
+        // --- Achievements Data ---
+        const achievements = [
+            { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
+            { id: 2, name: "Seasoned Scavenger", threshold: 15, icon: '🥈', message: "You've got a keen eye for deals!" },
+            { id: 3, name: "Treasure Tracker", threshold: 30, icon: '🥇', message: "A true master of the rummage arts!" },
+            { id: 4, name: "Rummage Royalty", threshold: 61, icon: '🏆', message: "You've conquered them all! Behold, the ultimate rummager!" }
+        ];
+
         // --- App State ---
         let completedLocations = [];
         let verifiedLocations = []; // For achievements
