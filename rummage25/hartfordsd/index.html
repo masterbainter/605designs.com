@@ -31,60 +31,55 @@
 </head>
 <body class="bg-gray-900 text-gray-200">
 
-    <div id="app">
-        <div id="main-content">
-            <header class="text-center mb-6 pt-4 px-4">
-                <div class="mb-4">
-                    <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto">
-                </div>
-                <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">
-                    Hartford Rummage Checklist
-                </h1>
-                <p class="text-base text-gray-400">
-                    Your guide to the 2025 city-wide sales.
-                </p>
-                <div class="mt-4 space-y-1">
-                    <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
-                    <div id="visitor-counter" class="text-sm font-medium text-cyan-400"><span class="animate-pulse">Connecting...</span></div>
-                    <div id="peak-visitor-counter" class="text-sm font-medium text-purple-400">Peak Visitors: ...</div>
-                </div>
-            </header>
-
-            <!-- Achievements Section -->
-            <div id="achievements-section" class="mb-8 text-center px-4">
-                 <h2 class="text-xl font-bold text-white mb-3">Your Awards</h2>
-                 <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6">
-                     <!-- Achievement icons will be inserted here -->
-                 </div>
+    <div class="p-4">
+        <header class="text-center mb-6 pt-4">
+            <div class="mb-4">
+                <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto">
             </div>
-
-            <!-- Filter buttons -->
-            <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap px-4">
-                <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
-                <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
-                <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
-                <button id="sort-by-distance-btn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Sort by Nearest</button>
-                <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
+            <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">
+                Hartford Rummage Checklist
+            </h1>
+            <p class="text-base text-gray-400">
+                Your guide to the 2025 city-wide sales.
+            </p>
+            <div class="mt-4 space-y-1">
+                <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
             </div>
-            
-            <div id="loading-indicator" class="text-center text-xl text-gray-400 px-4">Loading your checklist...</div>
+        </header>
 
-            <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4">
-                <!-- Rummage sale cards will be injected here -->
-            </main>
+        <!-- Achievements Section -->
+        <div id="achievements-section" class="mb-8 text-center px-4">
+             <h2 class="text-xl font-bold text-white mb-3">Your Awards</h2>
+             <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6">
+                 <!-- Achievement icons will be inserted here -->
+             </div>
         </div>
 
+        <!-- Filter buttons -->
+        <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap px-4">
+            <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
+            <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
+            <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
+            <button id="sort-by-distance-btn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Sort by Nearest</button>
+            <button id="update-position-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Update Position</button>
+            <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
+        </div>
+        
+        <div id="loading-indicator" class="text-center text-xl text-gray-400 px-4">Loading your checklist...</div>
+
+        <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4">
+            <!-- Rummage sale cards will be injected here -->
+        </main>
+    
         <!-- Google Map Section -->
         <div id="map-container" class="my-8 px-4">
             <h2 id="map-title" class="text-2xl font-bold text-white text-center mb-4">Sale Locations Map</h2>
-            <div class="relative">
-                <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
-                    <p class="text-gray-500">Loading Map...</p>
-                </div>
+            <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
+                <p class="text-gray-500">Loading Map...</p>
             </div>
         </div>
         
-        <footer id="main-footer" class="text-center mt-12 mb-4 text-gray-500 text-xs px-4">
+        <footer class="text-center mt-12 mb-4 text-gray-500 text-xs px-4">
             <p>Your progress is saved automatically to this device.</p>
         </footer>
     </div>
@@ -106,13 +101,8 @@
     </div>
 
 
-    <!-- Firebase and App Logic -->
+    <!-- App Logic -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getDatabase, ref, onValue, set, onDisconnect, runTransaction } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
-
         // --- Data with Geolocation ---
         const rummageSalesData = [
             { id: 1, address: "301 w 7th st", lat: 43.6230, lng: -96.9452, days: "Friday, Saturday", thursday: "N/a", friday: "8 am", saturday: "8 am", additionalDays: "N/a", items: "Porcelain Dolls, kids clothes, kids toys, household items, men's camo clothing" },
@@ -207,21 +197,19 @@
         let map, markers = [], infoWindow;
 
         // --- DOM Elements ---
-        const appDiv = document.getElementById('app');
+        const mainContent = document.getElementById('main-content');
         const salesContainer = document.getElementById('sales-container');
         const loadingIndicator = document.getElementById('loading-indicator');
         const progressCounter = document.getElementById('progress-counter');
         const filterContainer = document.getElementById('filter-container');
-        const visitorCounter = document.getElementById('visitor-counter');
         const achievementsContainer = document.getElementById('achievements-container');
         const modal = document.getElementById('achievement-modal');
         const closeModalBtn = document.getElementById('close-modal-btn');
         const toast = document.getElementById('toast-notification');
         const sortByDistanceBtn = document.getElementById('sort-by-distance-btn');
         const resetSortBtn = document.getElementById('reset-sort-btn');
+        const updatePositionBtn = document.getElementById('update-position-btn');
         const mapContainer = document.getElementById('map-container');
-        const fullscreenMapBtn = document.getElementById('fullscreen-map-btn');
-        const closeFullscreenMapBtn = document.getElementById('close-fullscreen-map-btn');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -306,23 +294,24 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         </button>
                     </div>
-                    <div class="flex-grow">
-                        <h3 class="font-bold text-lg mb-1 text-green-400 pr-10 ${isCompleted ? 'line-through' : ''}">${sale.address}</h3>
-                        ${isSaleOpenToday(sale) ? `<div class="text-xs font-bold text-yellow-400 mb-2">OPEN TODAY</div>` : ''}
-                        <p class="text-gray-400 text-sm mb-3"><strong>Sale Days:</strong> ${sale.days}</p>
-                        <div class="grid grid-cols-3 gap-2 text-center mb-4 text-xs sm:text-sm">
-                            <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Thursday</p><p class="text-gray-400">${sale.thursday}</p></div>
-                            <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Friday</p><p class="text-gray-400">${sale.friday}</p></div>
-                            <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Saturday</p><p class="text-gray-400">${sale.saturday}</p></div>
+                    <div class="flex-grow flex flex-col">
+                        <div>
+                            <h3 class="font-bold text-lg mb-1 text-green-400 pr-10 ${isCompleted ? 'line-through' : ''}">${sale.address}</h3>
+                            ${isSaleOpenToday(sale) ? `<div class="text-xs font-bold text-yellow-400 mb-2">OPEN TODAY</div>` : ''}
+                            <p class="text-gray-400 text-sm mb-3"><strong>Sale Days:</strong> ${sale.days}</p>
+                            <div class="grid grid-cols-3 gap-2 text-center mb-4 text-xs sm:text-sm">
+                                <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Thursday</p><p class="text-gray-400">${sale.thursday}</p></div>
+                                <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Friday</p><p class="text-gray-400">${sale.friday}</p></div>
+                                <div class="bg-gray-700/50 p-2 rounded-md"><p class="font-semibold text-gray-300">Saturday</p><p class="text-gray-400">${sale.saturday}</p></div>
+                            </div>
+                            ${(sale.additionalDays && !['na', 'n/a'].includes(sale.additionalDays.toLowerCase())) ? `<p class="text-xs sm:text-sm text-yellow-400 mb-3"><strong>Extra Days:</strong> ${sale.additionalDays}</p>` : ''}
+                            <div class="bg-gray-900/70 p-3 rounded-md">
+                                <p class="text-gray-300 font-semibold mb-1 text-sm">Items for Sale:</p>
+                                <p class="text-gray-400 text-xs sm:text-sm">${sale.items}</p>
+                            </div>
                         </div>
-                        ${(sale.additionalDays && !['na', 'n/a'].includes(sale.additionalDays.toLowerCase())) ? `<p class="text-xs sm:text-sm text-yellow-400 mb-3"><strong>Extra Days:</strong> ${sale.additionalDays}</p>` : ''}
-                        <div class="bg-gray-900/70 p-3 rounded-md mt-auto">
-                            <p class="text-gray-300 font-semibold mb-1 text-sm">Items for Sale:</p>
-                            <p class="text-gray-400 text-xs sm:text-sm">${sale.items}</p>
-                        </div>
-                    </div>
-                    ${sale.lat && sale.lng ? `<a href="https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}" target="_blank" class="mt-4 text-center bg-blue-500 text-white text-sm font-bold py-2 px-3 rounded-full hover:bg-blue-600 transition-colors w-full">Navigate</a>` : ''}
-                `;
+                        ${sale.lat && sale.lng ? `<a href="https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}" target="_blank" class="mt-4 text-center bg-blue-500 text-white text-sm font-bold py-2 px-3 rounded-full hover:bg-blue-600 transition-colors w-full">Navigate</a>` : ''}
+                    </div>`;
                 salesContainer.appendChild(card);
             });
             updateProgressCounter();
@@ -373,40 +362,6 @@
                 },
                 (error) => { showToast("Could not get location. Visit not verified for award.", true); }
             );
-        }
-        
-        function setupPresenceSystem(auth) {
-             onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    const rtdb = getDatabase();
-                    const appId = firebaseConfig.projectId;
-                    const uid = user.uid;
-                    const userStatusDatabaseRef = ref(rtdb, `/artifacts/${appId}/public/presence/users/${uid}`);
-                    const connectedRef = ref(rtdb, '.info/connected');
-                    const allUsersRef = ref(rtdb, `/artifacts/${appId}/public/presence/users`);
-                    const peakCountRef = ref(rtdb, `/artifacts/${appId}/public/presence/peakVisitorCount`);
-
-                    onValue(connectedRef, (snap) => {
-                        if (snap.val() === true) { set(userStatusDatabaseRef, true); onDisconnect(userStatusDatabaseRef).remove(); }
-                    });
-                    
-                    onValue(allUsersRef, (snap) => {
-                        const count = snap.size; 
-                        visitorCounter.innerHTML = `<span class="flex items-center justify-center"><span class="relative flex h-3 w-3 mr-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span></span>${count} Live Visitor${count === 1 ? '' : 's'}</span>`;
-                        runTransaction(peakCountRef, (currentPeak) => {
-                            if (currentPeak === null || count > currentPeak) {
-                                return count;
-                            }
-                            return; // Abort transaction
-                        });
-                    });
-
-                    onValue(peakCountRef, (snap) => {
-                         const peakCount = snap.val() || 0;
-                         document.getElementById('peak-visitor-counter').textContent = `Peak Visitors: ${peakCount}`;
-                    });
-                }
-            });
         }
         
         // --- Google Maps Logic ---
@@ -501,7 +456,27 @@
                     renderSales();
                     showToast("Sales sorted by nearest!", false);
                     sortByDistanceBtn.classList.add('hidden');
+                    updatePositionBtn.classList.remove('hidden');
                     resetSortBtn.classList.remove('hidden');
+                },
+                (error) => { showToast("Could not get your location to sort.", true); }
+            );
+        });
+
+        updatePositionBtn.addEventListener('click', () => {
+             showToast("Finding your location to re-sort...", false);
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    currentSalesData.forEach(sale => {
+                        if(sale.lat && sale.lng) {
+                            sale.distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
+                        } else {
+                            sale.distance = Infinity;
+                        }
+                    });
+                    currentSalesData.sort((a,b) => a.distance - b.distance);
+                    renderSales();
+                    showToast("List updated to your new location!", false);
                 },
                 (error) => { showToast("Could not get your location to sort.", true); }
             );
@@ -512,6 +487,7 @@
             renderSales();
             showToast("Sort has been reset.", false);
             sortByDistanceBtn.classList.remove('hidden');
+            updatePositionBtn.classList.add('hidden');
             resetSortBtn.classList.add('hidden');
         });
 
@@ -552,15 +528,13 @@
             try {
                 const app = initializeApp(firebaseConfig);
                 const auth = getAuth(app);
-                setupPresenceSystem(auth);
+                // We are removing the presence system, so no need to call setupPresenceSystem
                 const analytics = getAnalytics(app); // Initialize Analytics
                 signInAnonymously(auth).catch(err => {
-                    console.error("Anonymous sign-in for visitor counter failed:", err);
-                    visitorCounter.textContent = "Visitor count disabled";
+                    console.error("Anonymous sign-in for analytics failed:", err);
                 });
             } catch (error) {
-                console.error("Firebase Initialization for visitor counter failed:", error);
-                visitorCounter.textContent = "Offline";
+                console.error("Firebase Initialization failed:", error);
             }
             loadGoogleMaps();
         }
