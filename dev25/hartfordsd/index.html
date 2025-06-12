@@ -46,64 +46,66 @@
 </head>
 <body class="bg-gray-900 text-gray-200">
 
-    <div id="main-content">
-        <header class="text-center mb-6 pt-4 px-4">
-            <div class="mb-4">
-                <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto">
-            </div>
-            <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">
-                Hartford Rummage Checklist
-            </h1>
-            <p class="text-base text-gray-400">
-                Your guide to the 2025 city-wide sales.
-            </p>
-            <div class="mt-4 space-y-1">
-                <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
-                <div id="visitor-counter" class="text-sm font-medium text-cyan-400"><span class="animate-pulse">Connecting...</span></div>
-            </div>
-        </header>
+    <div id="app">
+        <div id="main-content">
+            <header class="text-center mb-6 pt-4 px-4">
+                <div class="mb-4">
+                    <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto">
+                </div>
+                <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">
+                    Hartford Rummage Checklist
+                </h1>
+                <p class="text-base text-gray-400">
+                    Your guide to the 2025 city-wide sales.
+                </p>
+                <div class="mt-4 space-y-1">
+                    <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
+                    <div id="visitor-counter" class="text-sm font-medium text-cyan-400"><span class="animate-pulse">Connecting...</span></div>
+                </div>
+            </header>
 
-        <!-- Achievements Section -->
-        <div id="achievements-section" class="mb-8 text-center px-4">
-             <h2 class="text-xl font-bold text-white mb-3">Your Awards</h2>
-             <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6">
-                 <!-- Achievement icons will be inserted here -->
-             </div>
+            <!-- Achievements Section -->
+            <div id="achievements-section" class="mb-8 text-center px-4">
+                 <h2 class="text-xl font-bold text-white mb-3">Your Awards</h2>
+                 <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6">
+                     <!-- Achievement icons will be inserted here -->
+                 </div>
+            </div>
+
+            <!-- Filter buttons -->
+            <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap px-4">
+                <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
+                <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
+                <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
+                <button id="sort-by-distance-btn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Sort by Nearest</button>
+                <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
+            </div>
+            
+            <div id="loading-indicator" class="text-center text-xl text-gray-400 px-4">Loading your checklist...</div>
+
+            <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4">
+                <!-- Rummage sale cards will be injected here -->
+            </main>
         </div>
 
-        <!-- Filter buttons -->
-        <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap px-4">
-            <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
-            <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
-            <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
-            <button id="sort-by-distance-btn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Sort by Nearest</button>
-            <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
+        <!-- Google Map Section -->
+        <div id="map-container" class="my-8 px-4">
+            <h2 id="map-title" class="text-2xl font-bold text-white text-center mb-4">Sale Locations Map</h2>
+            <div class="relative">
+                <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
+                    <p class="text-gray-500">Loading Map...</p>
+                </div>
+                <button id="fullscreen-map-btn" class="absolute top-2 left-2 bg-gray-900 bg-opacity-70 text-white rounded-md p-2 text-xs font-semibold hover:bg-opacity-90">Full Screen</button>
+                <button id="close-fullscreen-map-btn" class="hidden absolute top-2 right-2 bg-gray-900 bg-opacity-70 text-white rounded-full p-2 hover:bg-opacity-90 z-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
         </div>
         
-        <div id="loading-indicator" class="text-center text-xl text-gray-400 px-4">Loading your checklist...</div>
-
-        <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4">
-            <!-- Rummage sale cards will be injected here -->
-        </main>
+        <footer id="main-footer" class="text-center mt-12 mb-4 text-gray-500 text-xs px-4">
+            <p>Your progress is saved automatically to this device.</p>
+        </footer>
     </div>
-
-    <!-- Google Map Section -->
-    <div id="map-container" class="my-8 px-4">
-        <h2 id="map-title" class="text-2xl font-bold text-white text-center mb-4">Sale Locations Map</h2>
-        <div class="relative">
-            <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
-                <p class="text-gray-500">Loading Map...</p>
-            </div>
-            <button id="fullscreen-map-btn" class="absolute top-2 left-2 bg-gray-900 bg-opacity-70 text-white rounded-md p-2 text-xs font-semibold hover:bg-opacity-90">Full Screen</button>
-            <button id="close-fullscreen-map-btn" class="hidden absolute top-2 right-2 bg-gray-900 bg-opacity-70 text-white rounded-full p-2 hover:bg-opacity-90 z-50">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-        </div>
-    </div>
-    
-    <footer id="main-footer" class="text-center mt-12 mb-4 text-gray-500 text-xs px-4">
-        <p>Your progress is saved automatically to this device.</p>
-    </footer>
 
     <!-- Achievement Unlocked Modal -->
     <div id="achievement-modal" class="achievement-modal fixed inset-0 bg-black bg-opacity-70 items-center justify-center p-4 z-50">
@@ -222,7 +224,7 @@
         let map, markers = [], infoWindow;
 
         // --- DOM Elements ---
-        const mainContent = document.getElementById('main-content');
+        const appDiv = document.getElementById('app');
         const salesContainer = document.getElementById('sales-container');
         const loadingIndicator = document.getElementById('loading-indicator');
         const progressCounter = document.getElementById('progress-counter');
@@ -237,7 +239,6 @@
         const mapContainer = document.getElementById('map-container');
         const fullscreenMapBtn = document.getElementById('fullscreen-map-btn');
         const closeFullscreenMapBtn = document.getElementById('close-fullscreen-map-btn');
-        const mainFooter = document.getElementById('main-footer');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -536,16 +537,14 @@
         
         fullscreenMapBtn.addEventListener('click', () => {
             if (!map) return; // Prevent action if map isn't loaded
-            mainContent.classList.add('hidden');
-            mainFooter.classList.add('hidden');
+            appDiv.classList.add('hidden');
             mapContainer.classList.add('fullscreen');
             closeFullscreenMapBtn.classList.remove('hidden');
             google.maps.event.trigger(map, "resize");
         });
 
         closeFullscreenMapBtn.addEventListener('click', () => {
-            mainContent.classList.remove('hidden');
-            mainFooter.classList.remove('hidden');
+            appDiv.classList.remove('hidden');
             mapContainer.classList.remove('fullscreen');
             closeFullscreenMapBtn.classList.add('hidden');
             google.maps.event.trigger(map, "resize");
@@ -583,4 +582,4 @@
         main();
     </script>
 </body>
-</ht
+</html>
