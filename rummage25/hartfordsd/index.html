@@ -61,7 +61,10 @@
         
         <!-- Google Map Section -->
         <div id="map-container" class="my-8 px-4">
-            <h2 id="map-title" class="text-2xl font-bold text-white text-center mb-4">Sale Locations Map</h2>
+            <div class="flex justify-center items-center gap-4 mb-4">
+                 <h2 id="map-title" class="text-2xl font-bold text-white text-center">Sale Locations Map</h2>
+                 <button id="toggle-map-filter-btn" class="hidden px-3 py-1 text-xs font-semibold rounded-full transition-colors duration-200 bg-indigo-600 text-white hover:bg-indigo-500">Show All on Map</button>
+            </div>
             <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
                 <p class="text-gray-500">Loading Map...</p>
             </div>
@@ -69,7 +72,7 @@
 
         <!-- Filter buttons -->
         <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap px-4">
-            <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 active">All Sales</button>
+            <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
             <button data-filter="favorites" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Favorites</button>
             <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
             <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
@@ -188,10 +191,10 @@
         let unlockedAchievements = [];
         let activeFilters = new Set();
         let currentSalesData = [...rummageSalesData];
-        let map, markers = [], infoWindow;
+        let map, markers = new Map(), infoWindow;
+        let mapShowingAll = false;
 
         // --- DOM Elements ---
-        const mainContent = document.getElementById('main-content');
         const salesContainer = document.getElementById('sales-container');
         const loadingIndicator = document.getElementById('loading-indicator');
         const progressCounter = document.getElementById('progress-counter');
@@ -203,8 +206,7 @@
         const sortByDistanceBtn = document.getElementById('sort-by-distance-btn');
         const resetSortBtn = document.getElementById('reset-sort-btn');
         const updatePositionBtn = document.getElementById('update-position-btn');
-        const mapContainer = document.getElementById('map-container');
-        const mainFooter = document.getElementById('main-footer');
+        const toggleMapFilterBtn = document.getElementById('toggle-map-filter-btn');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -271,9 +273,8 @@
         }
         
         // --- Core Application Logic ---
-        function renderSales() {
+        function getFilteredSales() {
             let filteredSales = [...currentSalesData];
-
             if (activeFilters.size > 0) {
                 if (activeFilters.has('favorites')) {
                     filteredSales = filteredSales.filter(sale => favoriteLocations.includes(sale.id));
@@ -285,7 +286,11 @@
                     filteredSales = filteredSales.filter(sale => !completedLocations.includes(sale.id));
                 }
             }
+            return filteredSales;
+        }
 
+        function renderSales() {
+            const filteredSales = getFilteredSales();
             salesContainer.innerHTML = '';
             loadingIndicator.style.display = 'none';
             filteredSales.forEach(sale => {
@@ -337,7 +342,6 @@
             if (!completedLocations.includes(locationId)) {
                 completedLocations.push(locationId);
                 localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
-                renderSales();
                 if (sale.lat && sale.lng) {
                      verifyLocationForAchievement(locationId);
                 } else {
@@ -348,7 +352,13 @@
                 verifiedLocations = verifiedLocations.filter(id => id !== locationId);
                 localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
                 localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
-                renderSales();
+            }
+            renderSales();
+            
+            const marker = markers.get(locationId);
+            if (marker && map) {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(() => marker.setAnimation(null), 750);
             }
         }
         
@@ -361,6 +371,12 @@
             }
             localStorage.setItem('hartfordRummageFavorites2025', JSON.stringify(favoriteLocations));
             renderSales();
+
+            const marker = markers.get(locationId);
+            if (marker && map) {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(() => marker.setAnimation(null), 750);
+            }
         }
 
         function verifyLocationForAchievement(locationId) {
@@ -394,44 +410,62 @@
             };
             map = new google.maps.Map(document.getElementById("map"), mapOptions);
             infoWindow = new google.maps.InfoWindow();
-            renderMapMarkers();
-        }
-
-        function renderMapMarkers() {
-            if (!map) return;
-            markers.forEach(marker => marker.setMap(null));
-            markers = [];
+            
+            // Create all markers once
             rummageSalesData.forEach(sale => {
-                if (sale.lat && sale.lng) {
-                    const isCompleted = completedLocations.includes(sale.id);
-                    const isFavorite = favoriteLocations.includes(sale.id);
+                 if (sale.lat && sale.lng) {
                     const marker = new google.maps.Marker({
                         position: { lat: sale.lat, lng: sale.lng },
-                        map,
+                        map: null, // Initially hidden
                         title: sale.address,
-                        icon: {
-                            path: google.maps.SymbolPath.CIRCLE,
-                            scale: 8,
-                            fillColor: isCompleted ? '#22c55e' : '#ef4444',
-                            fillOpacity: 1,
-                            strokeWeight: 2,
-                            strokeColor: '#ffffff'
-                        },
-                        label: isFavorite ? '★' : null,
                     });
-                    marker.addListener('click', () => {
+                     marker.addListener('click', () => {
                         const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
                                             <h3 class="font-bold">${sale.address}</h3>
                                             <p class="text-xs mb-2">${sale.items}</p>
                                             <div class="flex items-center gap-2">
                                                 <button class="map-mark-done bg-green-500 text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">Mark Done</button>
+                                                <button class="map-favorite-btn ${favoriteLocations.includes(sale.id) ? 'bg-red-500' : 'bg-yellow-500'} text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">${favoriteLocations.includes(sale.id) ? 'Unfavorite' : 'Favorite'}</button>
                                                 <a href="https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}" target="_blank" class="bg-blue-500 text-white text-xs font-bold py-1 px-2 rounded-full">Navigate</a>
                                             </div>
                                        </div>`;
                         infoWindow.setContent(content);
                         infoWindow.open(map, marker);
                     });
-                    markers.push(marker);
+                    markers.set(sale.id, marker);
+                 }
+            });
+            renderMapMarkers();
+        }
+
+        function renderMapMarkers(showAll = false) {
+            if (!map) return;
+            
+            const salesToDisplay = showAll ? rummageSalesData : getFilteredSales();
+            const visibleIds = salesToDisplay.map(s => s.id);
+            toggleMapFilterBtn.classList.toggle('hidden', activeFilters.size === 0);
+            toggleMapFilterBtn.textContent = mapShowingAll ? 'Show Filtered' : 'Show All on Map';
+
+            markers.forEach((marker, id) => {
+                if(visibleIds.includes(id)) {
+                    const isCompleted = completedLocations.includes(id);
+                    const isFavorite = favoriteLocations.includes(id);
+                    let pinColor = '#ef4444'; // Default Red
+                    if (isCompleted) pinColor = '#22c55e'; // Green
+                    if (isFavorite) pinColor = '#3b82f6'; // Blue
+                    if (isFavorite && isCompleted) pinColor = '#2dd4bf'; // Turquoise
+                    
+                    marker.setIcon({
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: isFavorite ? 9 : 7,
+                        fillColor: pinColor,
+                        fillOpacity: 1,
+                        strokeWeight: 2,
+                        strokeColor: '#ffffff'
+                    });
+                    marker.setMap(map);
+                } else {
+                    marker.setMap(null);
                 }
             });
         }
@@ -455,6 +489,7 @@
             if (e.target.matches('.filter-btn')) {
                 const button = e.target;
                 const filterType = button.dataset.filter;
+                mapShowingAll = false; // Reset map view when filters change
 
                 if (filterType === 'all') {
                     activeFilters.clear();
@@ -540,13 +575,22 @@
         });
         
         document.getElementById('map').addEventListener('click', (e) => {
+            const locationId = parseInt(e.target.dataset.id, 10);
             if(e.target.classList.contains('map-mark-done')) {
-                const locationId = parseInt(e.target.dataset.id, 10);
                 if(!completedLocations.includes(locationId)) {
                      handleToggleComplete(locationId);
                 }
                 infoWindow.close();
             }
+            if(e.target.classList.contains('map-favorite-btn')) {
+                handleToggleFavorite(locationId);
+                infoWindow.close();
+            }
+        });
+        
+        toggleMapFilterBtn.addEventListener('click', () => {
+            mapShowingAll = !mapShowingAll;
+            renderMapMarkers(mapShowingAll);
         });
 
         closeModalBtn.addEventListener('click', hideAchievementModal);
