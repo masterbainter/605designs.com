@@ -552,9 +552,8 @@
             // SECURITY FIX: API Key is now a placeholder.
             // Replace this with your actual Google Maps API Key.
             // Remember to restrict this key in your Google Cloud Console to your domain.
-            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
-            
-            if (GOOGLE_MAPS_API_KEY === "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk") {
+            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";            
+            if (GOOGLE_MAPS_API_KEY === "empy") {
                  document.getElementById("map").innerHTML = `<p class="text-yellow-400">Issue Loading Map</p>`;
                  return;
             }
