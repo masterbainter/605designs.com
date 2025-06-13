@@ -42,68 +42,64 @@
 </head>
 <body class="bg-gray-900 text-gray-200">
 
-    <div id="app">
-        <div id="main-content">
-            <header class="text-center mb-6 pt-4 px-4">
-                <div class="mb-4">
-                    <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto">
-                </div>
-                <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">
-                    Hartford Rummage Checklist
-                </h1>
-                <p class="text-base text-gray-400">
-                    Your guide to the 2025 city-wide sales.
-                </p>
-                <div class="mt-4 space-y-1">
-                    <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
-                    <div id="visitor-counter" class="text-sm font-medium text-cyan-400"><span class="animate-pulse">Connecting...</span></div>
-                    <div id="peak-visitor-counter" class="text-sm font-medium text-purple-400">Peak Visitors: ...</div>
-                </div>
-            </header>
-
-            <!-- Achievements Section -->
-            <div id="achievements-section" class="mb-8 text-center px-4">
-                 <h2 class="text-xl font-bold text-white mb-3">Your Awards</h2>
-                 <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6">
-                     <!-- Achievement icons will be inserted here -->
-                 </div>
+    <div class="p-4">
+        <header class="text-center mb-6 pt-4">
+            <div class="mb-4">
+                <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto">
             </div>
-            
-            <!-- Google Map Section -->
-            <div id="map-container" class="my-8 px-4">
-                <div class="flex justify-center items-center gap-4 mb-4">
-                     <h2 id="map-title" class="text-2xl font-bold text-white text-center">Sale Locations Map</h2>
-                     <button id="toggle-map-filter-btn" class="hidden px-3 py-1 text-xs font-semibold rounded-full transition-colors duration-200 bg-indigo-600 text-white hover:bg-indigo-500">Show All on Map</button>
-                </div>
-                <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
-                    <p class="text-gray-500">Loading Map...</p>
-                </div>
+            <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">
+                Hartford Rummage Checklist
+            </h1>
+            <p class="text-base text-gray-400">
+                Your guide to the 2025 city-wide sales.
+            </p>
+            <div class="mt-4 space-y-1">
+                <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
             </div>
+        </header>
 
-            <!-- Filter buttons -->
-            <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap px-4">
-                <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
-                <button data-filter="favorites" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Favorites</button>
-                <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
-                <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
-                <div class="relative">
-                    <select id="category-filter" class="bg-gray-700 text-white text-sm font-semibold rounded-full py-2 px-4 appearance-none hover:bg-gray-600 cursor-pointer">
-                        <option value="">All Categories</option>
-                    </select>
-                </div>
-                <button id="sort-by-distance-btn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Sort by Nearest</button>
-                <button id="update-position-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Update Position</button>
-                <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
-            </div>
-            
-            <div id="loading-indicator" class="text-center text-xl text-gray-400 px-4">Loading your checklist...</div>
-
-            <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4">
-                <!-- Rummage sale cards will be injected here -->
-            </main>
+        <!-- Achievements Section -->
+        <div id="achievements-section" class="mb-8 text-center px-4">
+             <h2 class="text-xl font-bold text-white mb-3">Your Awards</h2>
+             <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6">
+                 <!-- Achievement icons will be inserted here -->
+             </div>
         </div>
         
-        <footer id="main-footer" class="text-center mt-12 mb-4 text-gray-500 text-xs px-4">
+        <!-- Google Map Section -->
+        <div id="map-container" class="my-8 px-4">
+            <div class="flex justify-center items-center gap-4 mb-4">
+                 <h2 id="map-title" class="text-2xl font-bold text-white text-center">Sale Locations Map</h2>
+                 <button id="toggle-map-filter-btn" class="hidden px-3 py-1 text-xs font-semibold rounded-full transition-colors duration-200 bg-indigo-600 text-white hover:bg-indigo-500">Show All on Map</button>
+            </div>
+            <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
+                <p class="text-gray-500">Loading Map...</p>
+            </div>
+        </div>
+
+        <!-- Filter buttons -->
+        <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap px-4">
+            <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
+            <button data-filter="favorites" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Favorites</button>
+            <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
+            <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
+            <div class="relative">
+                <select id="category-filter" class="bg-gray-700 text-white text-sm font-semibold rounded-full py-2 px-4 appearance-none hover:bg-gray-600 cursor-pointer">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+            <button id="sort-by-distance-btn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Sort by Nearest</button>
+            <button id="update-position-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Update Position</button>
+            <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
+        </div>
+        
+        <div id="loading-indicator" class="text-center text-xl text-gray-400 px-4">Loading your checklist...</div>
+
+        <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4">
+            <!-- Rummage sale cards will be injected here -->
+        </main>
+        
+        <footer class="text-center mt-12 mb-4 text-gray-500 text-xs px-4">
             <p>Your progress is saved automatically to this device.</p>
         </footer>
     </div>
@@ -125,13 +121,8 @@
     </div>
 
 
-    <!-- Firebase and App Logic -->
+    <!-- App Logic -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getDatabase, ref, onValue, set, onDisconnect, runTransaction } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
-
         // --- Data with Geolocation ---
         const rummageSalesData = [
             { id: 1, address: "301 w 7th st", lat: 43.6230, lng: -96.9452, days: "Friday, Saturday", thursday: "N/a", friday: "8 am", saturday: "8 am", additionalDays: "N/a", items: "Porcelain Dolls, kids clothes, kids toys, household items, men's camo clothing" },
@@ -141,7 +132,7 @@
             { id: 5, address: "203 Mary Ln", lat: 43.6253, lng: -96.9379, days: "Thursday, Friday, Saturday", thursday: "12-8", friday: "12-8", saturday: "8-12", additionalDays: "NA", items: "Multi family, many household items, women and men’s clothing, and home decor" },
             { id: 6, address: "46514 Kloxin Drive Hartford SD", lat: 43.6214, lng: -96.9213, days: "Thursday, Friday", thursday: "8:00am - 5:00pm", friday: "8:00am - 5:00pm", saturday: "N/A", additionalDays: "N/A", items: "Clothing, krumkake iron, 4 counter stools, toys, lamp, misc." },
             { id: 7, address: "408 S Western Ave (St.George Catholic Church)", lat: 43.6201, lng: -96.9482, days: "Friday, Saturday", thursday: "N/A", friday: "8:00 am", saturday: "8:00 am", additionalDays: "N/A", items: "Baby items, childrens clothing, furnature, glassware, antiques adult and teenage clothing." },
-            { id: 8, address: "26126 462nd Ave, Hartford", lat: 43.6429, lng: -96.9555, days: "Thursday, Friday, Saturday", thursday: "10-5", friday: "10-6", saturday: "10-2", additionalDays: "NA", items: "NEIGHBOR COUNTRY RUMMAGE - worth the 1.25 gravel drive! 2 Couches, Outdoor furniture, Dewalt Scroll Saw + Stand, Name Brand Kitchen items, Large baby items (swing, pac n play, bumbo seat, pumps), Tan garage door (9'W x 8'H), Men, women, and baby clothing and coats, lots more." },
+            { id: 8, address: "26126 462nd Ave, Hartford", lat: 43.6429, lng: -96.963, days: "Thursday, Friday, Saturday", thursday: "10-5", friday: "10-6", saturday: "10-2", additionalDays: "NA", items: "NEIGHBOR COUNTRY RUMMAGE - worth the 1.25 gravel drive! 2 Couches, Outdoor furniture, Dewalt Scroll Saw + Stand, Name Brand Kitchen items, Large baby items (swing, pac n play, bumbo seat, pumps), Tan garage door (9'W x 8'H), Men, women, and baby clothing and coats, lots more." },
             { id: 9, address: "810 Ruud Lane garage #8", lat: 43.6289, lng: -96.9535, days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Name brand men’s, women’s clothes and shoes, household items, twin mattress/box spring and frame, end tables, coffee table, lamps, plastic storage shelves, toys, lots of miscellaneous. Good prices, something for everyone." },
             { id: 10, address: "506 W Opal Ln", lat: 43.6320, lng: -96.9490, days: "Thursday, Friday, Saturday", thursday: "3PM", friday: "8AM", saturday: "8AM", additionalDays: "N/A", items: "LOTS of clothes! Girls NB - 7/8, Womens XL - 3X, Men's XL - 3X. Priced to sell! Toys Galore! Small to Big. Bigger items: Bumper cars, electric car, scooters, toy organizer, book shelf, kitchen, wagon, bikes" },
             { id: 11, address: "208 Elm Rd", lat: 43.6240, lng: -96.9400, days: "Thursday, Friday, Saturday", thursday: "8 am", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Tools,house items,fishing ,clothing" },
@@ -164,7 +155,7 @@
             { id: 28, address: "508 Crystal Drive", lat: 43.6290, lng: -96.9350, days: "Friday, Saturday", thursday: "N/A", friday: "9-5", saturday: "8-5", additionalDays: "N/A", items: "Stove/Oven, New crib, new Bluey toddler bed, Dryer, lots of boys gently used toys. Kitchen table and chairs. Fridge. Many more items added daily!" },
             { id: 29, address: "508 Connie Circle. Hartford, Sd", lat: 43.6270, lng: -96.9300, days: "Thursday, Friday, Saturday", thursday: "8am", friday: "8am", saturday: "8am", additionalDays: "n/a", items: "Post moving sale, 3+ family. Clothes, kitchen, etc...Something for everyone." },
             { id: 30, address: "46506 SD Hwy 38", lat: 43.6220, lng: -96.9240, days: "Friday, Saturday", thursday: "N/A", friday: "4:00pm", saturday: "8:00am", additionalDays: "N/A", items: "Portable fish house, Old Duck Decoys, Vintage jars & Canning equip, Loads of Puzzles, DVD Movies, Cedar Chest, Turkey Fryer, Gun Cabinet Swedish Death Cleaning..ALL Must GO!" },
-            { id: 31, address: "26126 462nd Ave, Hartford, SD", lat: 43.6429, lng: -96.9555, days: "Thursday, Friday, Saturday", thursday: "10-4", friday: "10-4", saturday: "10-2", additionalDays: "NA", items: "Couches, queen size bed frame, baby and kids clothes, large baby items, final inventory from Prairie Boutique (brand new women’s clothing), ice shack, left handed golf clubs, more." },
+            { id: 31, address: "26126 462nd Ave, Hartford, SD", lat: 43.6429, lng: -96.963, days: "Thursday, Friday, Saturday", thursday: "10-4", friday: "10-4", saturday: "10-2", additionalDays: "NA", items: "Couches, queen size bed frame, baby and kids clothes, large baby items, final inventory from Prairie Boutique (brand new women’s clothing), ice shack, left handed golf clubs, more." },
             { id: 32, address: "703 N Mundt Ave. #3", lat: 43.6310, lng: -96.9370, days: "Thursday, Friday, Saturday", thursday: "4pm-7pm", friday: "8am-7pm?", saturday: "8am-3pm?", additionalDays: "N/A", items: "Kids' Clothes/Jackets (Sizes 4-14), Medium to Plus Sized Adult Clothes/Scrubs/Jeans (Rock Revival, Silvers, Miss Me), Jewelry, Home Decor, Beats Flex Wireless Earphones, Books & DVDs, Pet Items (Auto Food Feeder), & Misc." },
             { id: 33, address: "509 Patrick Ave, Hartford", lat: 43.6280, lng: -96.9390, days: "Thursday, Friday, Saturday", thursday: "5pm - 8pm", friday: "8am - 7pm", saturday: "8am - 2pm?", additionalDays: "N/A", items: "child's desk, child's rocker, Strider bike (like new), Radio Flyer tricycle, Budweiser beer steins, patio swing" },
             { id: 34, address: "301 West Opal Lane Unit C", lat: 43.6320, lng: -96.9490, days: "Thursday, Friday", thursday: "3:30 pm", friday: "8:00", saturday: "Na", additionalDays: "Na", items: "Clothes, table and chairs, desk, kitchen items , mirrors, bedding" },
@@ -509,7 +500,7 @@
         }
 
         function loadGoogleMaps() {
-            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
+            const GOOGLE_MAPS_API_KEY = "AIzaSyCb-wQlQ8yBEH5QyG9q4F0poFbL3G_LLOk";
             if (!window.google) {
                 const script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap&libraries=marker`;
