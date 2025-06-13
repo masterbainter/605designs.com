@@ -31,6 +31,13 @@
             fill: #facc15; /* yellow-400 */
             color: #facc15;
         }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .bouncing {
+            animation: bounce 0.75s ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -368,8 +375,8 @@
             
             const marker = markers.get(locationId);
             if (marker && map) {
-                marker.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(() => marker.setAnimation(null), 750);
+                marker.element.classList.add('bouncing');
+                setTimeout(() => marker.element.classList.remove('bouncing'), 750);
             }
         }
         
@@ -385,8 +392,8 @@
 
             const marker = markers.get(locationId);
             if (marker && map) {
-                marker.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(() => marker.setAnimation(null), 750);
+                marker.element.classList.add('bouncing');
+                setTimeout(() => marker.element.classList.remove('bouncing'), 750);
             }
         }
 
@@ -411,7 +418,10 @@
         }
         
         // --- Google Maps Logic ---
-        function initMap() {
+        async function initMap() {
+            const { Map } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+            
             const mapOptions = {
                 center: { lat: 43.625, lng: -96.945 },
                 zoom: 13,
@@ -419,14 +429,13 @@
                 disableDefaultUI: true,
                 zoomControl: true
             };
-            map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            map = new Map(document.getElementById("map"), mapOptions);
             infoWindow = new google.maps.InfoWindow();
             
             rummageSalesData.forEach(sale => {
                  if (sale.lat && sale.lng) {
-                    const marker = new google.maps.Marker({
+                    const marker = new AdvancedMarkerElement({
                         position: { lat: sale.lat, lng: sale.lng },
-                        map: null, // Initially hidden
                         title: sale.address,
                     });
                      marker.addListener('click', () => {
@@ -452,30 +461,40 @@
             if (!map) return;
             
             const salesToDisplay = showAll ? rummageSalesData : getFilteredSales();
-            const visibleIds = salesToDisplay.map(s => s.id);
+            const visibleIds = new Set(salesToDisplay.map(s => s.id));
             toggleMapFilterBtn.classList.toggle('hidden', activeFilters.size === 0);
             toggleMapFilterBtn.textContent = mapShowingAll ? 'Show Filtered' : 'Show All on Map';
 
             markers.forEach((marker, id) => {
-                if(visibleIds.includes(id)) {
+                if(visibleIds.has(id)) {
                     const isCompleted = completedLocations.includes(id);
                     const isFavorite = favoriteLocations.includes(id);
-                    let pinColor = '#ef4444'; // Default Red
-                    if (isCompleted) pinColor = '#22c55e'; // Green
-                    if (isFavorite) pinColor = '#3b82f6'; // Blue
-                    if (isFavorite && isCompleted) pinColor = '#2dd4bf'; // Turquoise
                     
-                    marker.setIcon({
-                        path: google.maps.SymbolPath.CIRCLE,
-                        scale: isFavorite ? 9 : 7,
-                        fillColor: pinColor,
-                        fillOpacity: 1,
-                        strokeWeight: 2,
-                        strokeColor: '#ffffff'
+                    let pinBackgroundColor;
+                    if(isFavorite && isCompleted) {
+                        pinBackgroundColor = '#2dd4bf'; // Turquoise
+                    } else if (isFavorite && !isCompleted) {
+                        pinBackgroundColor = '#3b82f6'; // Blue
+                    } else if (!isFavorite && isCompleted) {
+                        pinBackgroundColor = '#22c55e'; // Green
+                    } else {
+                        pinBackgroundColor = '#ef4444'; // Red
+                    }
+
+                    const pinGlyph = document.createElement("div");
+                    pinGlyph.className = "text-white text-lg";
+                    pinGlyph.textContent = isFavorite ? '★' : '';
+
+                    const pin = new google.maps.marker.PinElement({
+                        background: pinBackgroundColor,
+                        borderColor: '#ffffff',
+                        glyph: pinGlyph,
                     });
-                    marker.setMap(map);
+                    
+                    marker.content = pin.element;
+                    marker.map = map;
                 } else {
-                    marker.setMap(null);
+                    marker.map = null;
                 }
             });
         }
@@ -484,7 +503,7 @@
             const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
             if (!window.google) {
                 const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap`;
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap&libraries=marker`;
                 script.async = true;
                 script.defer = true;
                 window.initMap = initMap; // Make initMap globally available
@@ -493,28 +512,6 @@
                 initMap();
             }
         }
-
-        function generateAndPopulateCategories() {
-            const categoryKeywords = ['furniture', 'clothes', 'toys', 'tools', 'baby', 'antique', 'kitchen', 'decor', 'books', 'electronics', 'fishing', 'clothing', 'shoes', 'camper'];
-            const foundCategories = new Set();
-            rummageSalesData.forEach(sale => {
-                const itemsText = (sale.items || '').toLowerCase();
-                categoryKeywords.forEach(keyword => {
-                    if (itemsText.includes(keyword)) {
-                        foundCategories.add(keyword);
-                    }
-                });
-            });
-
-            const sortedCategories = [...foundCategories].sort();
-            sortedCategories.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category;
-                option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-                categoryFilter.appendChild(option);
-            });
-        }
-
 
         // --- Event Listeners ---
         filterContainer.addEventListener('click', (e) => {
