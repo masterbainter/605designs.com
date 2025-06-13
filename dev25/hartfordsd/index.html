@@ -175,7 +175,7 @@
             { id: 60, address: "507 S Feyder", lat: 43.6190, lng: -96.9530, days: "Thursday, Friday, Saturday", thursday: "4-7 (depending on whether)", friday: "8-7", saturday: "8-4", additionalDays: "N/A", items: "Baby furniture/items - Dressers & Bedroom sets - Saddle bags for horses - Misc household and electronic items - Misc tools" },
             { id: 61, address: "1106 N Vandemark Ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
         ];
-        
+
         // --- Achievements Data ---
         const achievements = [
             { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
@@ -410,48 +410,16 @@
             };
             map = new google.maps.Map(document.getElementById("map"), mapOptions);
             infoWindow = new google.maps.InfoWindow();
-            renderMapMarkers();
-        }
-
-        function renderMapMarkers(showAll = false) {
-            if (!map) return;
-            for (const marker of markers.values()) { marker.setMap(null); }
-            markers.clear();
-
-            const salesToDisplay = showAll ? rummageSalesData : getFilteredSales();
-            toggleMapFilterBtn.classList.toggle('hidden', activeFilters.size === 0 || showAll);
-            toggleMapFilterBtn.textContent = showAll ? 'Show Filtered' : 'Show All on Map';
-
-            salesToDisplay.forEach(sale => {
-                if (sale.lat && sale.lng) {
-                    const isCompleted = completedLocations.includes(sale.id);
-                    const isFavorite = favoriteLocations.includes(sale.id);
-                    
-                    let pinColor;
-                    if(isFavorite && isCompleted) {
-                        pinColor = '#2dd4bf'; // Turquoise
-                    } else if (isFavorite && !isCompleted) {
-                        pinColor = '#3b82f6'; // Blue
-                    } else if (!isFavorite && isCompleted) {
-                        pinColor = '#22c55e'; // Green
-                    } else {
-                        pinColor = '#ef4444'; // Red
-                    }
-
+            
+            // Create all markers once
+            rummageSalesData.forEach(sale => {
+                 if (sale.lat && sale.lng) {
                     const marker = new google.maps.Marker({
                         position: { lat: sale.lat, lng: sale.lng },
-                        map,
+                        map: null, // Initially hidden
                         title: sale.address,
-                        icon: {
-                            path: google.maps.SymbolPath.CIRCLE,
-                            scale: isFavorite ? 9 : 7,
-                            fillColor: pinColor,
-                            fillOpacity: 1,
-                            strokeWeight: 2,
-                            strokeColor: '#ffffff'
-                        },
                     });
-                    marker.addListener('click', () => {
+                     marker.addListener('click', () => {
                         const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
                                             <h3 class="font-bold">${sale.address}</h3>
                                             <p class="text-xs mb-2">${sale.items}</p>
@@ -465,12 +433,45 @@
                         infoWindow.open(map, marker);
                     });
                     markers.set(sale.id, marker);
+                 }
+            });
+            renderMapMarkers();
+        }
+
+        function renderMapMarkers(showAll = false) {
+            if (!map) return;
+            
+            const salesToDisplay = showAll ? rummageSalesData : getFilteredSales();
+            const visibleIds = salesToDisplay.map(s => s.id);
+            toggleMapFilterBtn.classList.toggle('hidden', activeFilters.size === 0);
+            toggleMapFilterBtn.textContent = mapShowingAll ? 'Show Filtered' : 'Show All on Map';
+
+            markers.forEach((marker, id) => {
+                if(visibleIds.includes(id)) {
+                    const isCompleted = completedLocations.includes(id);
+                    const isFavorite = favoriteLocations.includes(id);
+                    let pinColor = '#ef4444'; // Default Red
+                    if (isCompleted) pinColor = '#22c55e'; // Green
+                    if (isFavorite) pinColor = '#3b82f6'; // Blue
+                    if (isFavorite && isCompleted) pinColor = '#2dd4bf'; // Turquoise
+                    
+                    marker.setIcon({
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: isFavorite ? 9 : 7,
+                        fillColor: pinColor,
+                        fillOpacity: 1,
+                        strokeWeight: 2,
+                        strokeColor: '#ffffff'
+                    });
+                    marker.setMap(map);
+                } else {
+                    marker.setMap(null);
                 }
             });
         }
 
         function loadGoogleMaps() {
-            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
+            const GOOGLE_MAPS_API_KEY = "AIzaSyCb-wQlQ8yBEH5QyG9q4F0poFbL3G_LLOk";
             if (!window.google) {
                 const script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap`;
