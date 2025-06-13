@@ -424,22 +424,23 @@
                 if (sale.lat && sale.lng) {
                     const isCompleted = completedLocations.includes(sale.id);
                     const isFavorite = favoriteLocations.includes(sale.id);
-                    let pinColor = isCompleted ? '#22c55e' : '#ef4444'; // green or red
-                    if (isFavorite) pinColor = '#3b82f6'; // blue for favorites
                     
+                    let pinColor = '#ef4444'; // Default: red
+                    if (isCompleted) pinColor = '#22c55e'; // Green if completed
+                    if (isFavorite) pinColor = '#3b82f6';  // Blue for favorites (overrides others)
+
                     const marker = new google.maps.Marker({
                         position: { lat: sale.lat, lng: sale.lng },
                         map,
                         title: sale.address,
                         icon: {
                             path: google.maps.SymbolPath.CIRCLE,
-                            scale: 8,
+                            scale: isFavorite ? 9 : 7, // Make favorites slightly larger
                             fillColor: pinColor,
                             fillOpacity: 1,
                             strokeWeight: 2,
                             strokeColor: '#ffffff'
                         },
-                        label: isFavorite ? {text: '★', color: 'white', fontSize: '10px'} : null,
                     });
                     marker.addListener('click', () => {
                         const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
