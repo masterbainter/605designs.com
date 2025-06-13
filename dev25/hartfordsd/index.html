@@ -448,6 +448,7 @@
                                             <p class="text-xs mb-2">${sale.items}</p>
                                             <div class="flex items-center gap-2">
                                                 <button class="map-mark-done bg-green-500 text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">Mark Done</button>
+                                                <button class="map-favorite-btn bg-yellow-500 text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">Favorite</button>
                                                 <a href="https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}" target="_blank" class="bg-blue-500 text-white text-xs font-bold py-1 px-2 rounded-full">Navigate</a>
                                             </div>
                                        </div>`;
@@ -563,11 +564,15 @@
         });
         
         document.getElementById('map').addEventListener('click', (e) => {
+            const locationId = parseInt(e.target.dataset.id, 10);
             if(e.target.classList.contains('map-mark-done')) {
-                const locationId = parseInt(e.target.dataset.id, 10);
                 if(!completedLocations.includes(locationId)) {
                      handleToggleComplete(locationId);
                 }
+                infoWindow.close();
+            }
+            if(e.target.classList.contains('map-favorite-btn')) {
+                handleToggleFavorite(locationId);
                 infoWindow.close();
             }
         });
