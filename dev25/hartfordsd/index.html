@@ -69,7 +69,7 @@
 
         <!-- Filter buttons -->
         <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap px-4">
-            <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
+            <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 active">All Sales</button>
             <button data-filter="favorites" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Favorites</button>
             <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
             <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
@@ -173,18 +173,6 @@
             { id: 61, address: "1106 N Vandemark Ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
         ];
 
-        // --- Firebase Configuration ---
-        const firebaseConfig = {
-          apiKey: "AIzaSyBp3vJ3R4xFtG7UHfv7CbSUl-bZE-5ik0E",
-          authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
-          databaseURL: "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com",
-          projectId: "hartford-rummage2025-fe0f3",
-          storageBucket: "hartford-rummage2025-fe0f3.appspot.com",
-          messagingSenderId: "520958147494",
-          appId: "1:520958147494:web:96a455852f231f35a3ad67",
-          measurementId: "G-50YZMDWQH8"
-        };
-        
         // --- Achievements Data ---
         const achievements = [
             { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
@@ -198,11 +186,12 @@
         let favoriteLocations = [];
         let verifiedLocations = []; // For achievements
         let unlockedAchievements = [];
-        let currentFilter = 'all';
+        let activeFilters = new Set();
         let currentSalesData = [...rummageSalesData];
         let map, markers = [], infoWindow;
 
         // --- DOM Elements ---
+        const mainContent = document.getElementById('main-content');
         const salesContainer = document.getElementById('sales-container');
         const loadingIndicator = document.getElementById('loading-indicator');
         const progressCounter = document.getElementById('progress-counter');
@@ -215,6 +204,7 @@
         const resetSortBtn = document.getElementById('reset-sort-btn');
         const updatePositionBtn = document.getElementById('update-position-btn');
         const mapContainer = document.getElementById('map-container');
+        const mainFooter = document.getElementById('main-footer');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -282,12 +272,20 @@
         
         // --- Core Application Logic ---
         function renderSales() {
-            const filteredSales = currentSalesData.filter(sale => {
-                if (currentFilter === 'favorites') return favoriteLocations.includes(sale.id);
-                if (currentFilter === 'not_visited') return !completedLocations.includes(sale.id);
-                if (currentFilter === 'open') return isSaleOpenToday(sale);
-                return true;
-            });
+            let filteredSales = [...currentSalesData];
+
+            if (activeFilters.size > 0) {
+                if (activeFilters.has('favorites')) {
+                    filteredSales = filteredSales.filter(sale => favoriteLocations.includes(sale.id));
+                }
+                if (activeFilters.has('open')) {
+                    filteredSales = filteredSales.filter(sale => isSaleOpenToday(sale));
+                }
+                if (activeFilters.has('not_visited')) {
+                    filteredSales = filteredSales.filter(sale => !completedLocations.includes(sale.id));
+                }
+            }
+
             salesContainer.innerHTML = '';
             loadingIndicator.style.display = 'none';
             filteredSales.forEach(sale => {
@@ -297,7 +295,7 @@
                 card.className = `relative bg-gray-800 border border-gray-700 rounded-lg p-4 transition-all duration-300 flex flex-col ${isCompleted ? 'opacity-50' : 'opacity-100'}`;
                 card.innerHTML = `
                     <div class="absolute top-3 right-3 flex items-center gap-2">
-                        <button data-id="${sale.id}" class="favorite-btn ${isFavorite ? 'favorited' : ''} text-gray-400 hover:text-yellow-400" aria-label="Favorite">
+                         <button data-id="${sale.id}" class="favorite-btn ${isFavorite ? 'favorited' : ''} text-gray-400 hover:text-yellow-400" aria-label="Favorite">
                            <svg class="w-6 h-6" fill="${isFavorite ? '#facc15' : 'none'}" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
                         </button>
                         <button data-id="${sale.id}" class="toggle-complete w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 z-10 ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-700 hover:bg-green-600 text-gray-400'}" aria-label="Mark ${sale.address} as visited">
@@ -306,7 +304,7 @@
                     </div>
                     <div class="flex-grow flex flex-col">
                         <div>
-                            <h3 class="font-bold text-lg mb-1 text-green-400 pr-10 ${isCompleted ? 'line-through' : ''}">${sale.address}</h3>
+                            <h3 class="font-bold text-lg mb-1 text-green-400 pr-20 ${isCompleted ? 'line-through' : ''}">${sale.address}</h3>
                             ${isSaleOpenToday(sale) ? `<div class="text-xs font-bold text-yellow-400 mb-2">OPEN TODAY</div>` : ''}
                             <p class="text-gray-400 text-sm mb-3"><strong>Sale Days:</strong> ${sale.days}</p>
                             <div class="grid grid-cols-3 gap-2 text-center mb-4 text-xs sm:text-sm">
@@ -455,11 +453,25 @@
         // --- Event Listeners ---
         filterContainer.addEventListener('click', (e) => {
             if (e.target.matches('.filter-btn')) {
-                const filterType = e.target.dataset.filter;
-                if (filterType === currentFilter) return;
-                filterContainer.querySelector('.active').classList.remove('active');
-                e.target.classList.add('active');
-                currentFilter = filterType;
+                const button = e.target;
+                const filterType = button.dataset.filter;
+
+                if (filterType === 'all') {
+                    activeFilters.clear();
+                    filterContainer.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                } else {
+                    document.querySelector('[data-filter="all"]').classList.remove('active');
+                    button.classList.toggle('active');
+                    if (activeFilters.has(filterType)) {
+                        activeFilters.delete(filterType);
+                    } else {
+                        activeFilters.add(filterType);
+                    }
+                    if (activeFilters.size === 0) {
+                        document.querySelector('[data-filter="all"]').classList.add('active');
+                    }
+                }
                 renderSales();
             }
         });
