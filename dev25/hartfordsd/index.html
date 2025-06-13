@@ -413,14 +413,14 @@
             renderMapMarkers();
         }
 
-        function renderMapMarkers() {
+        function renderMapMarkers(showAll = false) {
             if (!map) return;
             for (const marker of markers.values()) { marker.setMap(null); }
             markers.clear();
 
-            const salesToDisplay = mapShowingAll ? rummageSalesData : getFilteredSales();
-            toggleMapFilterBtn.classList.toggle('hidden', activeFilters.size === 0);
-            toggleMapFilterBtn.textContent = mapShowingAll ? 'Show Filtered' : 'Show All on Map';
+            const salesToDisplay = showAll ? rummageSalesData : getFilteredSales();
+            toggleMapFilterBtn.classList.toggle('hidden', activeFilters.size === 0 || showAll);
+            toggleMapFilterBtn.textContent = showAll ? 'Show Filtered' : 'Show All on Map';
 
             salesToDisplay.forEach(sale => {
                 if (sale.lat && sale.lng) {
@@ -470,7 +470,7 @@
         }
 
         function loadGoogleMaps() {
-            const GOOGLE_MAPS_API_KEY = "AIzaSyCb-wQlQ8yBEH5QyG9q4F0poFbL3G_LLOk";
+            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
             if (!window.google) {
                 const script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap`;
