@@ -31,6 +31,13 @@
             fill: #facc15; /* yellow-400 */
             color: #facc15;
         }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .bouncing {
+            animation: bounce 0.75s ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -125,7 +132,7 @@
             { id: 5, address: "203 Mary Ln", lat: 43.6253, lng: -96.9379, days: "Thursday, Friday, Saturday", thursday: "12-8", friday: "12-8", saturday: "8-12", additionalDays: "NA", items: "Multi family, many household items, women and men’s clothing, and home decor" },
             { id: 6, address: "46514 Kloxin Drive Hartford SD", lat: 43.6214, lng: -96.9213, days: "Thursday, Friday", thursday: "8:00am - 5:00pm", friday: "8:00am - 5:00pm", saturday: "N/A", additionalDays: "N/A", items: "Clothing, krumkake iron, 4 counter stools, toys, lamp, misc." },
             { id: 7, address: "408 S Western Ave (St.George Catholic Church)", lat: 43.6201, lng: -96.9482, days: "Friday, Saturday", thursday: "N/A", friday: "8:00 am", saturday: "8:00 am", additionalDays: "N/A", items: "Baby items, childrens clothing, furnature, glassware, antiques adult and teenage clothing." },
-            { id: 8, address: "26126 462nd Ave, Hartford", lat: 43.6429, lng: -96.9555, days: "Thursday, Friday, Saturday", thursday: "10-5", friday: "10-6", saturday: "10-2", additionalDays: "NA", items: "NEIGHBOR COUNTRY RUMMAGE - worth the 1.25 gravel drive! 2 Couches, Outdoor furniture, Dewalt Scroll Saw + Stand, Name Brand Kitchen items, Large baby items (swing, pac n play, bumbo seat, pumps), Tan garage door (9'W x 8'H), Men, women, and baby clothing and coats, lots more." },
+            { id: 8, address: "26126 462nd Ave, Hartford", lat: 43.6429, lng: -96.963, days: "Thursday, Friday, Saturday", thursday: "10-5", friday: "10-6", saturday: "10-2", additionalDays: "NA", items: "NEIGHBOR COUNTRY RUMMAGE - worth the 1.25 gravel drive! 2 Couches, Outdoor furniture, Dewalt Scroll Saw + Stand, Name Brand Kitchen items, Large baby items (swing, pac n play, bumbo seat, pumps), Tan garage door (9'W x 8'H), Men, women, and baby clothing and coats, lots more." },
             { id: 9, address: "810 Ruud Lane garage #8", lat: 43.6289, lng: -96.9535, days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Name brand men’s, women’s clothes and shoes, household items, twin mattress/box spring and frame, end tables, coffee table, lamps, plastic storage shelves, toys, lots of miscellaneous. Good prices, something for everyone." },
             { id: 10, address: "506 W Opal Ln", lat: 43.6320, lng: -96.9490, days: "Thursday, Friday, Saturday", thursday: "3PM", friday: "8AM", saturday: "8AM", additionalDays: "N/A", items: "LOTS of clothes! Girls NB - 7/8, Womens XL - 3X, Men's XL - 3X. Priced to sell! Toys Galore! Small to Big. Bigger items: Bumper cars, electric car, scooters, toy organizer, book shelf, kitchen, wagon, bikes" },
             { id: 11, address: "208 Elm Rd", lat: 43.6240, lng: -96.9400, days: "Thursday, Friday, Saturday", thursday: "8 am", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Tools,house items,fishing ,clothing" },
@@ -148,7 +155,7 @@
             { id: 28, address: "508 Crystal Drive", lat: 43.6290, lng: -96.9350, days: "Friday, Saturday", thursday: "N/A", friday: "9-5", saturday: "8-5", additionalDays: "N/A", items: "Stove/Oven, New crib, new Bluey toddler bed, Dryer, lots of boys gently used toys. Kitchen table and chairs. Fridge. Many more items added daily!" },
             { id: 29, address: "508 Connie Circle. Hartford, Sd", lat: 43.6270, lng: -96.9300, days: "Thursday, Friday, Saturday", thursday: "8am", friday: "8am", saturday: "8am", additionalDays: "n/a", items: "Post moving sale, 3+ family. Clothes, kitchen, etc...Something for everyone." },
             { id: 30, address: "46506 SD Hwy 38", lat: 43.6220, lng: -96.9240, days: "Friday, Saturday", thursday: "N/A", friday: "4:00pm", saturday: "8:00am", additionalDays: "N/A", items: "Portable fish house, Old Duck Decoys, Vintage jars & Canning equip, Loads of Puzzles, DVD Movies, Cedar Chest, Turkey Fryer, Gun Cabinet Swedish Death Cleaning..ALL Must GO!" },
-            { id: 31, address: "26126 462nd Ave, Hartford, SD", lat: 43.6429, lng: -96.9555, days: "Thursday, Friday, Saturday", thursday: "10-4", friday: "10-4", saturday: "10-2", additionalDays: "NA", items: "Couches, queen size bed frame, baby and kids clothes, large baby items, final inventory from Prairie Boutique (brand new women’s clothing), ice shack, left handed golf clubs, more." },
+            { id: 31, address: "26126 462nd Ave, Hartford, SD", lat: 43.6429, lng: -96.963, days: "Thursday, Friday, Saturday", thursday: "10-4", friday: "10-4", saturday: "10-2", additionalDays: "NA", items: "Couches, queen size bed frame, baby and kids clothes, large baby items, final inventory from Prairie Boutique (brand new women’s clothing), ice shack, left handed golf clubs, more." },
             { id: 32, address: "703 N Mundt Ave. #3", lat: 43.6310, lng: -96.9370, days: "Thursday, Friday, Saturday", thursday: "4pm-7pm", friday: "8am-7pm?", saturday: "8am-3pm?", additionalDays: "N/A", items: "Kids' Clothes/Jackets (Sizes 4-14), Medium to Plus Sized Adult Clothes/Scrubs/Jeans (Rock Revival, Silvers, Miss Me), Jewelry, Home Decor, Beats Flex Wireless Earphones, Books & DVDs, Pet Items (Auto Food Feeder), & Misc." },
             { id: 33, address: "509 Patrick Ave, Hartford", lat: 43.6280, lng: -96.9390, days: "Thursday, Friday, Saturday", thursday: "5pm - 8pm", friday: "8am - 7pm", saturday: "8am - 2pm?", additionalDays: "N/A", items: "child's desk, child's rocker, Strider bike (like new), Radio Flyer tricycle, Budweiser beer steins, patio swing" },
             { id: 34, address: "301 West Opal Lane Unit C", lat: 43.6320, lng: -96.9490, days: "Thursday, Friday", thursday: "3:30 pm", friday: "8:00", saturday: "Na", additionalDays: "Na", items: "Clothes, table and chairs, desk, kitchen items , mirrors, bedding" },
@@ -368,8 +375,8 @@
             
             const marker = markers.get(locationId);
             if (marker && map) {
-                marker.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(() => marker.setAnimation(null), 750);
+                marker.element.classList.add('bouncing');
+                setTimeout(() => marker.element.classList.remove('bouncing'), 750);
             }
         }
         
@@ -385,8 +392,8 @@
 
             const marker = markers.get(locationId);
             if (marker && map) {
-                marker.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(() => marker.setAnimation(null), 750);
+                marker.element.classList.add('bouncing');
+                setTimeout(() => marker.element.classList.remove('bouncing'), 750);
             }
         }
 
@@ -411,7 +418,10 @@
         }
         
         // --- Google Maps Logic ---
-        function initMap() {
+        async function initMap() {
+            const { Map } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+            
             const mapOptions = {
                 center: { lat: 43.625, lng: -96.945 },
                 zoom: 13,
@@ -419,14 +429,13 @@
                 disableDefaultUI: true,
                 zoomControl: true
             };
-            map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            map = new Map(document.getElementById("map"), mapOptions);
             infoWindow = new google.maps.InfoWindow();
             
             rummageSalesData.forEach(sale => {
                  if (sale.lat && sale.lng) {
-                    const marker = new google.maps.Marker({
+                    const marker = new AdvancedMarkerElement({
                         position: { lat: sale.lat, lng: sale.lng },
-                        map: null, // Initially hidden
                         title: sale.address,
                     });
                      marker.addListener('click', () => {
@@ -452,30 +461,40 @@
             if (!map) return;
             
             const salesToDisplay = showAll ? rummageSalesData : getFilteredSales();
-            const visibleIds = salesToDisplay.map(s => s.id);
+            const visibleIds = new Set(salesToDisplay.map(s => s.id));
             toggleMapFilterBtn.classList.toggle('hidden', activeFilters.size === 0);
             toggleMapFilterBtn.textContent = mapShowingAll ? 'Show Filtered' : 'Show All on Map';
 
             markers.forEach((marker, id) => {
-                if(visibleIds.includes(id)) {
+                if(visibleIds.has(id)) {
                     const isCompleted = completedLocations.includes(id);
                     const isFavorite = favoriteLocations.includes(id);
-                    let pinColor = '#ef4444'; // Default Red
-                    if (isCompleted) pinColor = '#22c55e'; // Green
-                    if (isFavorite) pinColor = '#3b82f6'; // Blue
-                    if (isFavorite && isCompleted) pinColor = '#2dd4bf'; // Turquoise
                     
-                    marker.setIcon({
-                        path: google.maps.SymbolPath.CIRCLE,
-                        scale: isFavorite ? 9 : 7,
-                        fillColor: pinColor,
-                        fillOpacity: 1,
-                        strokeWeight: 2,
-                        strokeColor: '#ffffff'
+                    let pinBackgroundColor;
+                    if(isFavorite && isCompleted) {
+                        pinBackgroundColor = '#2dd4bf'; // Turquoise
+                    } else if (isFavorite && !isCompleted) {
+                        pinBackgroundColor = '#3b82f6'; // Blue
+                    } else if (!isFavorite && isCompleted) {
+                        pinBackgroundColor = '#22c55e'; // Green
+                    } else {
+                        pinBackgroundColor = '#ef4444'; // Red
+                    }
+
+                    const pinGlyph = document.createElement("div");
+                    pinGlyph.className = "text-white text-lg";
+                    pinGlyph.textContent = isFavorite ? '★' : '';
+
+                    const pin = new google.maps.marker.PinElement({
+                        background: pinBackgroundColor,
+                        borderColor: '#ffffff',
+                        glyph: pinGlyph,
                     });
-                    marker.setMap(map);
+                    
+                    marker.content = pin.element;
+                    marker.map = map;
                 } else {
-                    marker.setMap(null);
+                    marker.map = null;
                 }
             });
         }
@@ -484,7 +503,7 @@
             const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
             if (!window.google) {
                 const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap`;
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap&libraries=marker`;
                 script.async = true;
                 script.defer = true;
                 window.initMap = initMap; // Make initMap globally available
@@ -493,7 +512,7 @@
                 initMap();
             }
         }
-
+        
         function generateAndPopulateCategories() {
             const categoryKeywords = ['furniture', 'clothes', 'toys', 'tools', 'baby', 'antique', 'kitchen', 'decor', 'books', 'electronics', 'fishing', 'clothing', 'shoes', 'camper'];
             const foundCategories = new Set();
