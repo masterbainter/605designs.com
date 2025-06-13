@@ -27,6 +27,10 @@
         #toast-notification.show {
             transform: translateY(0);
         }
+        .favorite-btn.favorited svg {
+            fill: #facc15; /* yellow-400 */
+            color: #facc15;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -54,6 +58,14 @@
                  <!-- Achievement icons will be inserted here -->
              </div>
         </div>
+        
+        <!-- Google Map Section -->
+        <div id="map-container" class="my-8 px-4">
+            <h2 id="map-title" class="text-2xl font-bold text-white text-center mb-4">Sale Locations Map</h2>
+            <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
+                <p class="text-gray-500">Loading Map...</p>
+            </div>
+        </div>
 
         <!-- Filter buttons -->
         <div id="filter-container" class="flex justify-center items-center gap-2 mb-6 flex-wrap px-4">
@@ -71,14 +83,6 @@
         <main id="sales-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4">
             <!-- Rummage sale cards will be injected here -->
         </main>
-    
-        <!-- Google Map Section -->
-        <div id="map-container" class="my-8 px-4">
-            <h2 id="map-title" class="text-2xl font-bold text-white text-center mb-4">Sale Locations Map</h2>
-            <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
-                <p class="text-gray-500">Loading Map...</p>
-            </div>
-        </div>
         
         <footer class="text-center mt-12 mb-4 text-gray-500 text-xs px-4">
             <p>Your progress is saved automatically to this device.</p>
@@ -191,6 +195,7 @@
 
         // --- App State ---
         let completedLocations = [];
+        let favoriteLocations = [];
         let verifiedLocations = []; // For achievements
         let unlockedAchievements = [];
         let currentFilter = 'all';
@@ -278,6 +283,7 @@
         // --- Core Application Logic ---
         function renderSales() {
             const filteredSales = currentSalesData.filter(sale => {
+                if (currentFilter === 'favorites') return favoriteLocations.includes(sale.id);
                 if (currentFilter === 'not_visited') return !completedLocations.includes(sale.id);
                 if (currentFilter === 'open') return isSaleOpenToday(sale);
                 return true;
@@ -286,10 +292,14 @@
             loadingIndicator.style.display = 'none';
             filteredSales.forEach(sale => {
                 const isCompleted = completedLocations.includes(sale.id);
+                const isFavorite = favoriteLocations.includes(sale.id);
                 const card = document.createElement('div');
                 card.className = `relative bg-gray-800 border border-gray-700 rounded-lg p-4 transition-all duration-300 flex flex-col ${isCompleted ? 'opacity-50' : 'opacity-100'}`;
                 card.innerHTML = `
-                    <div class="absolute top-3 right-3">
+                    <div class="absolute top-3 right-3 flex items-center gap-2">
+                        <button data-id="${sale.id}" class="favorite-btn ${isFavorite ? 'favorited' : ''} text-gray-400 hover:text-yellow-400" aria-label="Favorite">
+                           <svg class="w-6 h-6" fill="${isFavorite ? '#facc15' : 'none'}" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                        </button>
                         <button data-id="${sale.id}" class="toggle-complete w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 z-10 ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-700 hover:bg-green-600 text-gray-400'}" aria-label="Mark ${sale.address} as visited">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         </button>
@@ -344,6 +354,17 @@
             }
         }
         
+        function handleToggleFavorite(locationId) {
+            const index = favoriteLocations.indexOf(locationId);
+            if(index > -1) {
+                favoriteLocations.splice(index, 1);
+            } else {
+                favoriteLocations.push(locationId);
+            }
+            localStorage.setItem('hartfordRummageFavorites2025', JSON.stringify(favoriteLocations));
+            renderSales();
+        }
+
         function verifyLocationForAchievement(locationId) {
             const sale = rummageSalesData.find(s => s.id === locationId);
             navigator.geolocation.getCurrentPosition(
@@ -385,6 +406,7 @@
             rummageSalesData.forEach(sale => {
                 if (sale.lat && sale.lng) {
                     const isCompleted = completedLocations.includes(sale.id);
+                    const isFavorite = favoriteLocations.includes(sale.id);
                     const marker = new google.maps.Marker({
                         position: { lat: sale.lat, lng: sale.lng },
                         map,
@@ -396,7 +418,8 @@
                             fillOpacity: 1,
                             strokeWeight: 2,
                             strokeColor: '#ffffff'
-                        }
+                        },
+                        label: isFavorite ? '★' : null,
                     });
                     marker.addListener('click', () => {
                         const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
@@ -492,9 +515,15 @@
         });
 
         salesContainer.addEventListener('click', (e) => {
-            const button = e.target.closest('.toggle-complete');
-            if (button) {
-                handleToggleComplete(parseInt(button.dataset.id, 10));
+            const toggleCompleteBtn = e.target.closest('.toggle-complete');
+            if (toggleCompleteBtn) {
+                handleToggleComplete(parseInt(toggleCompleteBtn.dataset.id, 10));
+                return;
+            }
+            const favoriteBtn = e.target.closest('.favorite-btn');
+            if (favoriteBtn) {
+                handleToggleFavorite(parseInt(favoriteBtn.dataset.id, 10));
+                return;
             }
         });
         
@@ -517,6 +546,8 @@
             try {
                 const savedChecklist = localStorage.getItem('hartfordRummageChecklist2025');
                 if (savedChecklist) completedLocations = JSON.parse(savedChecklist);
+                const savedFavorites = localStorage.getItem('hartfordRummageFavorites2025');
+                if (savedFavorites) favoriteLocations = JSON.parse(savedFavorites);
                 const savedVerified = localStorage.getItem('hartfordRummageVerified2025');
                 if (savedVerified) verifiedLocations = JSON.parse(savedVerified);
                 const savedAchievements = localStorage.getItem('hartfordRummageAchievements2025');
