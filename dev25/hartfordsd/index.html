@@ -188,7 +188,7 @@
                 { id: 60, address: "507 S Feyder", lat: 43.6190, lng: -96.9530, days: "Thursday, Friday, Saturday", thursday: "4-7 (depending on whether)", friday: "8-7", saturday: "8-4", additionalDays: "N/A", items: "Baby furniture/items - Dressers & Bedroom sets - Saddle bags for horses - Misc household and electronic items - Misc tools" },
                 { id: 61, address: "1106 N Vandemark Ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
         ];
-
+        
         // --- Achievements Data ---
         const achievements = [
             { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
@@ -650,6 +650,7 @@
         closeModalBtn.addEventListener('click', hideAchievementModal);
         modal.addEventListener('click', (e) => { if (e.target === modal) hideAchievementModal(); });
         
+
         // --- Initialization ---
         function main() {
             try {
@@ -708,6 +709,7 @@
         }
         
         main();
+    });
     </script>
 </body>
 </html>
