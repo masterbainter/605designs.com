@@ -76,6 +76,11 @@
             <button data-filter="favorites" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Favorites</button>
             <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
             <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
+            <div class="relative">
+                <select id="category-filter" class="bg-gray-700 text-white text-sm font-semibold rounded-full py-2 px-4 appearance-none hover:bg-gray-600 cursor-pointer">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
             <button id="sort-by-distance-btn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Sort by Nearest</button>
             <button id="update-position-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Update Position</button>
             <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
@@ -207,6 +212,7 @@
         const resetSortBtn = document.getElementById('reset-sort-btn');
         const updatePositionBtn = document.getElementById('update-position-btn');
         const toggleMapFilterBtn = document.getElementById('toggle-map-filter-btn');
+        const categoryFilter = document.getElementById('category-filter');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -275,6 +281,11 @@
         // --- Core Application Logic ---
         function getFilteredSales() {
             let filteredSales = [...currentSalesData];
+            const selectedCategory = categoryFilter.value;
+
+            if (selectedCategory) {
+                filteredSales = filteredSales.filter(sale => (sale.items || '').toLowerCase().includes(selectedCategory));
+            }
             if (activeFilters.size > 0) {
                 if (activeFilters.has('favorites')) {
                     filteredSales = filteredSales.filter(sale => favoriteLocations.includes(sale.id));
@@ -411,7 +422,6 @@
             map = new google.maps.Map(document.getElementById("map"), mapOptions);
             infoWindow = new google.maps.InfoWindow();
             
-            // Create all markers once
             rummageSalesData.forEach(sale => {
                  if (sale.lat && sale.lng) {
                     const marker = new google.maps.Marker({
@@ -484,6 +494,28 @@
             }
         }
 
+        function generateAndPopulateCategories() {
+            const categoryKeywords = ['furniture', 'clothes', 'toys', 'tools', 'baby', 'antique', 'kitchen', 'decor', 'books', 'electronics', 'fishing', 'clothing', 'shoes', 'camper'];
+            const foundCategories = new Set();
+            rummageSalesData.forEach(sale => {
+                const itemsText = (sale.items || '').toLowerCase();
+                categoryKeywords.forEach(keyword => {
+                    if (itemsText.includes(keyword)) {
+                        foundCategories.add(keyword);
+                    }
+                });
+            });
+
+            const sortedCategories = [...foundCategories].sort();
+            sortedCategories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                categoryFilter.appendChild(option);
+            });
+        }
+
+
         // --- Event Listeners ---
         filterContainer.addEventListener('click', (e) => {
             if (e.target.matches('.filter-btn')) {
@@ -510,6 +542,8 @@
                 renderSales();
             }
         });
+        
+        categoryFilter.addEventListener('change', renderSales);
         
         sortByDistanceBtn.addEventListener('click', () => {
             showToast("Finding your location to sort...", false);
@@ -610,6 +644,7 @@
                 if (savedAchievements) unlockedAchievements = JSON.parse(savedAchievements);
             } catch (e) { console.error("Could not parse saved data", e); }
             
+            generateAndPopulateCategories();
             renderSales();
             renderAchievements();
             
