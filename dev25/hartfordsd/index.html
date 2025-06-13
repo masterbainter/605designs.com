@@ -129,7 +129,20 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
         
-        // --- Data with Geolocation ---
+        // --- API KEYS ---
+        const GOOGLE_MAPS_API_KEY = "AIzaSyB9Hnu_YHrDir5vQ4k4-9ZFJupkNMeZozI";
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyBp3vJ3R4xFtG7UHfv7CbSUl-bZE-5ik0E",
+            authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
+            databaseURL: "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com",
+            projectId: "hartford-rummage2025-fe0f3",
+            storageBucket: "hartford-rummage2025-fe0f3.appspot.com",
+            messagingSenderId: "520958147494",
+            appId: "1:520958147494:web:96a455852f231f35a3ad67",
+            measurementId: "G-50YZMDWQH8"
+        };
+        
+        // --- Rummage Sale Data ---
         const rummageSalesData = [
             { id: 1, address: "301 w 7th st", lat: 43.6230, lng: -96.9452, days: "Friday, Saturday", thursday: "N/a", friday: "8 am", saturday: "8 am", additionalDays: "N/a", items: "Porcelain Dolls, kids clothes, kids toys, household items, men's camo clothing" },
             { id: 2, address: "512 S. Main Ave, Hartford", lat: 43.6190, lng: -96.9439, days: "Thursday, Friday, Saturday", thursday: "1 PM", friday: "8 AM", saturday: "8 AM", additionalDays: "N/A", items: "Antique dishes & items, household items, TV's, outdoor decor, kitchen gadgets, photo & scrapbook albums, many more items too numerous to list" },
@@ -193,20 +206,6 @@
             { id: 61, address: "1106 N Vandemark Ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
         ];
 
-        // --- Firebase Configuration ---
-        const FIREBASE_CONFIG = {
-            apiKey: "AIzaSyBp3vJ3R4xFtG7UHfv7CbSUl-bZE-5ik0E",
-            authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
-            databaseURL: "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com",
-            projectId: "hartford-rummage2025-fe0f3",
-            storageBucket: "hartford-rummage2025-fe0f3.appspot.com",
-            messagingSenderId: "520958147494",
-            appId: "1:520958147494:web:96a455852f231f35a3ad67",
-            measurementId: "G-50YZMDWQH8"
-
-        };
-        
-        // --- Achievements Data ---
         const achievements = [
             { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
             { id: 2, name: "Seasoned Scavenger", threshold: 15, icon: '🥈', message: "You've got a keen eye for deals!" },
@@ -217,15 +216,13 @@
         // --- App State & Global Variables ---
         let completedLocations = [];
         let favoriteLocations = [];
-        let verifiedLocations = []; // For achievements
+        let verifiedLocations = []; 
         let unlockedAchievements = [];
         let activeFilters = new Set(['all']);
         let currentSalesData = [...rummageSalesData];
         let map, markers = new Map(), infoWindow;
         let mapShowingAll = false;
 
-        // **SCOPE FIX**: Declare Google Maps classes at the top level of the module
-        // so they are accessible by all functions that need them.
         let GoogleMap, AdvancedMarkerElement, PinElement;
 
 
@@ -405,7 +402,7 @@
                 }
             } else {
                 completedLocations = completedLocations.filter(id => id !== locationId);
-                verifiedLocations = verifiedLocations.filter(id => id !== locationId); // Also remove from verified
+                verifiedLocations = verifiedLocations.filter(id => id !== locationId); 
                 localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
                 localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
             }
@@ -440,7 +437,7 @@
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
-                    if (distance < 805) { // ~half a mile buffer
+                    if (distance < 805) { 
                         if (!verifiedLocations.includes(locationId)) {
                             verifiedLocations.push(locationId);
                             localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
@@ -475,10 +472,11 @@
                          const marker = new AdvancedMarkerElement({
                              position: { lat: sale.lat, lng: sale.lng },
                              title: sale.address,
-                             map: map // Initially add to map
+                             map: map
                          });
                          
-                         marker.addListener('click', () => {
+                         // *** WARNING FIX: Changed 'click' to 'gmp-click' ***
+                         marker.addListener('gmp-click', () => {
                              const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}`;
                              const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
                                                  <h3 class="font-bold">${sale.address}</h3>
@@ -503,7 +501,7 @@
         }
 
         function renderMapMarkers(showAll = mapShowingAll) {
-            if (!map || !PinElement) return; // Don't run if map or PinElement isn't ready
+            if (!map || !PinElement) return; 
             
             const salesToDisplay = showAll ? rummageSalesData : getFilteredSales();
             const visibleIds = new Set(salesToDisplay.map(s => s.id));
@@ -516,10 +514,10 @@
                     const isFavorite = favoriteLocations.includes(id);
                     
                     let pinBackgroundColor;
-                    if(isFavorite && isCompleted) pinBackgroundColor = '#2dd4bf'; // Turquoise
-                    else if (isFavorite && !isCompleted) pinBackgroundColor = '#3b82f6'; // Blue
-                    else if (!isFavorite && isCompleted) pinBackgroundColor = '#22c55e'; // Green
-                    else pinBackgroundColor = '#ef4444'; // Red
+                    if(isFavorite && isCompleted) pinBackgroundColor = '#2dd4bf';
+                    else if (isFavorite && !isCompleted) pinBackgroundColor = '#3b82f6';
+                    else if (!isFavorite && isCompleted) pinBackgroundColor = '#22c55e';
+                    else pinBackgroundColor = '#ef4444';
 
                     const pinGlyph = document.createElement("div");
                     pinGlyph.className = "text-white text-lg font-bold";
@@ -540,21 +538,12 @@
         }
 
         async function loadGoogleMaps() {
-            const GOOGLE_MAPS_API_KEY = "AIzaSyB9Hnu_YHrDir5vQ4k4-9ZFJupkNMeZozI";
-            
-            if (GOOGLE_MAPS_API_KEY === "YOUR_GOOGLE_MAPS_API_KEY") {
-                 document.getElementById("map").innerHTML = `<p class="text-yellow-400">Please provide a valid Google Maps API key to display the map.</p>`;
-                 return;
-            }
-
             try {
-                // Assign the imported classes to the globally-scoped variables
                 GoogleMap = (await google.maps.importLibrary("maps")).Map;
                 const markerLibrary = await google.maps.importLibrary("marker");
                 AdvancedMarkerElement = markerLibrary.AdvancedMarkerElement;
                 PinElement = markerLibrary.PinElement;
                 
-                // Now that the classes are loaded, initialize the map
                 initMap();
             } catch (error) {
                  console.error("Error loading Google Maps libraries:", error);
@@ -562,8 +551,6 @@
         }
         
         function setupGoogleMapsLoader() {
-            // This function sets up the script tag but doesn't assume the libraries are ready.
-            const GOOGLE_MAPS_API_KEY = "AIzaSyB9Hnu_YHrDir5vQ4k4-9ZFJupkNMeZozI";
             if (GOOGLE_MAPS_API_KEY === "YOUR_GOOGLE_MAPS_API_KEY") {
                  document.getElementById("map").innerHTML = `<p class="text-yellow-400">Please provide a valid Google Maps API key to display the map.</p>`;
                  return;
@@ -575,11 +562,9 @@
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=${callbackName}&libraries=marker,places&v=weekly`;
                 script.async = true;
                 script.defer = true;
-                // The loadGoogleMaps function will be called when the script is loaded and executed
                 window[callbackName] = loadGoogleMaps;
                 document.head.appendChild(script);
             } else {
-                // If it's already loaded for some reason, just call our loader
                 loadGoogleMaps();
             }
         }
@@ -774,7 +759,7 @@
             renderSales();
             renderAchievements();
             setupPresenceSystem();
-            setupGoogleMapsLoader(); // Changed to the new loader function
+            setupGoogleMapsLoader();
         }
         
         main();
