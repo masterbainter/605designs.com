@@ -564,10 +564,10 @@
         function setupGoogleMapsLoader() {
             // This function sets up the script tag but doesn't assume the libraries are ready.
             const GOOGLE_MAPS_API_KEY = "AIzaSyBp3vJ3R4xFtG7UHfv7CbSUl-bZE-5ik0E";
-            if (GOOGLE_MAPS_API_KEY === "YOUR_GOOGLE_MAPS_API_KEY") {
-                 document.getElementById("map").innerHTML = `<p class="text-yellow-400">Please provide a valid Google Maps API key to display the map.</p>`;
-                 return;
-            }
+//            if (GOOGLE_MAPS_API_KEY === "YOUR_GOOGLE_MAPS_API_KEY") {
+//                 document.getElementById("map").innerHTML = `<p class="text-yellow-400">Please provide a valid Google Maps API key to display the map.</p>`;
+//                 return;
+//            }
 
             if (!window.google || !window.google.maps) {
                 const script = document.createElement('script');
