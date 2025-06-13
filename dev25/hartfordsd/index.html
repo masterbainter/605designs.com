@@ -191,7 +191,7 @@
         let unlockedAchievements = [];
         let activeFilters = new Set();
         let currentSalesData = [...rummageSalesData];
-        let map, markers = [], infoWindow;
+        let map, markers = new Map(), infoWindow;
 
         // --- DOM Elements ---
         const mainContent = document.getElementById('main-content');
@@ -344,7 +344,6 @@
             if (!completedLocations.includes(locationId)) {
                 completedLocations.push(locationId);
                 localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
-                renderSales();
                 if (sale.lat && sale.lng) {
                      verifyLocationForAchievement(locationId);
                 } else {
@@ -355,7 +354,13 @@
                 verifiedLocations = verifiedLocations.filter(id => id !== locationId);
                 localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
                 localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
-                renderSales();
+            }
+            renderSales();
+            
+            const marker = markers.get(locationId);
+            if (marker && map) {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(() => marker.setAnimation(null), 750);
             }
         }
         
@@ -406,11 +411,11 @@
 
         function renderMapMarkers(showAll = false) {
             if (!map) return;
-            markers.forEach(marker => marker.setMap(null));
-            markers = [];
+            for (const marker of markers.values()) { marker.setMap(null); }
+            markers.clear();
 
             const salesToDisplay = showAll ? rummageSalesData : getFilteredSales();
-            showAllOnMapBtn.classList.toggle('hidden', activeFilters.size === 0);
+            showAllOnMapBtn.classList.toggle('hidden', activeFilters.size === 0 || showAll);
 
             salesToDisplay.forEach(sale => {
                 if (sale.lat && sale.lng) {
@@ -430,7 +435,8 @@
                             fillOpacity: 1,
                             strokeWeight: 2,
                             strokeColor: '#ffffff'
-                        }
+                        },
+                        label: isFavorite ? {text: '★', color: 'white', fontSize: '10px'} : null,
                     });
                     marker.addListener('click', () => {
                         const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
@@ -444,7 +450,7 @@
                         infoWindow.setContent(content);
                         infoWindow.open(map, marker);
                     });
-                    markers.push(marker);
+                    markers.set(sale.id, marker);
                 }
             });
         }
