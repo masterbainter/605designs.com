@@ -130,8 +130,6 @@
         import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
         
         // --- Data with Geolocation ---
-        // CORRECTED: Merged duplicate entries for IDs 8 and 31 into a single entry (ID 8) 
-        // to prevent confusion and overlapping map markers.
         const rummageSalesData = [
             { id: 1, address: "301 w 7th st", lat: 43.6230, lng: -96.9452, days: "Friday, Saturday", thursday: "N/a", friday: "8 am", saturday: "8 am", additionalDays: "N/a", items: "Porcelain Dolls, kids clothes, kids toys, household items, men's camo clothing" },
             { id: 2, address: "512 S. Main Ave, Hartford", lat: 43.6190, lng: -96.9439, days: "Thursday, Friday, Saturday", thursday: "1 PM", friday: "8 AM", saturday: "8 AM", additionalDays: "N/A", items: "Antique dishes & items, household items, TV's, outdoor decor, kitchen gadgets, photo & scrapbook albums, many more items too numerous to list" },
@@ -196,22 +194,18 @@
         ];
 
         // --- Firebase Configuration ---
-        // SECURITY FIX: API keys have been removed. 
-        // Replace the placeholder object below with your actual Firebase config object.
-        // It is strongly recommended to use environment variables or a backend service to protect these keys in a production environment.
         const FIREBASE_CONFIG = {
-            apiKey: "AIzaSyBp3vJ3R4xFtG7UHfv7CbSUl-bZE-5ik0E",
-            authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
-            databaseURL: "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com",
-            projectId: "hartford-rummage2025-fe0f3",
-            storageBucket: "hartford-rummage2025-fe0f3.appspot.com",
-            messagingSenderId: "520958147494",
-            appId: "1:520958147494:web:96a455852f231f35a3ad67",
-            measurementId: "G-50YZMDWQH8"
+            apiKey: "YOUR_FIREBASE_API_KEY",
+            authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
+            databaseURL: "YOUR_FIREBASE_DATABASE_URL",
+            projectId: "YOUR_FIREBASE_PROJECT_ID",
+            storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID",
+            measurementId: "YOUR_MEASUREMENT_ID"
         };
         
         // --- Achievements Data ---
-        // CORRECTED: Set final achievement threshold to the actual number of sales (61)
         const achievements = [
             { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
             { id: 2, name: "Seasoned Scavenger", threshold: 15, icon: '🥈', message: "You've got a keen eye for deals!" },
@@ -219,7 +213,7 @@
             { id: 4, name: "Rummage Royalty", threshold: 61, icon: '🏆', message: "You've conquered them all! Behold, the ultimate rummager!" }
         ];
 
-        // --- App State ---
+        // --- App State & Global Variables ---
         let completedLocations = [];
         let favoriteLocations = [];
         let verifiedLocations = []; // For achievements
@@ -228,6 +222,11 @@
         let currentSalesData = [...rummageSalesData];
         let map, markers = new Map(), infoWindow;
         let mapShowingAll = false;
+
+        // **SCOPE FIX**: Declare Google Maps classes at the top level of the module
+        // so they are accessible by all functions that need them.
+        let GoogleMap, AdvancedMarkerElement, PinElement;
+
 
         // --- DOM Elements ---
         const salesContainer = document.getElementById('sales-container');
@@ -290,19 +289,16 @@
              document.getElementById('modal-achievement-name').textContent = achievement.name;
              document.getElementById('modal-achievement-message').textContent = achievement.message;
              modal.classList.add('show');
-             // CORRECTED: Target the inner div for the animation
              setTimeout(() => modal.querySelector('.modal-content').classList.remove('scale-95', 'opacity-0'), 10);
          }
 
         function hideAchievementModal() {
-             // CORRECTED: Target the inner div for the animation
              modal.querySelector('.modal-content').classList.add('scale-95', 'opacity-0');
              setTimeout(() => modal.classList.remove('show'), 200);
          }
 
         function checkAchievements() {
             const verifiedCount = verifiedLocations.length;
-            // Check for the highest achievement that is newly unlocked
             const newlyUnlocked = achievements
                 .filter(ach => verifiedCount >= ach.threshold && !unlockedAchievements.includes(ach.id))
                 .sort((a,b) => b.threshold - a.threshold)[0];
@@ -353,7 +349,6 @@
                 const card = document.createElement('div');
                 card.className = `relative bg-gray-800 border border-gray-700 rounded-lg p-4 transition-all duration-300 flex flex-col ${isCompleted ? 'opacity-50' : 'opacity-100'}`;
                 
-                // BUG FIX: Corrected the Google Maps navigation URL
                 const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}`;
 
                 card.innerHTML = `
@@ -416,7 +411,7 @@
             renderSales();
             
             const marker = markers.get(locationId);
-            if (marker && marker.content) { // Check for content (the pin element)
+            if (marker && marker.content) { 
                 marker.content.classList.add('bouncing');
                 setTimeout(() => marker.content.classList.remove('bouncing'), 750);
             }
@@ -462,20 +457,16 @@
         // --- Google Maps Logic ---
         async function initMap() {
             try {
-                const { Map } = await google.maps.importLibrary("maps");
-                // BUG FIX: Correctly destructure PinElement
-                const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
-                
                 const mapOptions = {
                     center: { lat: 43.625, lng: -96.945 },
                     zoom: 13,
-                    mapId: 'RUMMAGE_MAP_ID_2025', // Use a unique Map ID
+                    mapId: 'RUMMAGE_MAP_ID_2025',
                     disableDefaultUI: true,
                     zoomControl: true,
                     mapTypeControl: false,
                     streetViewControl: false,
                 };
-                map = new Map(document.getElementById("map"), mapOptions);
+                map = new GoogleMap(document.getElementById("map"), mapOptions);
                 infoWindow = new google.maps.InfoWindow();
                 
                 rummageSalesData.forEach(sale => {
@@ -483,10 +474,10 @@
                          const marker = new AdvancedMarkerElement({
                              position: { lat: sale.lat, lng: sale.lng },
                              title: sale.address,
+                             map: map // Initially add to map
                          });
                          
                          marker.addListener('click', () => {
-                             // BUG FIX: Corrected the Google Maps navigation URL
                              const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}`;
                              const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
                                                  <h3 class="font-bold">${sale.address}</h3>
@@ -511,7 +502,7 @@
         }
 
         function renderMapMarkers(showAll = mapShowingAll) {
-            if (!map) return;
+            if (!map || !PinElement) return; // Don't run if map or PinElement isn't ready
             
             const salesToDisplay = showAll ? rummageSalesData : getFilteredSales();
             const visibleIds = new Set(salesToDisplay.map(s => s.id));
@@ -533,7 +524,6 @@
                     pinGlyph.className = "text-white text-lg font-bold";
                     pinGlyph.textContent = isFavorite ? '★' : '';
 
-                    // BUG FIX: Use the correctly destructured PinElement constructor
                     const pin = new PinElement({
                         background: pinBackgroundColor,
                         borderColor: '#ffffff',
@@ -548,22 +538,48 @@
             });
         }
 
-        function loadGoogleMaps() {
-            // SECURITY FIX: API Key is now a placeholder.
-            // Replace this with your actual Google Maps API Key.
-            // Remember to restrict this key in your Google Cloud Console to your domain.
-            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";            
+        async function loadGoogleMaps() {
+            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
+            
+            if (GOOGLE_MAPS_API_KEY === "YOUR_GOOGLE_MAPS_API_KEY") {
+                 document.getElementById("map").innerHTML = `<p class="text-yellow-400">Please provide a valid Google Maps API key to display the map.</p>`;
+                 return;
+            }
+
+            try {
+                // Assign the imported classes to the globally-scoped variables
+                GoogleMap = (await google.maps.importLibrary("maps")).Map;
+                const markerLibrary = await google.maps.importLibrary("marker");
+                AdvancedMarkerElement = markerLibrary.AdvancedMarkerElement;
+                PinElement = markerLibrary.PinElement;
+                
+                // Now that the classes are loaded, initialize the map
+                initMap();
+            } catch (error) {
+                 console.error("Error loading Google Maps libraries:", error);
+            }
+        }
+        
+        function setupGoogleMapsLoader() {
+            // This function sets up the script tag but doesn't assume the libraries are ready.
+            const GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY";
+            if (GOOGLE_MAPS_API_KEY === "YOUR_GOOGLE_MAPS_API_KEY") {
+                 document.getElementById("map").innerHTML = `<p class="text-yellow-400">Please provide a valid Google Maps API key to display the map.</p>`;
+                 return;
+            }
+
             if (!window.google || !window.google.maps) {
                 const script = document.createElement('script');
-                // Use a unique callback name to avoid conflicts
-                const callbackName = 'initMapCB'; 
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID_2025&callback=${callbackName}&libraries=marker,places&v=weekly`;
+                const callbackName = 'onGoogleMapsLoaded';
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=${callbackName}&libraries=marker,places&v=weekly`;
                 script.async = true;
                 script.defer = true;
-                window[callbackName] = initMap; // Make initMap globally available for the callback
+                // The loadGoogleMaps function will be called when the script is loaded and executed
+                window[callbackName] = loadGoogleMaps;
                 document.head.appendChild(script);
             } else {
-                initMap();
+                // If it's already loaded for some reason, just call our loader
+                loadGoogleMaps();
             }
         }
         
@@ -594,7 +610,7 @@
             if (e.target.matches('.filter-btn')) {
                 const button = e.target;
                 const filterType = button.dataset.filter;
-                mapShowingAll = false; // Reset map view when filters change
+                mapShowingAll = false; 
 
                 document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
 
@@ -757,7 +773,7 @@
             renderSales();
             renderAchievements();
             setupPresenceSystem();
-            loadGoogleMaps();
+            setupGoogleMapsLoader(); // Changed to the new loader function
         }
         
         main();
