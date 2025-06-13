@@ -193,18 +193,6 @@
             { id: 60, address: "507 S Feyder", lat: 43.6190, lng: -96.9530, days: "Thursday, Friday, Saturday", thursday: "4-7 (depending on whether)", friday: "8-7", saturday: "8-4", additionalDays: "N/A", items: "Baby furniture/items - Dressers & Bedroom sets - Saddle bags for horses - Misc household and electronic items - Misc tools" },
             { id: 61, address: "1106 N Vandemark Ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
         ];
-
-        // --- Firebase Configuration ---
-        const firebaseConfig = {
-          apiKey: "AIzaSyBp3vJ3R4xFtG7UHfv7CbSUl-bZE-5ik0E",
-          authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
-          databaseURL: "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com",
-          projectId: "hartford-rummage2025-fe0f3",
-          storageBucket: "hartford-rummage2025-fe0f3.appspot.com",
-          messagingSenderId: "520958147494",
-          appId: "1:520958147494:web:96a455852f231f35a3ad67",
-          measurementId: "G-50YZMDWQH8"
-        };
         
         // --- Achievements Data ---
         const achievements = [
@@ -238,7 +226,6 @@
         const updatePositionBtn = document.getElementById('update-position-btn');
         const toggleMapFilterBtn = document.getElementById('toggle-map-filter-btn');
         const categoryFilter = document.getElementById('category-filter');
-        const visitorCounter = document.getElementById('visitor-counter');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -717,7 +704,7 @@
                         });
                         
                         onValue(allUsersRef, (snap) => {
-                            const count = snap.numChildren(); 
+                            const count = snap.size; 
                             visitorCounter.innerHTML = `<span class="flex items-center justify-center"><span class="relative flex h-3 w-3 mr-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span></span>${count} Live Rummagers</span>`;
                         });
                     } else {
