@@ -39,6 +39,8 @@
             animation: bounce 0.75s ease-in-out;
         }
     </style>
+    <!-- **WARNING FIX**: Added Google Maps script directly to the head with async and defer -->
+    <script id="maps-script" async defer></script>
 </head>
 <body class="bg-gray-900 text-gray-200">
 
@@ -475,7 +477,6 @@
                              map: map
                          });
                          
-                         // *** WARNING FIX: Changed 'click' to 'gmp-click' ***
                          marker.addListener('gmp-click', () => {
                              const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}`;
                              const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
@@ -555,18 +556,10 @@
                  document.getElementById("map").innerHTML = `<p class="text-yellow-400">Please provide a valid Google Maps API key to display the map.</p>`;
                  return;
             }
-
-            if (!window.google || !window.google.maps) {
-                const script = document.createElement('script');
-                const callbackName = 'onGoogleMapsLoaded';
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=${callbackName}&libraries=marker,places&v=weekly`;
-                script.async = true;
-                script.defer = true;
-                window[callbackName] = loadGoogleMaps;
-                document.head.appendChild(script);
-            } else {
-                loadGoogleMaps();
-            }
+            const script = document.getElementById('maps-script');
+            const callbackName = 'onGoogleMapsLoaded';
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=${callbackName}&libraries=marker,places&v=weekly`;
+            window[callbackName] = loadGoogleMaps;
         }
         
         function generateAndPopulateCategories() {
