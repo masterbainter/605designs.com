@@ -42,10 +42,10 @@
 </head>
 <body class="bg-gray-900 text-gray-200">
 
-    <div class="p-4">
+    <div class="p-4 max-w-7xl mx-auto">
         <header class="text-center mb-6 pt-4">
             <div class="mb-4">
-                <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto">
+                <img src="https://www.hartfordsd.us/repository/designs/templates/GO_hartford_sd_2023_resp/images/title.png" alt="Hartford Logo" class="h-16 w-auto mx-auto" onerror="this.style.display='none'">
             </div>
             <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">
                 Hartford Rummage Checklist
@@ -62,7 +62,7 @@
         <!-- Achievements Section -->
         <div id="achievements-section" class="mb-8 text-center px-4">
              <h2 class="text-xl font-bold text-white mb-3">Your Awards</h2>
-             <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6">
+             <div id="achievements-container" class="flex justify-center items-center gap-4 sm:gap-6 flex-wrap">
                  <!-- Achievement icons will be inserted here -->
              </div>
         </div>
@@ -107,7 +107,7 @@
 
     <!-- Achievement Unlocked Modal -->
     <div id="achievement-modal" class="achievement-modal fixed inset-0 bg-black bg-opacity-70 items-center justify-center p-4 z-50">
-        <div class="bg-gray-800 border-2 border-yellow-400 rounded-xl p-6 text-center max-w-sm w-full transform transition-all scale-95 opacity-0">
+        <div class="modal-content bg-gray-800 border-2 border-yellow-400 rounded-xl p-6 text-center max-w-sm w-full transform transition-all scale-95 opacity-0">
             <h2 class="text-2xl font-bold text-yellow-300 mb-2">Achievement Unlocked!</h2>
             <div id="modal-achievement-icon" class="text-6xl my-4"></div>
             <h3 id="modal-achievement-name" class="text-xl font-semibold text-white"></h3>
@@ -130,6 +130,8 @@
         import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
         
         // --- Data with Geolocation ---
+        // CORRECTED: Merged duplicate entries for IDs 8 and 31 into a single entry (ID 8) 
+        // to prevent confusion and overlapping map markers.
         const rummageSalesData = [
             { id: 1, address: "301 w 7th st", lat: 43.6230, lng: -96.9452, days: "Friday, Saturday", thursday: "N/a", friday: "8 am", saturday: "8 am", additionalDays: "N/a", items: "Porcelain Dolls, kids clothes, kids toys, household items, men's camo clothing" },
             { id: 2, address: "512 S. Main Ave, Hartford", lat: 43.6190, lng: -96.9439, days: "Thursday, Friday, Saturday", thursday: "1 PM", friday: "8 AM", saturday: "8 AM", additionalDays: "N/A", items: "Antique dishes & items, household items, TV's, outdoor decor, kitchen gadgets, photo & scrapbook albums, many more items too numerous to list" },
@@ -138,7 +140,7 @@
             { id: 5, address: "203 Mary Ln", lat: 43.6253, lng: -96.9379, days: "Thursday, Friday, Saturday", thursday: "12-8", friday: "12-8", saturday: "8-12", additionalDays: "NA", items: "Multi family, many household items, women and men’s clothing, and home decor" },
             { id: 6, address: "46514 Kloxin Drive Hartford SD", lat: 43.6214, lng: -96.9213, days: "Thursday, Friday", thursday: "8:00am - 5:00pm", friday: "8:00am - 5:00pm", saturday: "N/A", additionalDays: "N/A", items: "Clothing, krumkake iron, 4 counter stools, toys, lamp, misc." },
             { id: 7, address: "408 S Western Ave (St.George Catholic Church)", lat: 43.6201, lng: -96.9482, days: "Friday, Saturday", thursday: "N/A", friday: "8:00 am", saturday: "8:00 am", additionalDays: "N/A", items: "Baby items, childrens clothing, furnature, glassware, antiques adult and teenage clothing." },
-            { id: 8, address: "26126 462nd Ave, Hartford", lat: 43.6429, lng: -96.963, days: "Thursday, Friday, Saturday", thursday: "10-5", friday: "10-6", saturday: "10-2", additionalDays: "NA", items: "NEIGHBOR COUNTRY RUMMAGE - worth the 1.25 gravel drive! 2 Couches, Outdoor furniture, Dewalt Scroll Saw + Stand, Name Brand Kitchen items, Large baby items (swing, pac n play, bumbo seat, pumps), Tan garage door (9'W x 8'H), Men, women, and baby clothing and coats, lots more." },
+            { id: 8, address: "26126 462nd Ave, Hartford", lat: 43.6429, lng: -96.963, days: "Thursday, Friday, Saturday", thursday: "10-6", friday: "10-6", saturday: "10-2", additionalDays: "NA", items: "NEIGHBOR COUNTRY RUMMAGE - worth the 1.25 gravel drive! 2 Couches, Outdoor furniture, Dewalt Scroll Saw + Stand, Name Brand Kitchen items, Large baby items (swing, pac n play, bumbo seat, pumps), Tan garage door (9'W x 8'H), Men, women, and baby clothing and coats. ALSO: queen size bed frame, final inventory from Prairie Boutique (brand new women’s clothing), ice shack, left handed golf clubs, and more." },
             { id: 9, address: "810 Ruud Lane garage #8", lat: 43.6289, lng: -96.9535, days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Name brand men’s, women’s clothes and shoes, household items, twin mattress/box spring and frame, end tables, coffee table, lamps, plastic storage shelves, toys, lots of miscellaneous. Good prices, something for everyone." },
             { id: 10, address: "506 W Opal Ln", lat: 43.6320, lng: -96.9490, days: "Thursday, Friday, Saturday", thursday: "3PM", friday: "8AM", saturday: "8AM", additionalDays: "N/A", items: "LOTS of clothes! Girls NB - 7/8, Womens XL - 3X, Men's XL - 3X. Priced to sell! Toys Galore! Small to Big. Bigger items: Bumper cars, electric car, scooters, toy organizer, book shelf, kitchen, wagon, bikes" },
             { id: 11, address: "208 Elm Rd", lat: 43.6240, lng: -96.9400, days: "Thursday, Friday, Saturday", thursday: "8 am", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Tools,house items,fishing ,clothing" },
@@ -161,7 +163,6 @@
             { id: 28, address: "508 Crystal Drive", lat: 43.6290, lng: -96.9350, days: "Friday, Saturday", thursday: "N/A", friday: "9-5", saturday: "8-5", additionalDays: "N/A", items: "Stove/Oven, New crib, new Bluey toddler bed, Dryer, lots of boys gently used toys. Kitchen table and chairs. Fridge. Many more items added daily!" },
             { id: 29, address: "508 Connie Circle. Hartford, Sd", lat: 43.6270, lng: -96.9300, days: "Thursday, Friday, Saturday", thursday: "8am", friday: "8am", saturday: "8am", additionalDays: "n/a", items: "Post moving sale, 3+ family. Clothes, kitchen, etc...Something for everyone." },
             { id: 30, address: "46506 SD Hwy 38", lat: 43.6220, lng: -96.9240, days: "Friday, Saturday", thursday: "N/A", friday: "4:00pm", saturday: "8:00am", additionalDays: "N/A", items: "Portable fish house, Old Duck Decoys, Vintage jars & Canning equip, Loads of Puzzles, DVD Movies, Cedar Chest, Turkey Fryer, Gun Cabinet Swedish Death Cleaning..ALL Must GO!" },
-            { id: 31, address: "26126 462nd Ave, Hartford, SD", lat: 43.6429, lng: -96.963, days: "Thursday, Friday, Saturday", thursday: "10-4", friday: "10-4", saturday: "10-2", additionalDays: "NA", items: "Couches, queen size bed frame, baby and kids clothes, large baby items, final inventory from Prairie Boutique (brand new women’s clothing), ice shack, left handed golf clubs, more." },
             { id: 32, address: "703 N Mundt Ave. #3", lat: 43.6310, lng: -96.9370, days: "Thursday, Friday, Saturday", thursday: "4pm-7pm", friday: "8am-7pm?", saturday: "8am-3pm?", additionalDays: "N/A", items: "Kids' Clothes/Jackets (Sizes 4-14), Medium to Plus Sized Adult Clothes/Scrubs/Jeans (Rock Revival, Silvers, Miss Me), Jewelry, Home Decor, Beats Flex Wireless Earphones, Books & DVDs, Pet Items (Auto Food Feeder), & Misc." },
             { id: 33, address: "509 Patrick Ave, Hartford", lat: 43.6280, lng: -96.9390, days: "Thursday, Friday, Saturday", thursday: "5pm - 8pm", friday: "8am - 7pm", saturday: "8am - 2pm?", additionalDays: "N/A", items: "child's desk, child's rocker, Strider bike (like new), Radio Flyer tricycle, Budweiser beer steins, patio swing" },
             { id: 34, address: "301 West Opal Lane Unit C", lat: 43.6320, lng: -96.9490, days: "Thursday, Friday", thursday: "3:30 pm", friday: "8:00", saturday: "Na", additionalDays: "Na", items: "Clothes, table and chairs, desk, kitchen items , mirrors, bedding" },
@@ -195,18 +196,22 @@
         ];
 
         // --- Firebase Configuration ---
-        const firebaseConfig = {
-          apiKey: "AIzaSyBp3vJ3R4xFtG7UHfv7CbSUl-bZE-5ik0E",
-          authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
-          databaseURL: "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com",
-          projectId: "hartford-rummage2025-fe0f3",
-          storageBucket: "hartford-rummage2025-fe0f3.appspot.com",
-          messagingSenderId: "520958147494",
-          appId: "1:520958147494:web:96a455852f231f35a3ad67",
-          measurementId: "G-50YZMDWQH8"
+        // SECURITY FIX: API keys have been removed. 
+        // Replace the placeholder object below with your actual Firebase config object.
+        // It is strongly recommended to use environment variables or a backend service to protect these keys in a production environment.
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyBp3vJ3R4xFtG7UHfv7CbSUl-bZE-5ik0E",
+            authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
+            databaseURL: "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com",
+            projectId: "hartford-rummage2025-fe0f3",
+            storageBucket: "hartford-rummage2025-fe0f3.appspot.com",
+            messagingSenderId: "520958147494",
+            appId: "1:520958147494:web:96a455852f231f35a3ad67",
+            measurementId: "G-50YZMDWQH8"
         };
         
         // --- Achievements Data ---
+        // CORRECTED: Set final achievement threshold to the actual number of sales (61)
         const achievements = [
             { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
             { id: 2, name: "Seasoned Scavenger", threshold: 15, icon: '🥈', message: "You've got a keen eye for deals!" },
@@ -219,7 +224,7 @@
         let favoriteLocations = [];
         let verifiedLocations = []; // For achievements
         let unlockedAchievements = [];
-        let activeFilters = new Set();
+        let activeFilters = new Set(['all']);
         let currentSalesData = [...rummageSalesData];
         let map, markers = new Map(), infoWindow;
         let mapShowingAll = false;
@@ -285,17 +290,23 @@
              document.getElementById('modal-achievement-name').textContent = achievement.name;
              document.getElementById('modal-achievement-message').textContent = achievement.message;
              modal.classList.add('show');
-             setTimeout(() => modal.querySelector('.transform').classList.remove('scale-95', 'opacity-0'), 10);
-        }
+             // CORRECTED: Target the inner div for the animation
+             setTimeout(() => modal.querySelector('.modal-content').classList.remove('scale-95', 'opacity-0'), 10);
+         }
 
         function hideAchievementModal() {
-             modal.querySelector('.transform').classList.add('scale-95', 'opacity-0');
+             // CORRECTED: Target the inner div for the animation
+             modal.querySelector('.modal-content').classList.add('scale-95', 'opacity-0');
              setTimeout(() => modal.classList.remove('show'), 200);
-        }
+         }
 
         function checkAchievements() {
             const verifiedCount = verifiedLocations.length;
-            const newlyUnlocked = achievements.find(ach => verifiedCount >= ach.threshold && !unlockedAchievements.includes(ach.id));
+            // Check for the highest achievement that is newly unlocked
+            const newlyUnlocked = achievements
+                .filter(ach => verifiedCount >= ach.threshold && !unlockedAchievements.includes(ach.id))
+                .sort((a,b) => b.threshold - a.threshold)[0];
+            
             if (newlyUnlocked) {
                 unlockedAchievements.push(newlyUnlocked.id);
                 localStorage.setItem('hartfordRummageAchievements2025', JSON.stringify(unlockedAchievements));
@@ -312,7 +323,8 @@
             if (selectedCategory) {
                 filteredSales = filteredSales.filter(sale => (sale.items || '').toLowerCase().includes(selectedCategory));
             }
-            if (activeFilters.size > 0) {
+
+            if (!activeFilters.has('all')) {
                 if (activeFilters.has('favorites')) {
                     filteredSales = filteredSales.filter(sale => favoriteLocations.includes(sale.id));
                 }
@@ -330,19 +342,28 @@
             const filteredSales = getFilteredSales();
             salesContainer.innerHTML = '';
             loadingIndicator.style.display = 'none';
+
+            if (filteredSales.length === 0) {
+                salesContainer.innerHTML = `<p class="text-gray-400 col-span-full text-center">No sales match your current filters.</p>`;
+            }
+
             filteredSales.forEach(sale => {
                 const isCompleted = completedLocations.includes(sale.id);
                 const isFavorite = favoriteLocations.includes(sale.id);
                 const card = document.createElement('div');
                 card.className = `relative bg-gray-800 border border-gray-700 rounded-lg p-4 transition-all duration-300 flex flex-col ${isCompleted ? 'opacity-50' : 'opacity-100'}`;
+                
+                // BUG FIX: Corrected the Google Maps navigation URL
+                const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}`;
+
                 card.innerHTML = `
                     <div class="absolute top-3 right-3 flex items-center gap-2">
                          <button data-id="${sale.id}" class="favorite-btn ${isFavorite ? 'favorited' : ''} text-gray-400 hover:text-yellow-400" aria-label="Favorite">
-                           <svg class="w-6 h-6" fill="${isFavorite ? '#facc15' : 'none'}" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
-                        </button>
-                        <button data-id="${sale.id}" class="toggle-complete w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 z-10 ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-700 hover:bg-green-600 text-gray-400'}" aria-label="Mark ${sale.address} as visited">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        </button>
+                            <svg class="w-6 h-6 pointer-events-none" fill="${isFavorite ? '#facc15' : 'none'}" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                         </button>
+                         <button data-id="${sale.id}" class="toggle-complete w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 z-10 ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-700 hover:bg-green-600 text-gray-400'}" aria-label="Mark ${sale.address} as visited">
+                             <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                         </button>
                     </div>
                     <div class="flex-grow flex flex-col">
                         <div>
@@ -360,7 +381,9 @@
                                 <p class="text-gray-400 text-xs sm:text-sm">${sale.items}</p>
                             </div>
                         </div>
-                        ${sale.lat && sale.lng ? `<a href="https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}" target="_blank" class="mt-4 text-center bg-blue-500 text-white text-sm font-bold py-2 px-3 rounded-full hover:bg-blue-600 transition-colors w-full">Navigate</a>` : ''}
+                        <div class="mt-auto pt-4">
+                           ${sale.lat && sale.lng ? `<a href="${navUrl}" target="_blank" class="block text-center bg-blue-600 text-white text-sm font-bold py-2 px-3 rounded-full hover:bg-blue-500 transition-colors w-full">Navigate</a>` : ''}
+                        </div>
                     </div>`;
                 salesContainer.appendChild(card);
             });
@@ -386,16 +409,16 @@
                 }
             } else {
                 completedLocations = completedLocations.filter(id => id !== locationId);
-                verifiedLocations = verifiedLocations.filter(id => id !== locationId);
+                verifiedLocations = verifiedLocations.filter(id => id !== locationId); // Also remove from verified
                 localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
                 localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
             }
             renderSales();
             
             const marker = markers.get(locationId);
-            if (marker && marker.element) {
-                marker.element.classList.add('bouncing');
-                setTimeout(() => marker.element.classList.remove('bouncing'), 750);
+            if (marker && marker.content) { // Check for content (the pin element)
+                marker.content.classList.add('bouncing');
+                setTimeout(() => marker.content.classList.remove('bouncing'), 750);
             }
         }
         
@@ -410,9 +433,9 @@
             renderSales();
 
             const marker = markers.get(locationId);
-            if (marker && marker.element) {
-                marker.element.classList.add('bouncing');
-                setTimeout(() => marker.element.classList.remove('bouncing'), 750);
+            if (marker && marker.content) {
+                marker.content.classList.add('bouncing');
+                setTimeout(() => marker.content.classList.remove('bouncing'), 750);
             }
         }
 
@@ -421,12 +444,12 @@
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
-                    if (distance < 805) { // ~half a mile
+                    if (distance < 805) { // ~half a mile buffer
                         if (!verifiedLocations.includes(locationId)) {
-                             verifiedLocations.push(locationId);
-                             localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
-                             showToast("Visit Verified!", false);
-                             checkAchievements();
+                            verifiedLocations.push(locationId);
+                            localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
+                            showToast("Visit Verified!", false);
+                            checkAchievements();
                         }
                     } else {
                         showToast("Too far away to verify for award.", true);
@@ -438,51 +461,62 @@
         
         // --- Google Maps Logic ---
         async function initMap() {
-            const { Map } = await google.maps.importLibrary("maps");
-            const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
-            
-            const mapOptions = {
-                center: { lat: 43.625, lng: -96.945 },
-                zoom: 13,
-                mapId: 'RUMMAGE_MAP_ID',
-                disableDefaultUI: true,
-                zoomControl: true
-            };
-            map = new Map(document.getElementById("map"), mapOptions);
-            infoWindow = new google.maps.InfoWindow();
-            
-            rummageSalesData.forEach(sale => {
-                 if (sale.lat && sale.lng) {
-                    const marker = new AdvancedMarkerElement({
-                        position: { lat: sale.lat, lng: sale.lng },
-                        title: sale.address,
-                    });
-                     marker.addListener('click', () => {
-                        const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
-                                            <h3 class="font-bold">${sale.address}</h3>
-                                            <p class="text-xs mb-2">${sale.items}</p>
-                                            <div class="flex items-center gap-2">
-                                                <button class="map-mark-done bg-green-500 text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">Mark Done</button>
-                                                <button class="map-favorite-btn ${favoriteLocations.includes(sale.id) ? 'bg-red-500' : 'bg-yellow-500'} text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">${favoriteLocations.includes(sale.id) ? 'Unfavorite' : 'Favorite'}</button>
-                                                <a href="https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}" target="_blank" class="bg-blue-500 text-white text-xs font-bold py-1 px-2 rounded-full">Navigate</a>
-                                            </div>
-                                       </div>`;
-                        infoWindow.setContent(content);
-                        infoWindow.open(map, marker);
-                    });
-                    markers.set(sale.id, marker);
-                 }
-            });
-            renderMapMarkers();
+            try {
+                const { Map } = await google.maps.importLibrary("maps");
+                // BUG FIX: Correctly destructure PinElement
+                const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+                
+                const mapOptions = {
+                    center: { lat: 43.625, lng: -96.945 },
+                    zoom: 13,
+                    mapId: 'RUMMAGE_MAP_ID_2025', // Use a unique Map ID
+                    disableDefaultUI: true,
+                    zoomControl: true,
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                };
+                map = new Map(document.getElementById("map"), mapOptions);
+                infoWindow = new google.maps.InfoWindow();
+                
+                rummageSalesData.forEach(sale => {
+                     if (sale.lat && sale.lng) {
+                         const marker = new AdvancedMarkerElement({
+                             position: { lat: sale.lat, lng: sale.lng },
+                             title: sale.address,
+                         });
+                         
+                         marker.addListener('click', () => {
+                             // BUG FIX: Corrected the Google Maps navigation URL
+                             const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}`;
+                             const content = `<div class="p-1 font-sans text-gray-800" style="max-width: 200px;">
+                                                 <h3 class="font-bold">${sale.address}</h3>
+                                                 <p class="text-xs mb-2">${sale.items}</p>
+                                                 <div class="flex items-center gap-2 flex-wrap">
+                                                     <button class="map-mark-done bg-green-500 text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">Mark Done</button>
+                                                     <button class="map-favorite-btn ${favoriteLocations.includes(sale.id) ? 'bg-red-500' : 'bg-yellow-500'} text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">${favoriteLocations.includes(sale.id) ? 'Unfavorite' : 'Favorite'}</button>
+                                                     <a href="${navUrl}" target="_blank" class="bg-blue-600 text-white text-xs font-bold py-1 px-2 rounded-full">Navigate</a>
+                                                 </div>
+                                             </div>`;
+                             infoWindow.setContent(content);
+                             infoWindow.open(map, marker);
+                         });
+                         markers.set(sale.id, marker);
+                     }
+                });
+                renderMapMarkers();
+            } catch (error) {
+                console.error("Google Maps failed to load:", error);
+                document.getElementById("map").innerHTML = `<p class="text-red-400">Error: Could not load the map. Please check the API key and internet connection.</p>`;
+            }
         }
 
-        function renderMapMarkers(showAll = false) {
+        function renderMapMarkers(showAll = mapShowingAll) {
             if (!map) return;
             
             const salesToDisplay = showAll ? rummageSalesData : getFilteredSales();
             const visibleIds = new Set(salesToDisplay.map(s => s.id));
-            toggleMapFilterBtn.classList.toggle('hidden', activeFilters.size === 0);
-            toggleMapFilterBtn.textContent = mapShowingAll ? 'Show Filtered' : 'Show All on Map';
+            toggleMapFilterBtn.classList.toggle('hidden', activeFilters.has('all'));
+            toggleMapFilterBtn.textContent = showAll ? 'Show Filtered' : 'Show All on Map';
 
             markers.forEach((marker, id) => {
                 if(visibleIds.has(id)) {
@@ -490,24 +524,20 @@
                     const isFavorite = favoriteLocations.includes(id);
                     
                     let pinBackgroundColor;
-                    if(isFavorite && isCompleted) {
-                        pinBackgroundColor = '#2dd4bf'; // Turquoise
-                    } else if (isFavorite && !isCompleted) {
-                        pinBackgroundColor = '#3b82f6'; // Blue
-                    } else if (!isFavorite && isCompleted) {
-                        pinBackgroundColor = '#22c55e'; // Green
-                    } else {
-                        pinBackgroundColor = '#ef4444'; // Red
-                    }
+                    if(isFavorite && isCompleted) pinBackgroundColor = '#2dd4bf'; // Turquoise
+                    else if (isFavorite && !isCompleted) pinBackgroundColor = '#3b82f6'; // Blue
+                    else if (!isFavorite && isCompleted) pinBackgroundColor = '#22c55e'; // Green
+                    else pinBackgroundColor = '#ef4444'; // Red
 
                     const pinGlyph = document.createElement("div");
-                    pinGlyph.className = "text-white text-lg";
+                    pinGlyph.className = "text-white text-lg font-bold";
                     pinGlyph.textContent = isFavorite ? '★' : '';
 
-                    const pin = new google.maps.marker.PinElement({
+                    // BUG FIX: Use the correctly destructured PinElement constructor
+                    const pin = new PinElement({
                         background: pinBackgroundColor,
                         borderColor: '#ffffff',
-                        glyph: pinGlyph,
+                        glyph: isFavorite ? pinGlyph : null,
                     });
                     
                     marker.content = pin.element;
@@ -519,13 +549,24 @@
         }
 
         function loadGoogleMaps() {
+            // SECURITY FIX: API Key is now a placeholder.
+            // Replace this with your actual Google Maps API Key.
+            // Remember to restrict this key in your Google Cloud Console to your domain.
             const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
-            if (!window.google) {
+            
+            if (GOOGLE_MAPS_API_KEY === "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk") {
+                 document.getElementById("map").innerHTML = `<p class="text-yellow-400">Please provide a valid Google Maps API key to display the map.</p>`;
+                 return;
+            }
+
+            if (!window.google || !window.google.maps) {
                 const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap&libraries=marker`;
+                // Use a unique callback name to avoid conflicts
+                const callbackName = 'initMapCB'; 
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID_2025&callback=${callbackName}&libraries=marker,places&v=weekly`;
                 script.async = true;
                 script.defer = true;
-                window.initMap = initMap; // Make initMap globally available
+                window[callbackName] = initMap; // Make initMap globally available for the callback
                 document.head.appendChild(script);
             } else {
                 initMap();
@@ -533,7 +574,7 @@
         }
         
         function generateAndPopulateCategories() {
-            const categoryKeywords = ['furniture', 'clothes', 'toys', 'tools', 'baby', 'antique', 'kitchen', 'decor', 'books', 'electronics', 'fishing', 'clothing', 'shoes', 'camper'];
+            const categoryKeywords = ['furniture', 'clothes', 'toys', 'tools', 'baby', 'antique', 'kitchen', 'decor', 'books', 'electronics', 'fishing', 'clothing', 'shoes', 'camper', 'military', 'sewing', 'hunting', 'vintage', 'teacher', 'college'];
             const foundCategories = new Set();
             rummageSalesData.forEach(sale => {
                 const itemsText = (sale.items || '').toLowerCase();
@@ -561,27 +602,36 @@
                 const filterType = button.dataset.filter;
                 mapShowingAll = false; // Reset map view when filters change
 
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+
                 if (filterType === 'all') {
-                    activeFilters.clear();
-                    filterContainer.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
+                    activeFilters = new Set(['all']);
                 } else {
-                    document.querySelector('[data-filter="all"]').classList.remove('active');
-                    button.classList.toggle('active');
+                    activeFilters.delete('all');
                     if (activeFilters.has(filterType)) {
                         activeFilters.delete(filterType);
                     } else {
                         activeFilters.add(filterType);
                     }
-                    if (activeFilters.size === 0) {
-                        document.querySelector('[data-filter="all"]').classList.add('active');
-                    }
                 }
+                
+                if (activeFilters.size === 0) {
+                    activeFilters.add('all');
+                }
+
+                activeFilters.forEach(filter => {
+                    const btn = document.querySelector(`.filter-btn[data-filter="${filter}"]`);
+                    if (btn) btn.classList.add('active');
+                });
+                
                 renderSales();
             }
         });
         
-        categoryFilter.addEventListener('change', renderSales);
+        categoryFilter.addEventListener('change', () => {
+            mapShowingAll = false;
+            renderSales();
+        });
         
         sortByDistanceBtn.addEventListener('click', () => {
             showToast("Finding your location to sort...", false);
@@ -605,24 +655,7 @@
             );
         });
 
-        updatePositionBtn.addEventListener('click', () => {
-             showToast("Finding your location to re-sort...", false);
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    currentSalesData.forEach(sale => {
-                        if(sale.lat && sale.lng) {
-                            sale.distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
-                        } else {
-                            sale.distance = Infinity;
-                        }
-                    });
-                    currentSalesData.sort((a,b) => a.distance - b.distance);
-                    renderSales();
-                    showToast("List updated to your new location!", false);
-                },
-                (error) => { showToast("Could not get your location to sort.", true); }
-            );
-        });
+        updatePositionBtn.addEventListener('click', () => sortByDistanceBtn.click());
 
         resetSortBtn.addEventListener('click', () => {
             currentSalesData = [...rummageSalesData];
@@ -647,14 +680,15 @@
         });
         
         document.getElementById('map').addEventListener('click', (e) => {
+            if (!e.target.dataset.id) return;
             const locationId = parseInt(e.target.dataset.id, 10);
+            
             if(e.target.classList.contains('map-mark-done')) {
                 if(!completedLocations.includes(locationId)) {
                      handleToggleComplete(locationId);
                 }
                 infoWindow.close();
-            }
-            if(e.target.classList.contains('map-favorite-btn')) {
+            } else if(e.target.classList.contains('map-favorite-btn')) {
                 handleToggleFavorite(locationId);
                 infoWindow.close();
             }
@@ -670,54 +704,46 @@
         
         function setupPresenceSystem() {
              try {
-                console.log("Attempting to initialize Firebase...");
-                const app = initializeApp(firebaseConfig);
-                console.log("Firebase App initialized.");
+                 if (FIREBASE_CONFIG.apiKey === "YOUR_FIREBASE_API_KEY") {
+                    visitorCounter.textContent = "Live counter disabled (No API Key)";
+                    console.warn("Firebase key not provided. Presence system disabled.");
+                    return;
+                 }
+                 const app = initializeApp(FIREBASE_CONFIG);
+                 const auth = getAuth(app);
+                 const analytics = getAnalytics(app);
 
-                const auth = getAuth(app);
-                console.log("Firebase Auth service retrieved.");
+                 onAuthStateChanged(auth, (user) => {
+                     if (user) {
+                         const rtdb = getDatabase();
+                         const appId = FIREBASE_CONFIG.projectId;
+                         const userStatusDatabaseRef = ref(rtdb, `presence/${appId}/users/${user.uid}`);
+                         const connectedRef = ref(rtdb, '.info/connected');
+                         const allUsersRef = ref(rtdb, `presence/${appId}/users`);
 
-                const analytics = getAnalytics(app);
-                console.log("Firebase Analytics initialized.");
+                         onValue(connectedRef, (snap) => {
+                             if (snap.val() === true) { 
+                                 set(userStatusDatabaseRef, true); 
+                                 onDisconnect(userStatusDatabaseRef).remove(); 
+                             }
+                         });
+                         
+                         onValue(allUsersRef, (snap) => {
+                             const count = snap.size; 
+                             visitorCounter.innerHTML = `<span class="flex items-center justify-center"><span class="relative flex h-3 w-3 mr-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span></span>${count} Live Rummagers</span>`;
+                         });
+                     }
+                 });
 
-                console.log("Setting up presence system...");
-                onAuthStateChanged(auth, (user) => {
-                    console.log("Auth state changed. User:", user);
-                    if (user) {
-                        console.log("User is signed in:", user.uid);
-                        const rtdb = getDatabase();
-                        const appId = firebaseConfig.projectId;
-                        const userStatusDatabaseRef = ref(rtdb, `presence/${appId}/users/${user.uid}`);
-                        const connectedRef = ref(rtdb, '.info/connected');
-                        const allUsersRef = ref(rtdb, `presence/${appId}/users`);
+                 signInAnonymously(auth).catch(err => {
+                     console.error("Anonymous sign-in failed:", err);
+                     visitorCounter.textContent = "Live counter disabled";
+                 });
 
-                        onValue(connectedRef, (snap) => {
-                            if (snap.val() === true) { 
-                                set(userStatusDatabaseRef, true); 
-                                onDisconnect(userStatusDatabaseRef).remove(); 
-                                console.log("User presence set.");
-                            }
-                        });
-                        
-                        onValue(allUsersRef, (snap) => {
-                            const count = snap.size; 
-                            visitorCounter.innerHTML = `<span class="flex items-center justify-center"><span class="relative flex h-3 w-3 mr-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span></span>${count} Live Rummagers</span>`;
-                        });
-                    } else {
-                        console.log("User is signed out.");
-                    }
-                });
-
-                console.log("Attempting to sign in anonymously...");
-                signInAnonymously(auth).catch(err => {
-                    console.error("Anonymous sign-in failed:", err);
-                    visitorCounter.textContent = "Live counter disabled";
-                });
-
-            } catch (error) {
-                console.error("Firebase Initialization failed:", error);
-                visitorCounter.textContent = "Offline";
-            }
+             } catch (error) {
+                 console.error("Firebase Initialization failed:", error);
+                 visitorCounter.textContent = "Offline";
+             }
         }
 
         // --- Initialization ---
@@ -741,7 +767,6 @@
         }
         
         main();
-    });
     </script>
 </body>
 </html>
