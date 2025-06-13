@@ -55,7 +55,7 @@
             </p>
             <div class="mt-4 space-y-1">
                 <div id="progress-counter" class="text-lg font-semibold text-green-400">Loading...</div>
-                <div id="visitor-counter" class="text-sm font-medium text-cyan-400"><span class="animate-pulse">Connecting...</span></div>
+                <div id="visitor-counter" class="text-sm font-medium text-cyan-400">Initializing Counter...</div>
             </div>
         </header>
 
@@ -128,7 +128,7 @@
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
-        
+
         // --- Data with Geolocation ---
         const rummageSalesData = [
             { id: 1, address: "301 w 7th st", lat: 43.6230, lng: -96.9452, days: "Friday, Saturday", thursday: "N/a", friday: "8 am", saturday: "8 am", additionalDays: "N/a", items: "Porcelain Dolls, kids clothes, kids toys, household items, men's camo clothing" },
@@ -194,6 +194,18 @@
             { id: 61, address: "1106 N Vandemark Ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
         ];
 
+        // --- Firebase Configuration ---
+        const firebaseConfig = {
+          apiKey: "AIzaSyBp3vJ3R4xFtG7UHfv7CbSUl-bZE-5ik0E",
+          authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
+          databaseURL: "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com",
+          projectId: "hartford-rummage2025-fe0f3",
+          storageBucket: "hartford-rummage2025-fe0f3.appspot.com",
+          messagingSenderId: "520958147494",
+          appId: "1:520958147494:web:96a455852f231f35a3ad67",
+          measurementId: "G-50YZMDWQH8"
+        };
+        
         // --- Achievements Data ---
         const achievements = [
             { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
@@ -381,7 +393,7 @@
             renderSales();
             
             const marker = markers.get(locationId);
-            if (marker && map) {
+            if (marker && marker.element) {
                 marker.element.classList.add('bouncing');
                 setTimeout(() => marker.element.classList.remove('bouncing'), 750);
             }
@@ -398,7 +410,7 @@
             renderSales();
 
             const marker = markers.get(locationId);
-            if (marker && map) {
+            if (marker && marker.element) {
                 marker.element.classList.add('bouncing');
                 setTimeout(() => marker.element.classList.remove('bouncing'), 750);
             }
@@ -675,42 +687,53 @@
             renderAchievements();
             
             try {
+                console.log("Attempting to initialize Firebase...");
                 const app = initializeApp(firebaseConfig);
-                const auth = getAuth(app);
-                const analytics = getAnalytics(app); // Initialize Analytics
+                console.log("Firebase App initialized.");
 
+                const auth = getAuth(app);
+                console.log("Firebase Auth service retrieved.");
+
+                const analytics = getAnalytics(app);
+                console.log("Firebase Analytics initialized.");
+
+                console.log("Setting up presence system...");
                 onAuthStateChanged(auth, (user) => {
+                    console.log("Auth state changed. User:", user);
                     if (user) {
-                        // User is signed in.
+                        console.log("User is signed in:", user.uid);
                         const rtdb = getDatabase();
                         const appId = firebaseConfig.projectId;
-                        const uid = user.uid;
-                        const userStatusDatabaseRef = ref(rtdb, `/artifacts/${appId}/public/presence/users/${uid}`);
+                        const userStatusDatabaseRef = ref(rtdb, `presence/${appId}/${user.uid}`);
                         const connectedRef = ref(rtdb, '.info/connected');
-                        const allUsersRef = ref(rtdb, `/artifacts/${appId}/public/presence/users`);
+                        const allUsersRef = ref(rtdb, `presence/${appId}`);
 
                         onValue(connectedRef, (snap) => {
                             if (snap.val() === true) { 
                                 set(userStatusDatabaseRef, true); 
                                 onDisconnect(userStatusDatabaseRef).remove(); 
+                                console.log("User presence set.");
                             }
                         });
                         
                         onValue(allUsersRef, (snap) => {
-                            const count = snap.size; 
+                            const count = snap.numChildren(); 
                             visitorCounter.innerHTML = `<span class="flex items-center justify-center"><span class="relative flex h-3 w-3 mr-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span></span>${count} Live Rummagers</span>`;
                         });
+                    } else {
+                        console.log("User is signed out.");
                     }
                 });
 
+                console.log("Attempting to sign in anonymously...");
                 signInAnonymously(auth).catch(err => {
-                    console.error("Anonymous sign-in for analytics failed:", err);
-                     visitorCounter.textContent = "Live counter disabled";
+                    console.error("Anonymous sign-in failed:", err);
+                    visitorCounter.textContent = "Live counter disabled";
                 });
 
             } catch (error) {
                 console.error("Firebase Initialization failed:", error);
-                 visitorCounter.textContent = "Offline";
+                visitorCounter.textContent = "Offline";
             }
 
             loadGoogleMaps();
