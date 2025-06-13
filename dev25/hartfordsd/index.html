@@ -63,7 +63,7 @@
         <div id="map-container" class="my-8 px-4">
             <div class="flex justify-center items-center gap-4 mb-4">
                  <h2 id="map-title" class="text-2xl font-bold text-white text-center">Sale Locations Map</h2>
-                 <button id="show-all-on-map-btn" class="hidden px-3 py-1 text-xs font-semibold rounded-full transition-colors duration-200 bg-indigo-600 text-white hover:bg-indigo-500">Show All</button>
+                 <button id="toggle-map-filter-btn" class="hidden px-3 py-1 text-xs font-semibold rounded-full transition-colors duration-200 bg-indigo-600 text-white hover:bg-indigo-500">Show All on Map</button>
             </div>
             <div id="map" class="h-96 w-full rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center">
                 <p class="text-gray-500">Loading Map...</p>
@@ -175,7 +175,7 @@
             { id: 60, address: "507 S Feyder", lat: 43.6190, lng: -96.9530, days: "Thursday, Friday, Saturday", thursday: "4-7 (depending on whether)", friday: "8-7", saturday: "8-4", additionalDays: "N/A", items: "Baby furniture/items - Dressers & Bedroom sets - Saddle bags for horses - Misc household and electronic items - Misc tools" },
             { id: 61, address: "1106 N Vandemark Ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
         ];
-
+        
         // --- Achievements Data ---
         const achievements = [
             { id: 1, name: "Bargain Beginner", threshold: 5, icon: '🥉', message: "You're off to a great start. Keep hunting for those treasures!" },
@@ -192,6 +192,7 @@
         let activeFilters = new Set();
         let currentSalesData = [...rummageSalesData];
         let map, markers = new Map(), infoWindow;
+        let mapShowingAll = false;
 
         // --- DOM Elements ---
         const salesContainer = document.getElementById('sales-container');
@@ -205,7 +206,7 @@
         const sortByDistanceBtn = document.getElementById('sort-by-distance-btn');
         const resetSortBtn = document.getElementById('reset-sort-btn');
         const updatePositionBtn = document.getElementById('update-position-btn');
-        const showAllOnMapBtn = document.getElementById('show-all-on-map-btn');
+        const toggleMapFilterBtn = document.getElementById('toggle-map-filter-btn');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -412,22 +413,30 @@
             renderMapMarkers();
         }
 
-        function renderMapMarkers(showAll = false) {
+        function renderMapMarkers() {
             if (!map) return;
             for (const marker of markers.values()) { marker.setMap(null); }
             markers.clear();
 
-            const salesToDisplay = showAll ? rummageSalesData : getFilteredSales();
-            showAllOnMapBtn.classList.toggle('hidden', activeFilters.size === 0 || showAll);
+            const salesToDisplay = mapShowingAll ? rummageSalesData : getFilteredSales();
+            toggleMapFilterBtn.classList.toggle('hidden', activeFilters.size === 0);
+            toggleMapFilterBtn.textContent = mapShowingAll ? 'Show Filtered' : 'Show All on Map';
 
             salesToDisplay.forEach(sale => {
                 if (sale.lat && sale.lng) {
                     const isCompleted = completedLocations.includes(sale.id);
                     const isFavorite = favoriteLocations.includes(sale.id);
                     
-                    let pinColor = '#ef4444'; // Default: red
-                    if (isCompleted) pinColor = '#22c55e'; // Green if completed
-                    if (isFavorite) pinColor = '#3b82f6';  // Blue for favorites (overrides others)
+                    let pinColor;
+                    if(isFavorite && isCompleted) {
+                        pinColor = '#2dd4bf'; // Turquoise
+                    } else if (isFavorite && !isCompleted) {
+                        pinColor = '#3b82f6'; // Blue
+                    } else if (!isFavorite && isCompleted) {
+                        pinColor = '#22c55e'; // Green
+                    } else {
+                        pinColor = '#ef4444'; // Red
+                    }
 
                     const marker = new google.maps.Marker({
                         position: { lat: sale.lat, lng: sale.lng },
@@ -435,7 +444,7 @@
                         title: sale.address,
                         icon: {
                             path: google.maps.SymbolPath.CIRCLE,
-                            scale: isFavorite ? 9 : 7, // Make favorites slightly larger
+                            scale: isFavorite ? 9 : 7,
                             fillColor: pinColor,
                             fillOpacity: 1,
                             strokeWeight: 2,
@@ -448,7 +457,7 @@
                                             <p class="text-xs mb-2">${sale.items}</p>
                                             <div class="flex items-center gap-2">
                                                 <button class="map-mark-done bg-green-500 text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">Mark Done</button>
-                                                <button class="map-favorite-btn bg-yellow-500 text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">Favorite</button>
+                                                <button class="map-favorite-btn ${favoriteLocations.includes(sale.id) ? 'bg-red-500' : 'bg-yellow-500'} text-white text-xs font-bold py-1 px-2 rounded-full" data-id="${sale.id}">${favoriteLocations.includes(sale.id) ? 'Unfavorite' : 'Favorite'}</button>
                                                 <a href="https://www.google.com/maps/dir/?api=1&destination=${sale.lat},${sale.lng}" target="_blank" class="bg-blue-500 text-white text-xs font-bold py-1 px-2 rounded-full">Navigate</a>
                                             </div>
                                        </div>`;
@@ -461,7 +470,7 @@
         }
 
         function loadGoogleMaps() {
-            const GOOGLE_MAPS_API_KEY = "AIzaSyBh4CAdv_iVbJ70F5Kq1UudeX34xmZsnTk";
+            const GOOGLE_MAPS_API_KEY = "AIzaSyCb-wQlQ8yBEH5QyG9q4F0poFbL3G_LLOk";
             if (!window.google) {
                 const script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&map_ids=RUMMAGE_MAP_ID&callback=initMap`;
@@ -479,6 +488,7 @@
             if (e.target.matches('.filter-btn')) {
                 const button = e.target;
                 const filterType = button.dataset.filter;
+                mapShowingAll = false; // Reset map view when filters change
 
                 if (filterType === 'all') {
                     activeFilters.clear();
@@ -577,7 +587,10 @@
             }
         });
         
-        showAllOnMapBtn.addEventListener('click', () => renderMapMarkers(true));
+        toggleMapFilterBtn.addEventListener('click', () => {
+            mapShowingAll = !mapShowingAll;
+            renderMapMarkers(mapShowingAll);
+        });
 
         closeModalBtn.addEventListener('click', hideAchievementModal);
         modal.addEventListener('click', (e) => { if (e.target === modal) hideAchievementModal(); });
