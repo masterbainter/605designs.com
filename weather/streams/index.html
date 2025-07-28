@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Stream Viewer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style for the currently selected video thumbnail */
+        .selected-video {
+            border-color: #3b82f6; /* blue-500 */
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white antialiased">
+
+    <div class="container mx-auto max-w-screen-xl p-4 sm:p-6 lg:p-8">
+
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">YouTube Stream Viewer</h1>
+            <p class="text-gray-400 mt-2">Click on a thumbnail below to switch streams</p>
+        </header>
+
+        <!-- Main Video Player -->
+        <div id="main-video-container" class="mb-8 rounded-lg overflow-hidden shadow-2xl">
+            <div class="aspect-w-16 aspect-h-9 bg-black">
+                <iframe id="video-player" 
+                        class="w-full h-full"
+                        src="https://www.youtube.com/embed/0tDeAg_mGa0?autoplay=1&mute=1" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Video Selection List -->
+        <div id="video-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <!-- Video thumbnails will be inserted here by JavaScript -->
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Video information now only contains the ID
+            const videos = [
+                { id: '0tDeAg_mGa0' },
+                { id: '9GRDKXF19nw' },
+                { id: 'sq-HK5aopkc' },
+                { id: 'kT1fahe6coM' },
+                { id: 'Y46I1hN2xG0' }
+            ];
+
+            const videoPlayer = document.getElementById('video-player');
+            const videoListContainer = document.getElementById('video-list');
+
+            // Function to change the main video
+            function selectVideo(videoId) {
+                // Update the iframe source
+                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`;
+
+                // Update the 'selected' style on thumbnails
+                const thumbnails = document.querySelectorAll('.video-thumbnail');
+                thumbnails.forEach(thumb => {
+                    if (thumb.dataset.videoId === videoId) {
+                        thumb.classList.add('selected-video', 'border-blue-500');
+                        thumb.classList.remove('border-gray-700', 'hover:border-blue-400');
+                    } else {
+                        thumb.classList.remove('selected-video', 'border-blue-500');
+                        thumb.classList.add('border-gray-700', 'hover:border-blue-400');
+                    }
+                });
+            }
+
+            // Populate the video list
+            videos.forEach(video => {
+                const thumbnailUrl = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`;
+
+                const videoElement = document.createElement('div');
+                videoElement.className = 'video-thumbnail cursor-pointer bg-gray-800 rounded-lg overflow-hidden border-2 border-gray-700 hover:border-blue-400 transition-all duration-300 transform hover:scale-105';
+                videoElement.dataset.videoId = video.id;
+
+                // Removed the div that contained the title
+                videoElement.innerHTML = `
+                    <div class="relative">
+                        <img src="${thumbnailUrl}" alt="Video thumbnail for ${video.id}" class="w-full h-auto object-cover" onerror="this.onerror=null;this.src='https://placehold.co/320x180/000000/FFFFFF?text=Error';">
+                        <div class="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                            <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    </div>
+                `;
+                
+                videoElement.addEventListener('click', () => {
+                    selectVideo(video.id);
+                });
+
+                videoListContainer.appendChild(videoElement);
+            });
+
+            // Set the initial selected state for the first video
+            selectVideo(videos[0].id);
+        });
+    </script>
+</body>
+</html>
