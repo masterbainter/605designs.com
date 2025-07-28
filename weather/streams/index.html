@@ -37,16 +37,15 @@
         <!-- Main Video Player Wrapper -->
         <div class="max-w-5xl mx-auto">
             <div id="main-video-container" class="mb-8 md:mb-12 rounded-xl overflow-hidden shadow-2xl shadow-blue-500/10 border border-gray-700">
-                <div class="aspect-w-16 aspect-h-9 bg-black">
-                    <iframe id="video-player" 
-                            class="w-full h-full"
-                            src="https://www.youtube.com/embed/8LjRo5t6RSE?autoplay=1&mute=1" 
-                            title="YouTube video player" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
+                <!-- The iframe now directly controls its aspect ratio, which is a more robust method. -->
+                <iframe id="video-player" 
+                        class="w-full aspect-video"
+                        src="https://www.youtube.com/embed/8LjRo5t6RSE?autoplay=1&mute=1" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
             </div>
         </div>
 
