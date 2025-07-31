@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Weather Stream Viewer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* A subtle gradient for the background */
+        .bg-gradient-pro {
+            background-color: #111827; /* bg-gray-900 */
+            background-image: radial-gradient(at 80% 20%, hsla(217,33%,17%,1) 0px, transparent 50%),
+                              radial-gradient(at 20% 90%, hsla(283,39%,25%,1) 0px, transparent 50%);
+        }
+        /* Custom class for the selected video thumbnail for a more pronounced effect */
+        .selected-video {
+            border-color: #3b82f6; /* blue-500 */
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gradient-pro text-gray-200 antialiased">
+
+    <div class="container mx-auto max-w-screen-xl p-4 sm:p-6 lg:p-8">
+
+        <!-- Header removed as requested -->
+
+        <!-- Main Video Player Wrapper -->
+        <div class="max-w-5xl mx-auto">
+            <div id="main-video-container" class="mb-8 md:mb-12 rounded-xl overflow-hidden shadow-2xl shadow-blue-500/10 border border-gray-700">
+                <!-- The iframe now directly controls its aspect ratio, which is a more robust method. -->
+                <iframe id="video-player" 
+                        class="w-full aspect-video"
+                        src="https://www.youtube.com/embed/8LjRo5t6RSE?autoplay=1&mute=1" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Video Selection List -->
+        <div id="video-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+            <!-- Video thumbnails will be inserted here by JavaScript -->
+        </div>
+
+    </div>
+
+    <!-- Footer added as requested -->
+    <footer class="text-center py-8">
+        <p class="text-sm text-gray-500">
+            Powered by <a href="https://605designs.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">605designs.com</a>
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Updated list with the correct video information
+            const videos = [
+                { id: '8LjRo5t6RSE', channel: 'Ryan Hall, Y\'all', title: '🔴LIVE - TORNADO ON THE GROUND - With Storm Chasers - Live Weather Channel...' },
+                { id: '0tDeAg_mGa0', channel: 'YallBot', title: '🔴 Live 24/7 National Weather Radar & Alerts, Weather Intensity Score & YallBot!' },
+                { id: '9GRDKXF19nw', channel: 'Storm Chaser Jordan Hall', title: 'Tornadoes or Damaging Wind storm in SD/MN? --LIVE Stormchasing as it happens' },
+                { id: 'sq-HK5aopkc', channel: 'Storm Chaser Corey Gerken', title: '🔴South Dakota Tornado/Derecho Chase - Live Storm Chaser' },
+                { id: 'kT1fahe6coM', channel: 'StormRunner Media', title: 'LIVE DESTRUCTIVE DERECHO/TORNADO THREAT- LIVE STORM CHASER' },
+                { id: 'Y46I1hN2xG0', channel: 'Storm Chaser Brandon Copic', title: '🔴SOUTH DAKOTA SEVERE WEATHER - LIVE STORM CHASER' },
+                { id: 'ytgYuGwF8Vs', channel: 'Connor Croff', title: 'LIVE MULTI-STATE DERECHO CHASE - 100MPH WINDS - LIVE STORM CHASER' },
+                { id: 'WcOqSitOkLs', channel: 'Tea Storm Chasers', title: 'LIVE Tornado & Severe Weather Outbreak!!' },
+                { id: 'N6l5p0wq8uI', channel: 'Tornado Crew Storm Chasers', title: 'Southeast South Dakota observed tornado' },
+                { id: 'OYHPF6gf58c', channel: 'Ryan Scholl', title: 'LIVE STORM CHASER: DERECHO AND TORNADOES LIKELY IN SOUTH DAKOTA (RARE MODERATE RISK)' }
+            ];
+
+            const videoPlayer = document.getElementById('video-player');
+            const videoListContainer = document.getElementById('video-list');
+
+            // Function to change the main video
+            function selectVideo(videoId) {
+                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`;
+                const thumbnails = document.querySelectorAll('.video-thumbnail');
+                thumbnails.forEach(thumb => {
+                    if (thumb.dataset.videoId === videoId) {
+                        thumb.classList.add('selected-video');
+                        thumb.classList.remove('border-gray-700', 'hover:border-blue-400');
+                    } else {
+                        thumb.classList.remove('selected-video');
+                        thumb.classList.add('border-gray-700', 'hover:border-blue-400');
+                    }
+                });
+            }
+
+            // Populate the video list
+            videos.forEach(video => {
+                const thumbnailUrl = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`;
+                const videoElement = document.createElement('div');
+                
+                videoElement.className = 'video-thumbnail flex flex-col cursor-pointer bg-gray-800/50 rounded-lg overflow-hidden border-2 border-gray-700 transition-all duration-300 ease-in-out hover:scale-105 hover:border-blue-400';
+                videoElement.dataset.videoId = video.id;
+
+                // Added back the title and channel name elements
+                videoElement.innerHTML = `
+                    <div class="relative group">
+                        <img src="${thumbnailUrl}" alt="Video thumbnail for ${video.id}" class="w-full h-auto object-cover" onerror="this.onerror=null;this.src='https.placehold.co/320x180/0d0f14/FFFFFF?text=Error';">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <svg class="w-12 h-12 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-gray-800/60 flex-grow flex flex-col justify-between">
+                        <h3 class="font-semibold text-sm text-gray-100 leading-tight line-clamp-2" title="${video.title}">${video.title}</h3>
+                        <p class="text-xs text-gray-400 mt-2 truncate" title="${video.channel}">${video.channel}</p>
+                    </div>
+                `;
+                
+                videoElement.addEventListener('click', () => selectVideo(video.id));
+                videoListContainer.appendChild(videoElement);
+            });
+
+            // Set the initial selected state for the first video in the list
+            selectVideo(videos[0].id);
+        });
+    </script>
+</body>
+</html>
