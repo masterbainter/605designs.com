@@ -126,6 +126,12 @@
             <button id="restart-btn" class="w-full bg-transparent hover:bg-amber-400 text-amber-400 hover:text-black font-bold text-xl py-4 px-6 rounded-xl border-2 border-amber-400 btn-glow">
                 New Workout
             </button>
+            <button id="download-csv-btn" class="w-full mt-4 bg-transparent hover:bg-green-600 text-green-500 hover:text-white font-bold text-xl py-4 px-6 rounded-xl border-2 border-green-500 btn-glow hidden">
+                Download Summary (CSV)
+            </button>
+            <button id="retry-btn" class="w-full mt-4 bg-transparent hover:bg-cyan-500 text-cyan-400 hover:text-black font-bold text-xl py-4 px-6 rounded-xl border-2 border-cyan-400 btn-glow hidden">
+                Retry Workout
+            </button>
         </div>
 
     </div>
@@ -142,6 +148,8 @@
         const doneBtn = document.getElementById('done-btn');
         const restartBtn = document.getElementById('restart-btn');
         const endBtn = document.getElementById('end-btn');
+        const downloadCsvBtn = document.getElementById('download-csv-btn');
+        const retryBtn = document.getElementById('retry-btn');
         
         const repsError = document.getElementById('reps-error');
         const exerciseError = document.getElementById('exercise-error');
@@ -163,20 +171,14 @@
         let selectedExercises = [];
         let exerciseStates = {}; // e.g., { Pushups: 10, Squats: 9 } tracks reps to be done
         let totalRepsCompleted = 0;
-        let totalRepsMissed = 0;
+        let missedRepsByExercise = {};
         let recommendedReps = 0;
         let totalRecommendedReps = 0;
         let previousAttemptCompleted = 0;
-        let previousAttemptMissed = 0;
+        let previousAttemptMissedByExercise = {};
         let roundStartTime;
         let roundTimes = [];
 
-        // Create Retry Button
-        const retryBtn = document.createElement('button');
-        retryBtn.id = 'retry-btn';
-        retryBtn.className = 'w-full mt-4 bg-transparent hover:bg-cyan-500 text-cyan-400 hover:text-black font-bold text-xl py-4 px-6 rounded-xl border-2 border-cyan-400 btn-glow hidden';
-        retryBtn.textContent = 'Retry Workout';
-        completeScreen.appendChild(retryBtn);
         
         // Event Listeners
         startBtn.addEventListener('click', startWorkout);
@@ -184,11 +186,12 @@
         endBtn.addEventListener('click', endWorkout);
         restartBtn.addEventListener('click', () => {
             previousAttemptCompleted = 0;
-            previousAttemptMissed = 0;
+            previousAttemptMissedByExercise = {};
             roundTimes = [];
             resetApp();
         });
         retryBtn.addEventListener('click', retryWorkout);
+        downloadCsvBtn.addEventListener('click', downloadCSV);
 
         repsInput.addEventListener('change', () => {
              if(parseInt(repsInput.value) < 1) repsInput.value = 1;
@@ -208,7 +211,21 @@
             const remainingSeconds = Math.floor(seconds % 60);
             return `${minutes}m ${remainingSeconds}s`;
         }
+        
+        function getFinalTotals() {
+            const finalCompleted = totalRepsCompleted + previousAttemptCompleted;
 
+            const finalMissedByExercise = { ...previousAttemptMissedByExercise };
+            Object.keys(missedRepsByExercise).forEach(ex => {
+                finalMissedByExercise[ex] = (finalMissedByExercise[ex] || 0) + missedRepsByExercise[ex];
+            });
+            
+            const totalFinalMissed = Object.values(finalMissedByExercise).reduce((sum, count) => sum + count, 0);
+
+            const beastModeReps = finalCompleted - totalRecommendedReps;
+
+            return { finalCompleted, finalMissedByExercise, totalFinalMissed, beastModeReps };
+        }
 
         // --- Core Functions ---
 
@@ -274,7 +291,7 @@
             startingReps = parseInt(repsInput.value);
             currentReps = startingReps;
             totalRepsCompleted = 0;
-            totalRepsMissed = 0;
+            missedRepsByExercise = {};
             roundTimes = [];
             
             totalRecommendedReps = sumOfN(recommendedReps) * selectedExercises.length;
@@ -282,6 +299,7 @@
             exerciseStates = {};
             selectedExercises.forEach(name => {
                 exerciseStates[name] = startingReps;
+                missedRepsByExercise[name] = 0;
             });
             
             updateRepDisplay();
@@ -341,6 +359,39 @@
                 doneButton.onclick = () => markExerciseComplete(item);
             });
         }
+
+        function updateSingleExerciseTracker(item) {
+            const exerciseName = item.dataset.name;
+            const exerciseReps = exerciseStates[exerciseName];
+            const isOnTarget = exerciseReps === currentReps;
+            const repsBehind = exerciseReps - currentReps;
+
+            let statusHTML;
+            if (isOnTarget) {
+                statusHTML = `<span class="text-green-400 font-semibold">On Target</span>`;
+            } else {
+                statusHTML = `<span class="text-yellow-400 font-semibold">You're on ${exerciseReps}, catch up!</span>`;
+            }
+
+            item.querySelector('.exercise-status').innerHTML = statusHTML;
+
+            const button = item.querySelector('.complete-exercise-btn');
+            // Remove all old color classes to prevent conflicts
+            button.classList.remove(
+                'bg-amber-400', 'hover:bg-amber-300', 'text-black',
+                'bg-amber-600', 'hover:bg-amber-500',
+                'bg-red-600', 'hover:bg-red-500', 'text-white'
+            );
+            
+            // Add the new correct color classes
+            if (isOnTarget) {
+                button.classList.add('bg-amber-400', 'hover:bg-amber-300', 'text-black');
+            } else if (repsBehind > 0 && repsBehind <= 3) {
+                button.classList.add('bg-amber-600', 'hover:bg-amber-500', 'text-black');
+            } else if (repsBehind > 3) {
+                button.classList.add('bg-red-600', 'hover:bg-red-500', 'text-white');
+            }
+        }
         
         function markExerciseComplete(item) {
             const name = item.dataset.name;
@@ -349,7 +400,7 @@
             if (exerciseReps > currentReps) {
                 exerciseStates[name]--; 
                 totalRepsCompleted++;   
-                buildExerciseTrackers(); 
+                updateSingleExerciseTracker(item); 
             } else if (exerciseReps === currentReps) {
                 item.dataset.completed = 'true';
                 const button = item.querySelector('.complete-exercise-btn');
@@ -385,7 +436,7 @@
                     totalRepsCompleted += repsForThisExercise;
                     exerciseStates[name] = currentReps - 1;
                 } else {
-                    totalRepsMissed += repsForThisExercise;
+                    missedRepsByExercise[name] += repsForThisExercise;
                 }
             });
             
@@ -417,7 +468,7 @@
                 const name = item.dataset.name;
                 const isCompletedThisRound = item.dataset.completed === 'true';
                 if (!isCompletedThisRound) {
-                    totalRepsMissed += exerciseStates[name];
+                    missedRepsByExercise[name] += exerciseStates[name];
                 } else {
                     totalRepsCompleted += exerciseStates[name];
                 }
@@ -425,7 +476,9 @@
 
             if (currentReps > 1) {
                 const repsInFutureRounds = sumOfN(currentReps - 1);
-                totalRepsMissed += repsInFutureRounds * selectedExercises.length;
+                selectedExercises.forEach(name => {
+                    missedRepsByExercise[name] += repsInFutureRounds;
+                });
             }
 
             showIncompleteScreen();
@@ -448,17 +501,58 @@
             });
         }
 
+        function downloadCSV() {
+            if (roundTimes.length === 0) return;
+
+            let csvContent = "Round,Time Taken (seconds),Status\n";
+
+            roundTimes.forEach(round => {
+                const row = `${round.roundNumber},${round.timeTaken.toFixed(2)},"${round.status}"`;
+                csvContent += row + "\n";
+            });
+
+            csvContent += "\n"; // Spacer
+            csvContent += "Metric,Value\n";
+            
+            const { finalCompleted, finalMissedByExercise, beastModeReps } = getFinalTotals();
+            
+            csvContent += `Total Reps Completed,${finalCompleted}\n`;
+            
+            for (const [exercise, count] of Object.entries(finalMissedByExercise)) {
+                if (count > 0) {
+                    csvContent += `Missed ${exercise} Reps,${count}\n`;
+                }
+            }
+            
+            if (beastModeReps > 0) {
+                csvContent += `Beast Mode Reps,${beastModeReps}\n`;
+            }
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                const today = new Date();
+                const dateString = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+                link.setAttribute("href", url);
+                link.setAttribute("download", `rep_down_summary_${dateString}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
         function showIncompleteScreen() {
             document.title = 'Rep Down';
-            const finalCompleted = totalRepsCompleted + previousAttemptCompleted;
-            const finalMissed = totalRepsMissed + previousAttemptMissed;
+            const { finalCompleted, totalFinalMissed } = getFinalTotals();
             
             document.getElementById('complete-title').textContent = "Workout Incomplete";
             document.getElementById('total-reps-info').textContent = `Total Reps Completed: ${finalCompleted}`;
             
             const totalMissedRepsInfo = document.getElementById('total-missed-reps-info');
-             if (finalMissed > 0) {
-                totalMissedRepsInfo.textContent = `Total Reps Missed: ${finalMissed}`;
+             if (totalFinalMissed > 0) {
+                totalMissedRepsInfo.textContent = `Total Reps Missed: ${totalFinalMissed}`;
                 totalMissedRepsInfo.classList.remove('hidden');
             } else {
                 totalMissedRepsInfo.classList.add('hidden');
@@ -467,6 +561,7 @@
             document.getElementById('beast-mode-info').classList.add('hidden');
             restartBtn.classList.add('hidden');
             retryBtn.classList.remove('hidden');
+            downloadCsvBtn.classList.remove('hidden');
             document.getElementById('complete-icon').classList.add('text-red-500');
             document.getElementById('complete-icon').classList.remove('text-amber-400');
             
@@ -478,7 +573,10 @@
         
         function retryWorkout() {
             previousAttemptCompleted += totalRepsCompleted;
-            previousAttemptMissed += totalRepsMissed;
+            Object.keys(missedRepsByExercise).forEach(ex => {
+                previousAttemptMissedByExercise[ex] = (previousAttemptMissedByExercise[ex] || 0) + missedRepsByExercise[ex];
+            });
+            roundTimes = [];
             resetApp();
         }
 
@@ -486,22 +584,20 @@
             clearInterval(totalTimerInterval);
             document.title = 'Rep Down';
             
-            const finalCompleted = totalRepsCompleted + previousAttemptCompleted;
-            const finalMissed = totalRepsMissed + previousAttemptMissed;
+            const { finalCompleted, totalFinalMissed, beastModeReps } = getFinalTotals();
 
             document.getElementById('complete-title').textContent = "Well Done!";
             document.getElementById('total-reps-info').textContent = `Total Reps Completed: ${finalCompleted}`;
 
             const totalMissedRepsInfo = document.getElementById('total-missed-reps-info');
-            if (finalMissed > 0) {
-                totalMissedRepsInfo.textContent = `Total Reps Missed: ${finalMissed}`;
+            if (totalFinalMissed > 0) {
+                totalMissedRepsInfo.textContent = `Total Reps Missed: ${totalFinalMissed}`;
                 totalMissedRepsInfo.classList.remove('hidden');
             } else {
                 totalMissedRepsInfo.classList.add('hidden');
             }
 
             const beastModeInfo = document.getElementById('beast-mode-info');
-            const beastModeReps = finalCompleted - totalRecommendedReps;
             if (beastModeReps > 0) {
                 beastModeInfo.textContent = `Beast Mode: ${beastModeReps} extra reps!`;
                 beastModeInfo.classList.remove('hidden');
@@ -511,6 +607,7 @@
 
             restartBtn.classList.remove('hidden');
             retryBtn.classList.add('hidden');
+            downloadCsvBtn.classList.remove('hidden');
             document.getElementById('complete-icon').classList.remove('text-red-500');
             document.getElementById('complete-icon').classList.add('text-amber-400');
 
@@ -531,7 +628,8 @@
             } else {
                 retryInfoDisplay.classList.add('hidden');
             }
-
+            
+            downloadCsvBtn.classList.add('hidden');
             updateChallengeInfo();
             completeScreen.classList.add('hidden');
             workoutScreen.classList.add('hidden');
@@ -565,23 +663,34 @@
             roundStartTime = Date.now();
 
             let timeLeft = 600; // 10 minutes
+            let isOvertime = false;
             totalTimerDisplay.textContent = formatTime(timeLeft);
             document.title = `${formatTime(timeLeft)} - Rep Down`;
             const container = document.getElementById('total-timer-container');
-            container.querySelector('p:first-child').classList.remove('text-red-500');
+            const timerLabel = container.querySelector('p:first-child');
+            
+            timerLabel.textContent = "Time Remaining for this Round";
+            timerLabel.classList.remove('text-red-500');
             totalTimerDisplay.classList.remove('text-red-500');
+
             totalTimerInterval = setInterval(() => {
                 timeLeft--;
-                const formattedTime = formatTime(timeLeft);
-                totalTimerDisplay.textContent = formattedTime;
-                document.title = `${formattedTime} - Rep Down`;
-
-                if (timeLeft <= 0) {
-                    clearInterval(totalTimerInterval);
-                    totalTimerDisplay.textContent = "Time's Up!";
-                    document.title = "Time's Up! - Rep Down";
-                    container.querySelector('p:first-child').classList.add('text-red-500');
-                    totalTimerDisplay.classList.add('text-red-500');
+                
+                if (timeLeft >= 0) {
+                    const formattedTime = formatTime(timeLeft);
+                    totalTimerDisplay.textContent = formattedTime;
+                    document.title = `${formattedTime} - Rep Down`;
+                } else { // Overtime
+                    if (!isOvertime) {
+                        isOvertime = true;
+                        timerLabel.textContent = "Finish Your Reps!";
+                        timerLabel.classList.add('text-red-500');
+                        totalTimerDisplay.classList.add('text-red-500');
+                    }
+                    const overtime = Math.abs(timeLeft);
+                    const formattedOvertime = `+${formatTime(overtime)}`;
+                    totalTimerDisplay.textContent = formattedOvertime;
+                    document.title = `${formattedOvertime} - Rep Down`;
                 }
             }, 1000);
         }
@@ -589,4 +698,5 @@
     </script>
 </body>
 </html>
+
 
