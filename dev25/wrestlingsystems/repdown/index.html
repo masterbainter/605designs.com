@@ -421,10 +421,19 @@
             const exerciseItems = dynamicExerciseList.querySelectorAll('.exercise-item');
             const allDone = Array.from(exerciseItems).every(item => item.dataset.completed === 'true');
             
+            const missedRepsInRound = {};
+            exerciseItems.forEach(item => {
+                const name = item.dataset.name;
+                if (item.dataset.completed !== 'true') {
+                    missedRepsInRound[name] = exerciseStates[name];
+                }
+            });
+            
             roundTimes.push({
                 roundNumber: currentReps,
                 timeTaken: timeTaken,
-                status: allDone ? 'Completed' : 'Started Early'
+                status: allDone ? 'Completed' : 'Started Early',
+                missedReps: missedRepsInRound
             });
 
             exerciseItems.forEach(item => {
@@ -457,13 +466,23 @@
             clearInterval(totalTimerInterval);
             const roundEndTime = Date.now();
             const timeTaken = (roundEndTime - roundStartTime) / 1000;
-             roundTimes.push({
-                roundNumber: currentReps,
-                timeTaken: timeTaken,
-                status: 'Ended Early'
+            const exerciseItems = dynamicExerciseList.querySelectorAll('.exercise-item');
+            
+            const missedRepsInRound = {};
+            exerciseItems.forEach(item => {
+                const name = item.dataset.name;
+                if(item.dataset.completed !== 'true') {
+                    missedRepsInRound[name] = exerciseStates[name];
+                }
             });
 
-            const exerciseItems = dynamicExerciseList.querySelectorAll('.exercise-item');
+            roundTimes.push({
+                roundNumber: currentReps,
+                timeTaken: timeTaken,
+                status: 'Ended Early',
+                missedReps: missedRepsInRound
+            });
+
             exerciseItems.forEach(item => {
                 const name = item.dataset.name;
                 const isCompletedThisRound = item.dataset.completed === 'true';
@@ -491,11 +510,22 @@
             roundTimes.forEach(round => {
                 const statusColor = round.status === 'Completed' ? 'text-green-400' : (round.status === 'Started Early' ? 'text-yellow-400' : 'text-red-500');
                 const summaryItem = document.createElement('div');
-                summaryItem.className = 'flex justify-between items-center text-gray-300 py-1 border-b border-gray-700/50';
+                summaryItem.className = 'text-gray-300 py-2 border-b border-gray-700/50';
+
+                let missedRepsHTML = '';
+                const missedEntries = Object.entries(round.missedReps || {});
+                if (missedEntries.length > 0) {
+                    const missedContent = missedEntries.map(([exercise, reps]) => `<span>- Missed ${reps} ${exercise}</span>`).join('<br>');
+                    missedRepsHTML = `<div class="text-sm text-red-400 pl-4 pt-1">${missedContent}</div>`;
+                }
+
                 summaryItem.innerHTML = `
-                    <span>Round <span class="font-bold text-amber-400">${round.roundNumber}</span></span>
-                    <span class="font-semibold">${formatRoundTime(round.timeTaken)}</span>
-                    <span class="font-bold ${statusColor}">${round.status}</span>
+                    <div class="flex justify-between items-center">
+                        <span>Round <span class="font-bold text-amber-400">${round.roundNumber}</span></span>
+                        <span class="font-semibold">${formatRoundTime(round.timeTaken)}</span>
+                        <span class="font-bold ${statusColor}">${round.status}</span>
+                    </div>
+                    ${missedRepsHTML}
                 `;
                 roundSummaryList.appendChild(summaryItem);
             });
@@ -559,7 +589,7 @@
             }
 
             document.getElementById('beast-mode-info').classList.add('hidden');
-            restartBtn.classList.add('hidden');
+            restartBtn.classList.remove('hidden'); // Always show New Workout option
             retryBtn.classList.remove('hidden');
             downloadCsvBtn.classList.remove('hidden');
             document.getElementById('complete-icon').classList.add('text-red-500');
@@ -606,7 +636,11 @@
             }
 
             restartBtn.classList.remove('hidden');
-            retryBtn.classList.add('hidden');
+            if (totalFinalMissed > 0) {
+                retryBtn.classList.remove('hidden');
+            } else {
+                retryBtn.classList.add('hidden');
+            }
             downloadCsvBtn.classList.remove('hidden');
             document.getElementById('complete-icon').classList.remove('text-red-500');
             document.getElementById('complete-icon').classList.add('text-amber-400');
@@ -698,5 +732,4 @@
     </script>
 </body>
 </html>
-
 
