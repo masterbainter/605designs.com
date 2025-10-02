@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Crane | Consulting & Construction Services</title>
+    <meta name="description" content="Blue Crane offers expert construction-based project consulting and hands-on building services for efficient, sustainable outcomes.">
+    
+    <!-- Favicon Links -->
+    <link rel="apple-touch-icon" sizes="180x180" href="https://605designs.com/demos/bluecrane-pro/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://605designs.com/demos/bluecrane-pro/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://605designs.com/demos/bluecrane-pro/favicon_io/favicon-16x16.png">
+    <link rel="icon" href="https://605designs.com/demos/bluecrane-pro/favicon_io/favicon.ico">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles & Configuration -->
+    <style>
+        /* Custom base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1b2a; /* Dark Navy Blue Base */
+            color: #E0E0E0;
+        }
+
+        .main-section {
+            background-image: radial-gradient(circle at 10% 20%, rgba(0, 145, 198, 0.15), transparent 40%), radial-gradient(circle at 90% 80%, rgba(0, 145, 198, 0.15), transparent 40%);
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Subtle scroll-in animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .service-view {
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        /* Custom focus styles for accessibility */
+        :focus-visible {
+            outline: 2px solid #00a9e3; 
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* Accordion styles */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .accordion-card {
+            border: 1px solid transparent;
+            transition: all 0.4s ease-in-out;
+        }
+        
+        .accordion-card.active {
+            border-color: #0091C6; /* blue from logo */
+            background-color: #415a77; /* Lighter blue for active state */
+        }
+
+        .accordion-card.active .accordion-content,
+        .accordion-card:not(.active):hover .accordion-content {
+            max-height: 500px; /* Adjust as needed */
+            padding-top: 1.5rem;
+            padding-bottom: 0.5rem;
+        }
+        
+        .accordion-card.active .accordion-arrow {
+             transform: rotate(180deg);
+        }
+
+        @media (hover: none) {
+            .accordion-card:hover .accordion-content {
+                max-height: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+            .accordion-card:hover {
+                box-shadow: none;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header id="header" class="bg-[#1b263b]/80 backdrop-blur-lg sticky top-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#offerings" class="flex items-center">
+                <img src="https://605designs.com/demos/bluecrane-pro/BCLOGOWhiteLetters.png" alt="Blue Crane Logo" class="h-12">
+            </a>
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#offerings" class="text-gray-300 hover:text-[#00a9e3] transition-colors duration-300">Offerings</a>
+                <a href="#about" class="text-gray-300 hover:text-[#00a9e3] transition-colors duration-300">About</a>
+                <a href="#contact" class="bg-[#0091C6] hover:bg-[#007aa8] text-white font-semibold px-5 py-2 rounded-lg transition-transform duration-300 hover:scale-105">Contact Me</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-300 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-4 6h4"></path>
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2">
+            <a href="#offerings" class="block text-gray-300 hover:text-[#00a9e3] transition-colors duration-300 py-2">Offerings</a>
+            <a href="#about" class="block text-gray-300 hover:text-[#00a9e3] transition-colors duration-300 py-2">About</a>
+            <a href="#contact" class="block bg-[#0091C6] hover:bg-[#007aa8] text-white font-semibold px-5 py-2 rounded-lg transition-transform duration-300 hover:scale-105 mt-2 text-center">Contact Me</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Offerings Section (New Hero) -->
+        <section id="offerings" class="main-section py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-4 reveal">Blue Crane</h1>
+                    <p class="text-lg md:text-2xl text-gray-300 max-w-3xl mx-auto reveal" style="transition-delay: 200ms;">High-Level Project Consulting and Hands-On Building Services for Efficient, Sustainable Outcomes.</p>
+                </div>
+
+                <!-- Toggle Buttons -->
+                <div class="flex justify-center mb-12 reveal" style="transition-delay: 400ms;">
+                    <div class="bg-[#1b263b] p-1.5 rounded-lg flex space-x-2">
+                        <button id="consulting-toggle" class="px-6 py-2 text-sm font-semibold text-white bg-[#0091C6] rounded-md transition-colors">Consulting</button>
+                        <button id="services-toggle" class="px-6 py-2 text-sm font-semibold text-gray-300 hover:bg-gray-700/50 rounded-md transition-colors">Services</button>
+                    </div>
+                </div>
+
+                <!-- Consulting View -->
+                <div id="consulting-view" class="service-view">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div class="accordion-card bg-[#1b263b] p-6 rounded-xl shadow-lg hover:shadow-[#0091C6]/10 transition-all duration-300 cursor-pointer reveal">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-[#00a9e3]">Project & Management Services</h3>
+                                <svg class="accordion-arrow w-6 h-6 text-gray-400 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                            <div class="accordion-content">
+                                <ul class="space-y-3 text-gray-400 list-disc list-inside">
+                                    <li>Owner's Representation</li>
+                                    <li>Project Management</li>
+                                    <li>Contract & Proposal Reviews</li>
+                                    <li>Takeoffs/Estimating</li>
+                                    <li>Progress Inspections</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-card bg-[#1b263b] p-6 rounded-xl shadow-lg hover:shadow-[#0091C6]/10 transition-all duration-300 cursor-pointer reveal">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-[#00a9e3]">Design, Engineering & QA</h3>
+                                <svg class="accordion-arrow w-6 h-6 text-gray-400 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                            <div class="accordion-content">
+                                <ul class="space-y-3 text-gray-400 list-disc list-inside">
+                                    <li>Design Reviews</li>
+                                    <li>Sustainability Assessments</li>
+                                    <li>Quality Assurance Inspections</li>
+                                    <li>Development Planning</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-card bg-[#1b263b] p-6 rounded-xl shadow-lg hover:shadow-[#0091C6]/10 transition-all duration-300 cursor-pointer reveal">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-[#00a9e3]">Claims, Disputes & Legal</h3>
+                                <svg class="accordion-arrow w-6 h-6 text-gray-400 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                            <div class="accordion-content">
+                                <ul class="space-y-3 text-gray-400 list-disc list-inside">
+                                    <li>Dispute Resolution</li>
+                                    <li>Claims Management</li>
+                                    <li>Expert Witness</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-card bg-[#1b263b] p-6 rounded-xl shadow-lg hover:shadow-[#0091C6]/10 transition-all duration-300 cursor-pointer reveal">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-[#00a9e3]">Forensic & Investigation</h3>
+                                <svg class="accordion-arrow w-6 h-6 text-gray-400 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                            <div class="accordion-content">
+                                <ul class="space-y-3 text-gray-400 list-disc list-inside">
+                                    <li>Forensic Analysis</li>
+                                    <li>Defect & Accident Investigations</li>
+                                    <li>Property Condition Assessments</li>
+                                    <li>Building Envelope Surveys</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services View -->
+                <div id="services-view" class="service-view hidden">
+                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div class="accordion-card bg-[#1b263b] p-6 rounded-xl shadow-lg hover:shadow-[#0091C6]/10 transition-all duration-300 cursor-pointer reveal">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-[#00a9e3]">Building Services</h3>
+                                <svg class="accordion-arrow w-6 h-6 text-gray-400 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                            <div class="accordion-content">
+                                <ul class="space-y-3 text-gray-400 list-disc list-inside">
+                                    <li>Handyman</li>
+                                    <li>Scheduled Maintenance</li>
+                                    <li>Remodels</li>
+                                    <li>Small Scope New Projects</li>
+                                    <li>Large Project Scope Gap Coverage</li>
+                                </ul>
+                            </div>
+                        </div>
+                         <div class="accordion-card bg-[#1b263b] p-6 rounded-xl shadow-lg hover:shadow-[#0091C6]/10 transition-all duration-300 cursor-pointer reveal">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-[#00a9e3]">Courier Services</h3>
+                                <svg class="accordion-arrow w-6 h-6 text-gray-400 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                            <div class="accordion-content">
+                                <ul class="space-y-3 text-gray-400 list-disc list-inside">
+                                    <li>Medical & Pharmaceutical</li>
+                                    <li>Legal & Confidential Documents</li>
+                                    <li>Bid Delivery</li>
+                                </ul>
+                            </div>
+                        </div>
+                         <div class="accordion-card bg-[#1b263b] p-6 rounded-xl shadow-lg hover:shadow-[#0091C6]/10 transition-all duration-300 cursor-pointer reveal">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-[#00a9e3]">Personal Services</h3>
+                                <svg class="accordion-arrow w-6 h-6 text-gray-400 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                             <div class="accordion-content">
+                                <ul class="space-y-3 text-gray-400 list-disc list-inside">
+                                    <li>Shopping & Errands</li>
+                                    <li>Transportation</li>
+                                    <li>In-Home Pet Care</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 md:py-32 bg-[#1b263b]">
+            <div class="container mx-auto px-6 max-w-4xl text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 reveal">My Approach to Construction Solutions</h2>
+                <div class="w-24 h-1 bg-[#0091C6] mx-auto mb-8 reveal"></div>
+                <p class="text-lg text-gray-300 leading-relaxed reveal">
+                    I specialize in two distinct streams of expertise. I provide tailored, high-level **consulting** for large-scale construction projects and offer skilled, hands-on **services** for building, repair, and finishing tasks. I partner directly with my clients to transform both complex challenges and practical needs into high-value assets.
+                </p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 md:py-32 bg-[#0d1b2a]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 reveal">Get in Touch</h2>
+                    <p class="text-lg text-gray-300 max-w-2xl mx-auto reveal">Have a project in mind? I'd love to hear from you. Let's build something great together.</p>
+                </div>
+                <div class="max-w-lg mx-auto flex justify-center">
+                    <!-- Contact Details -->
+                    <div class="space-y-8 text-gray-300 reveal" style="transition-delay: 200ms;">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-[#0091C6]/10 text-[#0091C6] rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-white">Email</h3>
+                                <a href="mailto:blue-crane@hotmail.com" class="hover:text-[#00a9e3] transition-colors">blue-crane@hotmail.com</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-[#0091C6]/10 text-[#0091C6] rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-white">Phone</h3>
+                                <a href="tel:6059561050" class="hover:text-[#00a9e3] transition-colors">605 956 1050</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#1b263b] py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#offerings" class="hover:text-[#00a9e3] transition-colors">Offerings</a>
+                <a href="#about" class="hover:text-[#00a9e3] transition-colors">About</a>
+                <a href="#contact" class="hover:text-[#00a9e3] transition-colors">Contact</a>
+                <a href="#" class="hover:text-[#00a9e3] transition-colors">Privacy Policy</a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Blue Crane. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when a link is clicked
+            document.querySelectorAll('#mobile-menu a, nav a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if(link.getAttribute('href').startsWith('#')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Header shadow on scroll
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    header.classList.add('shadow-lg', 'shadow-black/20');
+                } else {
+                    header.classList.remove('shadow-lg', 'shadow-black/20');
+                }
+            });
+
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Scroll reveal animation
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+
+            // Accordion Logic
+            const accordionCards = document.querySelectorAll('.accordion-card');
+            accordionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const wasActive = card.classList.contains('active');
+                    // Find all accordions within the same view and close them
+                    card.closest('.service-view').querySelectorAll('.accordion-card').forEach(c => c.classList.remove('active'));
+                    if (!wasActive) {
+                        card.classList.add('active');
+                    }
+                });
+            });
+
+            // Services Toggle Logic
+            const consultingToggle = document.getElementById('consulting-toggle');
+            const servicesToggle = document.getElementById('services-toggle');
+            const consultingView = document.getElementById('consulting-view');
+            const servicesView = document.getElementById('services-view');
+
+            function showConsulting() {
+                consultingView.classList.remove('hidden');
+                servicesView.classList.add('hidden');
+                
+                consultingToggle.classList.add('bg-[#0091C6]', 'text-white');
+                consultingToggle.classList.remove('hover:bg-gray-700/50', 'text-gray-300');
+                servicesToggle.classList.remove('bg-[#0091C6]', 'text-white');
+                servicesToggle.classList.add('hover:bg-gray-700/50', 'text-gray-300');
+            }
+
+            function showServices() {
+                servicesView.classList.remove('hidden');
+                consultingView.classList.add('hidden');
+
+                servicesToggle.classList.add('bg-[#0091C6]', 'text-white');
+                servicesToggle.classList.remove('hover:bg-gray-700/50', 'text-gray-300');
+                consultingToggle.classList.remove('bg-[#0091C6]', 'text-white');
+                consultingToggle.classList.add('hover:bg-gray-700/50', 'text-gray-300');
+            }
+
+            consultingToggle.addEventListener('click', () => {
+                showConsulting();
+                document.querySelectorAll('#services-view .accordion-card.active').forEach(c => c.classList.remove('active'));
+            });
+
+            servicesToggle.addEventListener('click', () => {
+                showServices();
+                document.querySelectorAll('#consulting-view .accordion-card.active').forEach(c => c.classList.remove('active'));
+            });
+
+        });
+    </script>
+
+</body>
+</html>
+
