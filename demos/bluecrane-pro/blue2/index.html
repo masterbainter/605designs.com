@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Crane | Consulting & Construction Services</title>
+    <meta name="description" content="Blue Crane offers expert construction-based project consulting and hands-on building services for efficient, sustainable outcomes.">
+    
+    <!-- Favicon Links -->
+    <link rel="apple-touch-icon" sizes="180x180" href="https://605designs.com/demos/bluecrane-pro/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://605designs.com/demos/bluecrane-pro/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://605designs.com/demos/bluecrane-pro/favicon_io/favicon-16x16.png">
+    <link rel="icon" href="https://605designs.com/demos/bluecrane-pro/favicon_io/favicon.ico">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles & Configuration -->
+    <style>
+        /* Custom base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1b2a; /* Dark Navy Blue Base */
+            color: #E0E0E0;
+        }
+
+        .main-section {
+            background-image: radial-gradient(circle at 10% 20%, rgba(0, 145, 198, 0.15), transparent 40%), radial-gradient(circle at 90% 80%, rgba(0, 145, 198, 0.15), transparent 40%);
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Subtle scroll-in animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom focus styles for accessibility */
+        :focus-visible {
+            outline: 2px solid #00a9e3; 
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header id="header" class="bg-[#1b263b]/80 backdrop-blur-lg sticky top-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#offerings" class="flex items-center">
+                <img src="https://605designs.com/demos/bluecrane-pro/BCLOGOWhiteLetters.png" alt="Blue Crane Logo" class="h-12">
+            </a>
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#offerings" class="text-gray-300 hover:text-[#00a9e3] transition-colors duration-300">Offerings</a>
+                <a href="#about" class="text-gray-300 hover:text-[#00a9e3] transition-colors duration-300">About</a>
+                <a href="#contact" class="bg-[#0091C6] hover:bg-[#007aa8] text-white font-semibold px-5 py-2 rounded-lg transition-transform duration-300 hover:scale-105">Contact Me</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-300 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-4 6h4"></path>
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2">
+            <a href="#offerings" class="block text-gray-300 hover:text-[#00a9e3] transition-colors duration-300 py-2">Offerings</a>
+            <a href="#about" class="block text-gray-300 hover:text-[#00a9e3] transition-colors duration-300 py-2">About</a>
+            <a href="#contact" class="block bg-[#0091C6] hover:bg-[#007aa8] text-white font-semibold px-5 py-2 rounded-lg transition-transform duration-300 hover:scale-105 mt-2 text-center">Contact Me</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Offerings Section (New Hero) -->
+        <section id="offerings" class="main-section py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-4 reveal">Blue Crane</h1>
+                    <p class="text-lg md:text-2xl text-gray-300 max-w-3xl mx-auto reveal" style="transition-delay: 200ms;">High-Level Project Consulting and Hands-On Building Services for Efficient, Sustainable Outcomes.</p>
+                </div>
+
+                <!-- Offering Buttons -->
+                <div class="flex flex-col md:flex-row justify-center items-center gap-6 mt-12 reveal" style="transition-delay: 400ms;">
+                    <button id="open-consulting-modal" class="bg-[#0091C6] hover:bg-[#007aa8] text-white font-bold py-4 px-8 rounded-lg transition-transform duration-300 hover:scale-105 w-full md:w-auto">
+                        Explore Consulting
+                    </button>
+                    <button id="open-services-modal" class="bg-[#1b263b] hover:bg-[#415a77] text-white font-bold py-4 px-8 rounded-lg transition-transform duration-300 hover:scale-105 w-full md:w-auto">
+                        Explore Services
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 md:py-32 bg-[#1b263b]">
+            <div class="container mx-auto px-6 max-w-4xl text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 reveal">My Approach to Construction Solutions</h2>
+                <div class="w-24 h-1 bg-[#0091C6] mx-auto mb-8 reveal"></div>
+                <p class="text-lg text-gray-300 leading-relaxed reveal">
+                    I specialize in two distinct streams of expertise. I provide tailored, high-level **consulting** for large-scale construction projects and offer skilled, hands-on **services** for building, repair, and finishing tasks. I partner directly with my clients to transform both complex challenges and practical needs into high-value assets.
+                </p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 md:py-32 bg-[#0d1b2a]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 reveal">Get in Touch</h2>
+                    <p class="text-lg text-gray-300 max-w-2xl mx-auto reveal">Have a project in mind? I'd love to hear from you. Let's build something great together.</p>
+                </div>
+                <div class="max-w-lg mx-auto flex justify-center">
+                    <!-- Contact Details -->
+                    <div class="space-y-8 text-gray-300 reveal" style="transition-delay: 200ms;">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-[#0091C6]/10 text-[#0091C6] rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-white">Email</h3>
+                                <a href="mailto:blue-crane@hotmail.com" class="hover:text-[#00a9e3] transition-colors">blue-crane@hotmail.com</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-[#0091C6]/10 text-[#0091C6] rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-white">Phone</h3>
+                                <a href="tel:6059561050" class="hover:text-[#00a9e3] transition-colors">605 956 1050</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#1b263b] py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#offerings" class="hover:text-[#00a9e3] transition-colors">Offerings</a>
+                <a href="#about" class="hover:text-[#00a9e3] transition-colors">About</a>
+                <a href="#contact" class="hover:text-[#00a9e3] transition-colors">Contact</a>
+                <a href="#" class="hover:text-[#00a9e3] transition-colors">Privacy Policy</a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Blue Crane. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- Consulting Modal -->
+    <div id="consulting-modal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black/70 invisible opacity-0">
+        <div class="modal-content bg-[#1b263b] rounded-lg shadow-xl w-11/12 max-w-4xl p-8 transform scale-95">
+            <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-white">Consulting Offerings</h2>
+                <button class="close-modal text-gray-400 hover:text-white">&times;</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 max-h-[60vh] overflow-y-auto pr-4">
+                <div>
+                    <h3 class="text-xl font-bold text-[#00a9e3] mb-3">Project & Management</h3>
+                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
+                        <li>Owner's Representation</li>
+                        <li>Project Management</li>
+                        <li>Contract & Proposal Reviews</li>
+                        <li>Takeoffs/Estimating</li>
+                        <li>Progress Inspections</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-[#00a9e3] mb-3">Design, Engineering & QA</h3>
+                     <ul class="space-y-2 text-gray-300 list-disc list-inside">
+                        <li>Design Reviews</li>
+                        <li>Sustainability Assessments</li>
+                        <li>Quality Assurance Inspections</li>
+                        <li>Development Planning</li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="text-xl font-bold text-[#00a9e3] mb-3">Claims, Disputes & Legal</h3>
+                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
+                        <li>Dispute Resolution</li>
+                        <li>Claims Management</li>
+                        <li>Expert Witness</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-[#00a9e3] mb-3">Forensic & Investigation</h3>
+                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
+                        <li>Forensic Analysis</li>
+                        <li>Defect & Accident Investigations</li>
+                        <li>Property Condition Assessments</li>
+                        <li>Building Envelope Surveys</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 text-right">
+                <button class="interested-btn bg-[#0091C6] hover:bg-[#007aa8] text-white font-semibold px-6 py-2 rounded-lg transition-transform duration-300 hover:scale-105">I'm Interested</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Services Modal -->
+    <div id="services-modal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black/70 invisible opacity-0">
+        <div class="modal-content bg-[#1b263b] rounded-lg shadow-xl w-11/12 max-w-4xl p-8 transform scale-95">
+            <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-white">Hands-On Services</h2>
+                 <button class="close-modal text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 max-h-[60vh] overflow-y-auto pr-4">
+                <div>
+                    <h3 class="text-xl font-bold text-[#00a9e3] mb-3">Building Services</h3>
+                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
+                         <li>Handyman</li>
+                         <li>Scheduled Maintenance</li>
+                         <li>Remodels</li>
+                         <li>Small Scope New Projects</li>
+                         <li>Large Project Scope Gap Coverage</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-[#00a9e3] mb-3">Courier Services</h3>
+                     <ul class="space-y-2 text-gray-300 list-disc list-inside">
+                        <li>Medical & Pharmaceutical</li>
+                        <li>Legal & Confidential Documents</li>
+                        <li>Bid Delivery</li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="text-xl font-bold text-[#00a9e3] mb-3">Personal Services</h3>
+                    <ul class="space-y-2 text-gray-300 list-disc list-inside">
+                        <li>Shopping & Errands</li>
+                        <li>Transportation</li>
+                        <li>In-Home Pet Care</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="mt-8 text-right">
+                <button class="interested-btn bg-[#0091C6] hover:bg-[#007aa8] text-white font-semibold px-6 py-2 rounded-lg transition-transform duration-300 hover:scale-105">I'm Interested</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when a link is clicked
+            document.querySelectorAll('#mobile-menu a, nav a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if(link.getAttribute('href').startsWith('#')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Header shadow on scroll
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    header.classList.add('shadow-lg', 'shadow-black/20');
+                } else {
+                    header.classList.remove('shadow-lg', 'shadow-black/20');
+                }
+            });
+
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Scroll reveal animation
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+
+            // Modal Logic
+            const consultingModal = document.getElementById('consulting-modal');
+            const servicesModal = document.getElementById('services-modal');
+            const openConsultingBtn = document.getElementById('open-consulting-modal');
+            const openServicesBtn = document.getElementById('open-services-modal');
+            const closeButtons = document.querySelectorAll('.close-modal');
+            const interestedButtons = document.querySelectorAll('.interested-btn');
+
+            const openModal = (modal) => {
+                modal.classList.remove('invisible', 'opacity-0');
+                modal.querySelector('.modal-content').classList.remove('scale-95');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            };
+
+            const closeModal = (modal) => {
+                modal.classList.add('opacity-0');
+                modal.querySelector('.modal-content').classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('invisible');
+                    document.body.style.overflow = ''; // Restore scrolling
+                }, 300);
+            };
+
+            openConsultingBtn.addEventListener('click', () => openModal(consultingModal));
+            openServicesBtn.addEventListener('click', () => openModal(servicesModal));
+
+            closeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    closeModal(consultingModal);
+                    closeModal(servicesModal);
+                });
+            });
+            
+            // Close modal when clicking on the backdrop
+            [consultingModal, servicesModal].forEach(modal => {
+                 modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeModal(modal);
+                    }
+                });
+            });
+            
+            // Handle "I'm Interested" button click
+            interestedButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    closeModal(consultingModal);
+                    closeModal(servicesModal);
+                    // Smooth scroll to contact section
+                    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal(consultingModal);
+                    closeModal(servicesModal);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
+
