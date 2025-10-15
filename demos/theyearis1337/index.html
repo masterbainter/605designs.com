@@ -215,6 +215,7 @@
             const sealContainer = document.getElementById('seal-container');
             const seal = document.getElementById('seal');
             const grimoireContent = document.getElementById('grimoire-content');
+            let hasBeenUnsealed = false;
 
             // --- Sound Synthesis ---
             const synth = new Tone.MembraneSynth().toDestination();
@@ -226,19 +227,27 @@
 
 
             // --- Interactions ---
-            seal.addEventListener('click', async () => {
-                await Tone.start();
+            seal.addEventListener('click', () => {
+                if (hasBeenUnsealed) return;
+                hasBeenUnsealed = true;
 
-                // Wait for the audio file to load before trying to play it.
-                // This prevents the "buffer is not set or not loaded" error.
-                await Tone.loaded();
-                parchmentSound.start();
-                
+                // --- Start Visuals Immediately ---
                 sealContainer.classList.add('unsealed');
                 grimoireContent.classList.add('visible');
-                
-                // Trigger typing effect after content is visible
                 setTimeout(startTyping, 1200);
+
+                // --- Try to play audio, but don't block visuals if it fails ---
+                const playSounds = async () => {
+                    try {
+                        await Tone.start();
+                        await Tone.loaded();
+                        parchmentSound.start();
+                    } catch (error) {
+                        console.error("Audio could not be initialized or played, but the site will continue to function.", error);
+                    }
+                };
+
+                playSounds();
             });
             
             // --- Typing Effect ---
@@ -284,16 +293,16 @@
                         content.style.maxHeight = null;
                         content.style.padding = "0 1rem";
                     } else {
-                        synth.triggerAttackRelease("C2", "8n");
+                        // Only play sound if Tone.js is ready
+                        if (Tone.context.state === 'running') {
+                            synth.triggerAttackRelease("C2", "8n");
+                        }
                         content.style.maxHeight = content.scrollHeight + "px";
                         content.style.padding = "1.5rem 1rem";
                     }
                 });
             });
             
-             // --- Image Hosting Fix ---
-             // I've re-hosted your images on Imgur for stability.
-             // The old Google Photo links were unreliable for embedding.
         });
     </script>
 </body>
