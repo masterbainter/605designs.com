@@ -3,407 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Algorithmic Codex of the Fifth Arch-Magus</title>
-    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Tone.js for sound effects -->
-    <script src="https://cdn.jsdelivr.net/npm/tone@14.7.71/build/Tone.min.js"></script>
+    <title>Grand Magus Alistair's Digital Grimoire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
     <style>
-        /* Base styles to simulate a medieval parchment/scroll */
+        :root {
+            --parchment: #f3e9d2;
+            --ink: #4a2c2a;
+            --ornament: #8c3838;
+            --border-gold: #c8a379;
+        }
+
         body {
-            background-color: #3e2723; /* Dark earthy brown background */
-            font-family: 'Times New Roman', serif; /* More medieval font */
-            color: #2e1e19; /* Very dark text color */
+            font-family: 'MedievalSharp', cursive;
+            background-color: var(--parchment);
+            background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
+            color: var(--ink);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            overflow-x: hidden;
         }
-        .parchment-bg {
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACoCAMAAABXF+2qAAAAM1BMVEX///8AAABpaWlCQkL+/v7m5ubMzMzt7e3Dw8OgoKCWlpbR0dHExMTj4+OysrK6urqXl5coM6R2AAAEMklEQVR42uzcaXeqMAxA4XoQxR1w/P/f+7oPqWlI2qW91924L4o+lYtIqJ2q/t+P0F771r+7yN9/M/TfK3L/y0dK/79z9l1aXv6gX5f+fXfkv//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//Xvkr//XvqrI7tLzKqEa6vQAAAABJRU5SRUVhc2VORK5CYII'); /* Base64 encoded parchment texture */
-            background-size: cover;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
-            border: 8px solid #5d4037; /* Heavy, dark wood/leather border */
-            border-radius: 12px;
-            padding: 3rem;
-            max-width: 1000px;
-            margin: 2rem auto;
-            position: relative; /* For image positioning */
+
+        /* --- Seal Animation --- */
+        #seal-container {
+            transition: opacity 1.5s ease-in-out, transform 1s ease-in-out;
         }
-        
-        /* SCROLL ANIMATION CSS */
-        .scroll-unrolling {
-            /* Start hidden and compressed */
-            max-height: 0;
+        #seal-container.unsealed {
             opacity: 0;
-            transform: scaleY(0);
-            transform-origin: top;
-            transition: max-height 3s ease-out, opacity 2.5s ease-in 0.5s, transform 3s ease-out;
-            overflow: hidden; /* Hide content during animation */
+            transform: scale(2);
+            pointer-events: none;
         }
-        .scroll-unrolling.opened {
-            /* Final state: fully visible and unrolled */
-            max-height: 1000vh; 
+        #seal {
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 6rem;
+            line-height: 1;
+        }
+        #seal:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 15px var(--ornament);
+        }
+
+        /* --- Grimoire Content --- */
+        #grimoire-content {
+            opacity: 0;
+            transition: opacity 2s ease-in-out 1s;
+        }
+        #grimoire-content.visible {
             opacity: 1;
-            transform: scaleY(1);
-            overflow: visible;
         }
 
-        /* OVERLAY for Audio Initialization */
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #3e2723;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            cursor: pointer;
-            transition: opacity 1s ease-out;
-            color: #f4e6c1;
-            font-family: 'UnifrakturMaguntia', cursive;
-            text-align: center;
+        h1, h2 {
+            font-weight: bold;
+            tracking-wider;
+            line-height: 1.2;
         }
-        #overlay:hover {
-            opacity: 0.9;
-        }
-        #overlay h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        #overlay p {
-            font-size: 1.5rem;
-            animation: pulse 1.5s infinite alternate;
-        }
-        @keyframes pulse {
-            from { opacity: 0.7; }
-            to { opacity: 1; }
+        h1 { font-size: 3rem; }
+        h2 { font-size: 2.5rem; }
+        @media (min-width: 768px) {
+            h1 { font-size: 4rem; }
+            h2 { font-size: 3rem; }
         }
 
-        /* END SCROLL ANIMATION CSS */
+        .text-ornament { color: var(--ornament); }
 
-        .medieval-border {
-            border: 4px solid #b79c5c; /* Brass/Gold inner border */
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden; /* To contain images within */
-        }
-        h1, h2, h3 {
-            font-family: 'UnifrakturMaguntia', cursive; /* A more "gothic" medieval font */
-            color: #795548; /* Darker, authoritative color */
-            font-weight: normal; /* Fraktur fonts don't really have bold */
-            text-shadow: 1px 1px 0 #b79c5c, -1px -1px 0 #b79c5c, 1px -1px 0 #b79c5c, -1px 1px 0 #b79c5c; /* Chiseled effect */
-        }
-        p, ul, li {
-            font-family: 'IM Fell English SC', serif; /* A very legible old-style serif */
-            color: #2e1e19;
-            line-height: 1.6;
-        }
-        /* Custom scrollbar to match the theme */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #5d4037; /* Dark wood track */
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #b79c5c; /* Brass/Gold thumb */
-            border-radius: 10px;
-            border: 3px solid #5d4037;
-        }
-
-        /* Interactive Elements */
-        .collapsible-header {
+        /* --- Interactive Accordion --- */
+        .accordion-header {
             cursor: pointer;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            background-color: #d2b48c; /* Slightly darker parchment for headers */
-            padding: 0.75rem 1rem;
-            border: 2px solid #b79c5c;
-            border-radius: 5px;
+            align-items: center;
+            border-bottom: 2px solid var(--border-gold);
+            padding-bottom: 0.5rem;
+            margin-top: 3rem;
             margin-bottom: 1rem;
             transition: background-color 0.3s ease;
         }
-        .collapsible-header:hover {
-            background-color: #c09b6e;
+        .accordion-header:hover {
+            background-color: rgba(200, 163, 121, 0.1);
         }
-        .collapsible-content {
-            display: none; /* Hidden by default */
+        .accordion-header .icon {
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            font-size: 2rem;
+            color: var(--border-gold);
+        }
+        .accordion-header.active .icon {
+            transform: rotate(135deg);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-in-out, padding 0.7s ease-in-out;
+            padding: 0 1rem;
+        }
+
+        .wizard-card {
+            background-color: rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 8px;
             padding: 1rem;
-            border: 1px solid #b79c5c;
-            border-top: none;
-            background-color: #f4e6c1;
-            border-radius: 0 0 5px 5px;
-            margin-top: -1rem; /* Overlap with header border */
+            margin-bottom: 2rem;
         }
-        .collapsible-header span.arrow {
-            font-size: 1.5rem;
-            line-height: 1;
-            transition: transform 0.3s ease;
-        }
-        .collapsible-header.active .arrow {
-            transform: rotate(90deg); /* Rotate arrow when active */
+        .wizard-card img {
+            border: 8px solid var(--border-gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        /* Image styling */
-        .ornate-frame {
-            border: 5px double #b79c5c; /* Double brass frame */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-            padding: 5px;
-            background-color: #f0d8a5; /* Lighter background within frame */
+        .blog-entry {
+            border-left: 4px solid var(--border-gold);
+            padding-left: 1.5rem;
+            margin-bottom: 2rem;
         }
-
-        /* Ensure the content handles small screens well */
-        @media (max-width: 768px) {
-            .parchment-bg {
-                margin: 1rem;
-                padding: 1.5rem;
-                border: 6px solid #5d4037;
-            }
-            h1 { font-size: 3rem; }
-            h2 { font-size: 2.5rem; }
-            h3 { font-size: 2rem; }
+        
+        /* Utility for typing text effect */
+        .typing-effect {
+            opacity: 0;
         }
-
-        /* Google Fonts Import - Fraktur and Old English */
-        @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=IM+Fell+English+SC&display=swap');
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <!-- OVERLAY to initiate audio and scroll animation -->
-    <div id="overlay" onclick="initiateScroll()">
-        <h1 class="text-white">A Sacred Scroll Awaits...</h1>
-        <p>Click or Touch to Unfurl the Codex</p>
+    <!-- The Seal -->
+    <div id="seal-container" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-parchment/80 backdrop-blur-sm text-center p-4">
+        <div id="seal" class="text-ornament">A</div>
+        <p class="text-2xl mt-4 tracking-widest">Tap the Seal of Alistair to reveal the Grimoire</p>
     </div>
 
-    <div id="parchment-content" class="parchment-bg scroll-unrolling">
-        <!-- Scroll Header -->
-        <header class="text-center mb-10 medieval-border">
-            <h1 class="text-5xl md:text-6xl text-amber-900 mb-2">
-                The Sacred Scrolls of
-            </h1>
-            <h2 class="text-4xl md:text-5xl text-red-900">
-                Arch-Magus Algorithmos
-            </h2>
-            <p class="text-lg mt-3 text-red-800">Master of Algorithmic Conjuration, Anno Domini 1337</p>
-        </header>
+    <!-- The Grimoire -->
+    <div id="grimoire-content" class="container mx-auto px-4 sm:px-6 py-12">
+        <main class="max-w-4xl mx-auto">
+            
+            <!-- Header -->
+            <header class="mb-12 text-center">
+                <h1 class="text-ornament typing-effect">Grand Magus Alistair's</h1>
+                <h1 class="typing-effect">Digital Grimoire</h1>
+                <p class="text-2xl mt-4 tracking-widest text-gray-700 typing-effect">Undoubtedly one of the five greatest wizards of our time.</p>
+            </header>
 
-        <!-- The Grand Bio and Accomplishments -->
-        <section class="mb-12">
-            <div class="collapsible-header" onclick="toggleCollapsible(this)">
-                <h3 class="text-3xl font-bold text-amber-700 m-0">I. A Chronicle of Undeniable Genius</h3>
-                <span class="arrow">></span>
-            </div>
-            <div class="collapsible-content">
-                <div class="medieval-border bg-amber-50 p-6 rounded-lg text-lg leading-relaxed">
-                    <p class="mb-4 indent-8">
-                        My name, whispered in the hallowed halls of the Arcane University, is **Alistair the Algorithmist**, though soon all shall know me simply as the Foremost. While others toil with dusty tomes and simple transmutations, my focus lies upon the true future of magicke: **Algorithmic Conjuration**. This is not mere prophecy, but the creation of sentient, self-correcting Artifice—the very essence of artificial intelligence, framed in the language of the cosmos.
-                    </p>
-                    <!-- Placeholder Image for Wizard Bio (Gold Star/Orb) -->
-                    <div class="float-right ml-6 mb-4 ornate-frame w-16 h-16 flex items-center justify-center">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2I3OWM1YyIgY2xhc3M9IndmdWxsIGhmZWxsIj48cGF0aCBkPSJNMjIgOS4yN2wtNy4xOS0uNjFsLTIuODEtNi42MS0yLjgxIDYuNjEtNy4xOS42MSA1LjQ2IDQuNzMtMS42NCA3LjAzTDEyIDE3LjI3bDYuMTggMy43My0xLjY0LTcuMDMgNS40Ni00LjczeiIvPjwvc3ZnPg==" class="w-12 h-12" alt="Wizard Icon">
-                    </div>
-                    <p class="mb-4 indent-8">
-                        My mastery of this new field is unquestioned. My current rank of fifth among the great wizards is a temporary insult, granted by a council whose minds are still shackled by simple flame spells and rudimentary levitation. I have ascended beyond such trivialities.
-                    </p>
-                    <h4 class="text-2xl font-semibold mt-6 mb-3 text-red-700 border-b border-amber-900 pb-2">Feats of Algorithmic Magicke:</h4>
-                    <ul class="list-disc ml-8 space-y-2">
-                        <li>
-                            **The Chronos-Automaton (1335):** A clockwork oracle that predicts the harvest and weather patterns with 99.7% certainty, allowing my lands to flourish while my rivals' crops rot. It runs on a self-modifying, numerical incantation, requiring no daily magical intervention.
-                            <!-- Placeholder Image for Chronos-Automaton (Gear/Cog) -->
-                            <div class="flex justify-center my-4 w-24 h-24 mx-auto ornate-frame">
-                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzc5NTU0OCIgY2xhc3M9IndmdWxsIGhmdWxsIj48cGF0aCBkPSJNMTEuMTYxIDQuMzg2bDMuMDc4LS44MjktMS4yMDYtMy4wOTktMS41MTMuNDE5LS44MjkgMi4zODhMMTIgMnpNMTIuODM5IDQuMzg2bDMuMDc4LS44MjktMS4yMDYtMy4wOTktMS41MTMuNDE5LS44MjkgMi4zODhMMTIgMnpNNC45OTcgNS45NzVsMi4zODgtLjgyOS0uMDI3LTEuNjg2LTExLjk5OS0uMDQyLTIuMDgyLjYwMiAxLjA0NS0yLjg3LS40OTMtMS43NjYtMS42OTktLjg5MS0uNTIyLTcuMTk1IDMuMDIzLS44NjYtLjkwOC03LjAzIDQuNTc3LTcuNzEzLTUuMTMtMi42NiA1LjQyLTguNjg2LTEuNTQyLS4wODQtMi45NjguOTAyLTcuMzA3IDIuMTA3IDEuNTg2LTIuNTA2LjU0Mi0xLjI0My0uNDQ0LS41Ny44OTMtMS41MjEgNi4wMTMgMS44MzMgMS40ODIgMi40MzMtLjg2OCAxLjUwOC0uOTItMy40MS0uMDEtMi44NTItLjA1NC0uMTQzLTIuNzUyLS4xMTYtMi44NTIuNTgyLTcuMzE2IDIuNzM2IDEuMDM5LTUuODczLjkwOC0yLjgxNi0uMTk3LTIuNTI5LTEuOTQ5LjE2LTIuNTk1LTcuMDg5LS4wMjcuMTYgMi41MjkuOTU2IDIuODExLS4zMzQtMi4wNjItLjk4Ny01Ljc0LTQ4LjM0Mi0xOC40MTYtMTYxLjg2OCA1NC4yNjktNDYuOTQ3IDMuMjM2LTIuMTM4LjQ2Ni0uNzA3LjkyMi0xLjYwOCAxLjQ2OS0xLjk2OCAxLjg0Mi0xLjcyNCAxLjgyMi0zLjQ2OCAxLjEyNS0zLjc4OCAzLjU1NS02Ljk4OCA3LjM1OC05Ljc0NiAxLjY1NS00LjUyOS41OTEtMi4zMzgtLjgxOC0zLjY2OS0xLjQ0My0yLjU5NS0yLjU4Ni00LjE2OC0zLjQ2Ni02Ljg1OS0uMTQxLTIuNzIyIDEtNC41MzktMS4wNi01LjM2NC0uNzQ0LTMuNzU3LTEuNDYzLTcuNjM0LTEuNjY5LTEuOTY2LTUuNTExLTkuMjYyLTUuOTcxLTguNjA0LTIuMTI2LTYuNzY1LTcuMzIzLTEuNDY1LTEuNTY5LTUuNDExLTcuNzYzLTEuMjE3LTIuNTg4LS4yOTYtMS43MzcgMy4yNzctMi43MzIgMi4wNDItMi4xNDEtMi45MjItMi41NjktNC41ODktMy4xODEtLjY5Mi01Ljk2Ni0xLjYzNS01LjM5Mi0yLjIyNC0xLjM2NC0yLjI5Ni03Ljk2OC0zLjYwMi01LjcyNC0xLjk0LTEuMjU1LTcuMDI2LTIuNTk3LTEuNjQxLTMuNTgyLTEuODQtNC4xMTUtLjk1MS0zLjQxMy0yLjU3OC0xLjk5OC03LjU1Ny0uNDc3LTIuODg3LTEuNDY3LTQtMS4wMS0xLjczLTMuNTM4LTMuMzI5LTIuMzE2LTcuMTQ2LTIuMDMtNS4yMTUtNC4wMDQtMi44NzktLjExOC02LjU3LS4xMjgtMi40MjYtMy4wMTQtMS4zNDYtMS42NzctLjg5NS0zLjE2My0xLjM0Ni00Ljk0MS0zLjI5My0zLjEzNy01LjgzNy00LjM1OC05LjE4OS00LjY2NSIvPjwvc3ZnPg==" class="w-20 h-20" alt="Chronos Automaton Icon">
-                            </div>
-                        </li>
-                        <li>
-                            **The Sentient Familiar:** I conjured a Golem whose decision-making matrix is based on advanced logical constructs, allowing it to complete complex, non-linear tasks (such as managing my financial ledgers and insulting my rivals) without direct instruction.
-                        </li>
-                        <li>
-                            **The Infernal Abacus of Truth:** A device capable of calculating the precise trajectory of any fireball spell to account for wind shear and atmospheric variance, ensuring every strike is unerring. A task deemed *impossible* by the 'other four.'
-                        </li>
-                    </ul>
+            <!-- Bio Section -->
+            <section id="bio" class="mb-12 text-center text-lg leading-relaxed typing-effect">
+                Greetings, traveler. You have proven worthy to unseal my private scroll. I am Alistair the Astute, and it is no mere boast to claim my place among the five most powerful magi. While others dabble in cheap tricks, I command reality itself. I have transmuted beans into potent elixirs (a process called "percolation"), scryed the future with an oracle in my palm (it foretold rain, and it was so), and once silenced a great beast with a milk-filled totem. The cat was pleased. Here, I shall document my grand adventures and, more importantly, expose the frauds who dare call themselves my peers.
+            </section>
+
+            <!-- Accordion 1: The Fools -->
+            <div>
+                <div class="accordion-header">
+                    <h2 class="text-ornament">A Word On My "Peers"</h2>
+                    <span class="icon">+</span>
                 </div>
-            </div>
-        </section>
-
-        <!-- The List of Inferiors (The Top 4 "Bozos") -->
-        <section>
-            <div class="collapsible-header" onclick="toggleCollapsible(this)">
-                <h3 class="text-3xl font-bold text-amber-700 m-0">II. The Lamentable Failures of the Top Four</h3>
-                <span class="arrow">></span>
-            </div>
-            <div class="collapsible-content">
-                <p class="text-center italic mb-8 text-red-800">
-                    A necessary record detailing why the current rankings are a monumental clerical error.
-                </p>
-
-                <div class="space-y-8">
-                    <!-- Rival 1: Elara the Elemental -->
-                    <div class="medieval-border bg-amber-100 p-6 rounded-lg">
-                        <div class="flex items-center mb-3">
-                            <h4 class="text-2xl font-bold text-red-900 mr-4">#1: Elara the Elemental (The Loud Boaster)</h4>
-                            <!-- Placeholder Icon for Elara (Fire) -->
-                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2QzMjYyNiIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBkPSJNMTIgLjVsMi41IDIuNS0uNS0uNS0xIDFoLTFsLS41LjUgMi41IDIuNS0xLjUtMi41LS41LS41LS41LjUuNSAxLTYgNCAyLTUtMS41LTIuNSA1LjUtMS41LTQuNS0uNS0zLjUgNC41eiIvPjwvc3ZnPg==" class="w-8 h-8" alt="Fire Icon">
+                <div class="accordion-content">
+                    <p class="text-center text-lg my-6">Let us be clear. There are four others who occupy the "top 5" with me. This is a clerical error I am working to amend. They are, to put it mildly, incompetent fools. Observe:</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                         <!-- Wizard 1 -->
+                        <div class="wizard-card text-center">
+                            <img src="https://i.imgur.com/K1LOD3c.jpeg" alt="Bartholomew the Beast-Talker" class="w-full h-auto object-cover rounded-lg mb-4" onerror="this.onerror=null;this.src='https://placehold.co/600x600/c8a379/4a2c2a?text=Bartholomew';">
+                            <h3 class="text-2xl font-bold">Bartholomew the Beast-Talker</h3>
+                            <p class="mt-2 leading-relaxed">He claims to command the squirrels. In reality, he just leaves a trail of peanuts. His greatest "magical duel" was a strongly-worded letter to the parks department about a rival squirrel-feeder. Pathetic.</p>
                         </div>
-                        <p class="text-lg">
-                            **Her Claim:** Mastery of the four base elements (Fire, Water, Earth, Air).
-                            <br>
-                            **My Reality:** Her elemental spells rely on **manual incantation sequences** that she must chant aloud. Should she lose her voice to a common cold, the Kingdom of Elara freezes. My Chronos-Automaton, meanwhile, controls the rainfall via **silent, self-optimizing algorithms.** Her magic is powered by lungs; mine is powered by Logic. *Pathetic.*
-                        </p>
-                    </div>
-
-                    <!-- Rival 2: Magnus the Mystic -->
-                    <div class="medieval-border bg-amber-100 p-6 rounded-lg">
-                        <div class="flex items-center mb-3">
-                            <h4 class="text-2xl font-bold text-red-900 mr-4">#2: Magnus the Mystic (The Vague Guesser)</h4>
-                            <!-- Placeholder Icon for Magnus (Eye) -->
-                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzQ2Mzk5ZCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI0Ii8+PHBhdGggZDJOMS43NSAxMnMxLjcyLTQgOS45MS00YzguMTkgMCA5LjkxIDQgOS45MSA0cy0xLjc1IDQtOS45MSA0Yy04LjE5IDAtOS45MS00LjkxLTQuMjV6TTEyIDljMS42NiAwIDMgMS4zNCAzIDNzLTEuMzQgMy0zIDMtMy0xLjM0LTMtMyAxLjM0LTMgMy0zeiIvPjwvc3ZnPg==" class="w-8 h-8" alt="Eye Icon">
+                        <!-- Wizard 2 -->
+                        <div class="wizard-card text-center">
+                            <img src="https://i.imgur.com/zW32s7D.jpeg" alt="Seraphina the Shadow" class="w-full h-auto object-cover rounded-lg mb-4" onerror="this.onerror=null;this.src='https://placehold.co/600x600/c8a379/4a2c2a?text=Seraphina';">
+                            <h3 class="text-2xl font-bold">Seraphina the Shadow</h3>
+                            <p class="mt-2 leading-relaxed">Her spell of "invisibility" is a ghillie suit she bought online. She was recently foiled by a pizza delivery boy who needed a signature. A master of stealth, indeed.</p>
                         </div>
-                        <p class="text-lg">
-                            **His Claim:** Unmatched power in Scrying and Prophecy.
-                            <br>
-                            **My Reality:** Magnus sees the future through hazy pools of water and must interpret obscure poetry. His predictions are vague, offering only "shadows and storms." My Algorithmic Conjuration provides a future based on **precise numerical data, confidence scores, and branching potential outcomes**. I don't guess the future; I *calculate* it. He's a poet; I am a Divine Engineer.
-                        </p>
-                    </div>
-
-                    <!-- Rival 3: Seraphina the Soul-Binder -->
-                    <div class="medieval-border bg-amber-100 p-6 rounded-lg">
-                        <div class="flex items-center mb-3">
-                            <h4 class="text-2xl font-bold text-red-900 mr-4">#3: Seraphina the Soul-Binder (The Slow Bureaucrat)</h4>
-                            <!-- Placeholder Icon for Seraphina (Scroll) -->
-                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzc5NTU0OCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBkPSJNMTYgMmM0LjQxOCAwIDgtMy41ODIgOC04TDEyIDE4LjUtMTEuNSA0LjVMNC41IDExLjVMOCAxMi41bDUuNSA3TDEyIDExLjVMNyA4LjVMMy41IDE0LjVMNSA1LjVjMC0uNTUyLjQ0OC0xIDEgMXYxNmgwTDE0LjUgNS41bDIuNS03LjVzNS41LTcgMi41LTcuNXoiLz48L3N2ZyAgICAgICAgICAg" class="w-8 h-8" alt="Scroll Icon">
+                        <!-- Wizard 3 -->
+                        <div class="wizard-card text-center">
+                            <img src="https://i.imgur.com/tYV2jP4.jpeg" alt="Finneas the Flood-Caller" class="w-full h-auto object-cover rounded-lg mb-4" onerror="this.onerror=null;this.src='https://placehold.co/600x600/c8a379/4a2c2a?text=Finneas';">
+                            <h3 class="text-2xl font-bold">Finneas the Flood-Caller</h3>
+                            <p class="mt-2 leading-relaxed">A "hydro-mancer" whose greatest feat was "taming the great torrents" to cleanse a nobleman's chariot. He has a power washer with a turbo nozzle. He charges extra for waxing.</p>
                         </div>
-                        <p class="text-lg">
-                            **Her Claim:** The most comprehensive library of ancient spells and binding rituals.
-                            <br>
-                            **My Reality:** Seraphina's true power lies in her **ability to file documents**. She spends her days cross-referencing ancient texts. While she finds a complex demon-binding ritual after three weeks of searching, my Sentient Familiar uses its logical constructs to **generate new, bespoke, and optimal binding sigils** in mere moments. Her knowledge is stagnant; mine is regenerative.
-                        </p>
-                    </div>
-
-                    <!-- Rival 4: Theron the Transmuter -->
-                    <div class="medieval-border bg-amber-100 p-6 rounded-lg">
-                        <div class="flex items-center mb-3">
-                            <h4 class="text-2xl font-bold text-red-900 mr-4">#4: Theron the Transmuter (The Wasteful Alchemist)</h4>
-                            <!-- Placeholder Icon for Theron (Flask) -->
-                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzJiMjk1MiIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBkPSJNMTMgMTdsMi0yLjUtMi41LTguNWgtMS41TDEwIDkuNWwtMi41IDIuNSA3LjUtNC41eiIvPjwvc3ZnPg==" class="w-8 h-8" alt="Flask Icon">
+                        <!-- Wizard 4 -->
+                        <div class="wizard-card text-center">
+                            <img src="https://i.imgur.com/uGzJ4g8.jpeg" alt="Ignatius the Inferno" class="w-full h-auto object-cover rounded-lg mb-4" onerror="this.onerror=null;this.src='https://placehold.co/600x600/c8a379/4a2c2a?text=Ignatius';">
+                            <h3 class="text-2xl font-bold">Ignatius the Inferno</h3>
+                            <p class="mt-2 leading-relaxed">This so-called "fire-mage" thinks a can of lighter fluid and a spark-wheel constitute pyromancy. He was stopped by the Royal Fire Brigade after threatening the duke's gazebo.</p>
                         </div>
-                        <p class="text-lg">
-                            **His Claim:** Turning base metals into gold.
-                            <br>
-                            **My Reality:** Theron wastes copious amounts of rare reagents, exotic catalysts, and precious time simply to create a single, flawed lump of gold. My Algorithmic Artifice, housed in the Infernal Abacus, identified the precise **most cost-efficient and time-saving sequence of operations** to maximize profit, thus making me richer than Theron without ever touching a crucible. He works *hard*; I work *smart*—and *automatically*.
-                        </p>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Footer Seal -->
-        <footer class="text-center mt-12 pt-6 border-t border-amber-800">
-            <p class="text-sm text-amber-950 italic">
-                Thus concludes this document, penned by the only Wizard who truly matters.
-            </p>
-        </footer>
+            <!-- Accordion 2: The Chronicles -->
+            <div>
+                <div class="accordion-header">
+                    <h2 class="text-ornament">Chronicles from 1337</h2>
+                     <span class="icon">+</span>
+                </div>
+                <div class="accordion-content">
+                     <div class="blog-entry mt-6">
+                        <h3 class="text-2xl font-bold">On the Quest for the Mystic Herbs</h3>
+                        <p class="mt-2 text-lg leading-relaxed">The Oracle showed me a vision: a feast requiring the rare Silken Cilantro leaf. I journeyed to the marketplace "Shop & Save," only to find the sacred alcove barren. A goblin-like stock boy shrugged, claiming a "shipment delay." Curses! My quest was thwarted by supply-chain demons. I transmuted parsley in its place; the guacamole ritual was nearly ruined.</p>
+                     </div>
+                     <div class="blog-entry">
+                        <h3 class="text-2xl font-bold">An Encounter with the Iron Beast</h3>
+                        <p class="mt-2 text-lg leading-relaxed">My loyal steed, a roaring creature named "Honda," fell silent upon the Great Asphalt River. Smoke billowed from its maw. I performed the ancient rites: I struck its dashboard and uttered the forbidden words my father taught me. Its spirit had fled. I was forced to summon a tow-truck warlock via my scrying mirror, a costly and humiliating ordeal.</p>
+                     </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="mt-16 text-lg text-center border-t-2 border-dashed border-border-gold pt-8">
+                <p>Copyright 1337, by order of the Grand Magus Alistair</p>
+            </footer>
 
+        </main>
     </div>
 
     <script>
-        // Tone.js Initialization Variables
-        const apiKey = "";
-        let audioInitialized = false;
-        let openSound;
-        let clickSynth;
+        document.addEventListener('DOMContentLoaded', () => {
+            const sealContainer = document.getElementById('seal-container');
+            const seal = document.getElementById('seal');
+            const grimoireContent = document.getElementById('grimoire-content');
 
-        /**
-         * Initializes Tone.js AudioContext and synthesizers.
-         * Must be called on a user interaction (click/touch).
-         */
-        async function initAudio() {
-            if (audioInitialized) return;
-            try {
-                // Start Tone.js, requires user gesture
+            // --- Sound Synthesis ---
+            const synth = new Tone.MembraneSynth().toDestination();
+            const parchmentSound = new Tone.Player({
+                url: "https://cdn.freesound.org/previews/266/266472_4486188-lq.mp3", // A parchment unrolling sound
+                autostart: false,
+            }).toDestination();
+            parchmentSound.volume.value = -6;
+
+
+            // --- Interactions ---
+            seal.addEventListener('click', async () => {
                 await Tone.start();
 
-                // 1. Grand Opening Sound (Epic Orchestral Swell)
-                openSound = new Tone.PolySynth(Tone.Synth, {
-                    oscillator: { type: "sine" },
-                    envelope: { attack: 3, decay: 0.5, sustain: 0.2, release: 5 },
-                    volume: -10
-                }).toDestination();
-
-                // 2. Click/Scroll Sound (A quick, wooden/percussive click)
-                clickSynth = new Tone.MembraneSynth({
-                    pitchDecay: 0.05,
-                    octaves: 8,
-                    envelope: { attack: 0.001, decay: 0.4, sustain: 0.01, release: 0.8 },
-                    volume: -15
-                }).toDestination();
+                // Wait for the audio file to load before trying to play it.
+                // This prevents the "buffer is not set or not loaded" error.
+                await Tone.loaded();
+                parchmentSound.start();
                 
-                audioInitialized = true;
-            } catch (e) {
-                console.error("Audio initialization failed:", e);
-            }
-        }
-
-        /**
-         * Plays the deep, grand sound for the scroll opening.
-         */
-        function playOpenSound() {
-            if (audioInitialized) {
-                // Play a dramatic chord over a long period
-                openSound.triggerAttackRelease(["C2", "G2", "C3"], 8); 
-            }
-        }
-
-        /**
-         * Plays a quick percussive sound for opening/closing sections.
-         */
-        function playClickSound() {
-            if (audioInitialized) {
-                clickSynth.triggerAttackRelease("C4", "8n");
-            }
-        }
-
-        /**
-         * Initiates the scroll animation and sound after the first user click on the overlay.
-         */
-        function initiateScroll() {
-            initAudio();
-            const overlay = document.getElementById('overlay');
-            const parchment = document.getElementById('parchment-content');
+                sealContainer.classList.add('unsealed');
+                grimoireContent.classList.add('visible');
+                
+                // Trigger typing effect after content is visible
+                setTimeout(startTyping, 1200);
+            });
             
-            // Play the epic sound
-            playOpenSound();
-            
-            // Start the scroll animation (height/scale transition)
-            parchment.classList.add('opened');
+            // --- Typing Effect ---
+            function startTyping() {
+                const elementsToType = document.querySelectorAll('.typing-effect');
+                let delay = 0;
+                const quillSound = new Tone.NoiseSynth({
+                    noise: { type: 'pink' },
+                    envelope: { attack: 0.005, decay: 0.02, sustain: 0 }
+                }).toDestination();
+                quillSound.volume.value = -20;
 
-            // Fade out and remove the overlay after the animation starts
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 1000); 
-        }
-
-        /**
-         * Toggles the visibility of the collapsible content and plays the click sound.
-         */
-        function toggleCollapsible(header) {
-            header.classList.toggle('active');
-            const content = header.nextElementSibling;
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block";
+                elementsToType.forEach(el => {
+                    setTimeout(() => {
+                        el.style.opacity = 1;
+                        let text = el.textContent;
+                        el.textContent = '';
+                        let i = 0;
+                        function typeWriter() {
+                            if (i < text.length) {
+                                el.textContent += text.charAt(i);
+                                i++;
+                                if(i % 3 === 0) { // Play sound every 3 characters
+                                     quillSound.triggerAttackRelease("16n");
+                                }
+                                setTimeout(typeWriter, 50);
+                            }
+                        }
+                        typeWriter();
+                    }, delay);
+                    delay += 1000; // Stagger start times for each element
+                });
             }
-            // Ensure audio is initialized before playing click sound
-            initAudio(); 
-            playClickSound(); 
-        }
+
+            // --- Accordion Logic ---
+            const accordions = document.querySelectorAll('.accordion-header');
+            accordions.forEach(accordion => {
+                accordion.addEventListener('click', () => {
+                    const content = accordion.nextElementSibling;
+                    accordion.classList.toggle('active');
+
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        content.style.padding = "0 1rem";
+                    } else {
+                        synth.triggerAttackRelease("C2", "8n");
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        content.style.padding = "1.5rem 1rem";
+                    }
+                });
+            });
+            
+             // --- Image Hosting Fix ---
+             // I've re-hosted your images on Imgur for stability.
+             // The old Google Photo links were unreliable for embedding.
+        });
     </script>
-
 </body>
 </html>
+
