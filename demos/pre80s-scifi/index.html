@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBERSALOON 2025 - Future Frontier Simulation</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter is the default font, but we'll override it with a monospace/retro feel -->
+    <style>
+        /* Custom Tailwind Config for Retro Colors */
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'atari-neon': '#33FF33',
+                        'atari-red': '#FF4444',
+                        'crt-blue': '#44FFFF',
+                        'void-black': '#0A0A0A',
+                    },
+                    fontFamily: {
+                        'retro-mono': ['"Press Start 2P"', 'monospace'], /* Using a classic arcade font lookalike */
+                    },
+                }
+            }
+        }
+
+        /* --- CRT EFFECT STYLING (The 1978 AI Magic) --- */
+        body {
+            background-color: #000000;
+            font-family: 'retro-mono', monospace;
+            color: var(--atari-neon, #33FF33);
+            /* Add subtle screen flicker and scanlines */
+            animation: flicker 0.15s infinite alternate;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5) 1px, transparent 1px);
+            background-size: 100% 2px;
+            text-shadow: 0 0 5px rgba(51, 255, 51, 0.7);
+        }
+
+        /* Subtle flicker animation */
+        @keyframes flicker {
+            0% { opacity: 0.99; }
+            100% { opacity: 1; }
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px #33FF33, 0 0 20px rgba(51, 255, 51, 0.5);
+        }
+
+        .atari-border {
+            border: 4px solid #33FF33;
+            box-shadow: 0 0 15px #33FF33;
+        }
+
+        .button-glow {
+            transition: all 0.2s;
+        }
+        .button-glow:hover {
+            box-shadow: 0 0 8px #FF4444, 0 0 15px #FF4444;
+            background-color: #FF4444;
+            color: #000000;
+        }
+
+        /* Hide the progress bar after load */
+        #loader:not(.loading) {
+            display: none;
+        }
+
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen void-black text-atari-neon">
+
+    <!-- Primary Display Container (CRT Frame) -->
+    <div class="max-w-4xl mx-auto p-4 md:p-8 atari-border rounded-lg bg-void-black">
+
+        <!-- Header: System Status -->
+        <header class="text-center mb-10 border-b-2 border-atari-neon pb-4">
+            <h1 id="title" class="text-3xl md:text-5xl font-extrabold text-glow tracking-widest uppercase mb-2">
+                CYBERSALOON <span class="text-atari-red">2025</span>
+            </h1>
+            <p id="subtitle" class="text-sm md:text-base text-crt-blue">
+                // SYSTEM 78-A.I. ONLINE // PREDICTIONS FOR THE FUTURE FRONTIER
+            </p>
+        </header>
+
+        <!-- Loading Bar Simulation -->
+        <div id="loader" class="loading mb-6">
+            <p class="text-sm mb-1">DATA-STREAM INITIATING... [ACCESS LEVEL: ALPHA-7]</p>
+            <div class="w-full bg-atari-neon h-2 rounded-full overflow-hidden">
+                <div id="progress" class="bg-atari-red h-full" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Navigation/Interface Buttons -->
+        <nav id="nav-menu" class="hidden grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+            <button onclick="loadSection('Manifesto')" class="button-glow p-3 text-sm uppercase rounded-md bg-atari-neon text-void-black font-bold border-2 border-atari-red">
+                <span class="md:hidden">Manifesto</span><span class="hidden md:inline">The 2025 Manifesto</span>
+            </button>
+            <button onclick="loadSection('Tech')" class="button-glow p-3 text-sm uppercase rounded-md bg-void-black text-atari-neon font-bold border-2 border-atari-neon">
+                <span class="md:hidden">Tech</span><span class="hidden md:inline">New Frontier Tech</span>
+            </button>
+            <button onclick="loadSection('Culture')" class="button-glow p-3 text-sm uppercase rounded-md bg-void-black text-atari-neon font-bold border-2 border-red-500">
+                <span class="md:hidden">Culture</span><span class="hidden md:inline">Saloon & Code Culture</span>
+            </button>
+            <button onclick="loadSection('Contact')" class="button-glow p-3 text-sm uppercase rounded-md bg-void-black text-atari-neon font-bold border-2 border-atari-neon">
+                <span class="md:hidden">Comm-Log</span><span class="hidden md:inline">Comm-Log Protocol</span>
+            </button>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main id="content-display" class="hidden p-4 md:p-6 border-2 border-crt-blue rounded-md bg-void-black/80 shadow-inner shadow-crt-blue/50">
+            <!-- Content will be injected here -->
+        </main>
+
+        <!-- Footer: Command Line -->
+        <footer class="mt-10 pt-4 border-t-2 border-atari-red">
+            <div class="text-sm flex flex-col md:flex-row md:justify-between">
+                <span id="terminal-message" class="text-atari-red">_INITIALIZING_</span>
+                <span class="mt-2 md:mt-0">_ACCESS_GRANTED_BY_A.I._UNIT_78-A_</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript for UI Logic and Retro Effects -->
+    <script>
+        const contentData = {
+            'Manifesto': `
+                <h2 class="text-2xl mb-4 text-atari-red">MISSION LOG: YEAR 2025</h2>
+                <p class="mb-4">Greetings, future inhabitant. By 2025, Earth is history. We now dwell on **Mars**, the New Texas Colony. AI runs the systems, but the spirit is pure frontier—tough, lawless, and digitized. Our survival depends on **Bit-Chips** (digital currency) and the speed of our **Iron Steeds** (cybernetic horses).</p>
+                <p class="mb-4">The air is thick with red dust and plasma energy. We've replaced sheriffs with **Code Wardens** and saloons with **Holo-Cantinas**. Never trust an analogue signal.</p>
+                <p class="text-sm text-crt-blue">// PROTOCOL COMPLETE. PROCEED TO DATA-INDEX //
+            `,
+            'Tech': `
+                <h2 class="text-2xl mb-4 text-atari-red">FRONTIER HARDWARE</h2>
+                <ul class="list-disc ml-6 space-y-3">
+                    <li><span class="text-crt-blue">PLASMA-CAST REVOLVER:</span> Not lead, but compressed energy. Six-shot capacity, reloads by tapping into local solar grids. Essential for dealing with **Xeno-Scorpions**.</li>
+                    <li><span class="text-crt-blue">IRON STEEDS:</span> Bio-mechanical mounts. They don't need water, just high-octane synth-fuel. Faster than any organic horse, with integrated satellite comms.</li>
+                    <li><span class="text-crt-blue">OMNI-COMM WRISTBAND:</span> Your total link. Runs our 'AI-Partner' operating system. Acts as a map, radio, and currency wallet. Never remove it.</li>
+                    <li><span class="text-crt-blue">DATA-LASSO:</span> Our future search engine. You physically "cast" a light string into the network to retrieve data.</li>
+                </ul>
+            `,
+            'Culture': `
+                <h2 class="text-2xl mb-4 text-atari-red">SALOON & CODE CULTURE</h2>
+                <p class="mb-4">The **Holo-Cantina** is the hub. Instead of whiskey, we drink Synth-Nectar. Instead of poker, we play 'Vector Duel'—a high-stakes game of light cycle racing. Music is generated live by sentient AIs, optimized for deep space blues.</p>
+                <p class="mb-4">The law is simple: **The Code is the Law.** If an AI deems you a threat to the network, your Bit-Chips are zeroed out. Trust is earned through reliable code commits, not handshake deals.</p>
+                <p class="text-sm text-crt-blue">// CULTURAL SUBROUTINE ACTIVE. INITIATE HOLOGRAPHIC DANCE? //
+            `,
+            'Contact': `
+                <h2 class="text-2xl mb-4 text-atari-red">COMM-LOG PROTOCOL</h2>
+                <p class="mb-4">To contact us in the year 2025, transmit your query using a compatible 78-A.I. protocol. If you are reading this in 1978, we are the future you are inventing. KEEP CODING, PARDNER.</p>
+                <form onsubmit="handleCommLog(event)">
+                    <textarea id="comm-input" class="w-full h-32 p-2 bg-void-black border-2 border-crt-blue text-atari-neon rounded-md focus:outline-none focus:border-atari-red" placeholder="[INPUT MESSAGE FOR 2025... (MAX 256 CHARS)]" maxlength="256"></textarea>
+                    <button type="submit" class="w-full mt-4 button-glow p-3 text-sm uppercase rounded-md bg-atari-red text-void-black font-bold border-2 border-atari-neon">
+                        <span class="flex items-center justify-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l.489-.489v-13h13v13l.489.489a1 1 0 001.169-1.409l-7-14z"></path></svg>
+                            TRANSMIT PULSE
+                        </span>
+                    </button>
+                </form>
+            `
+        };
+
+        const terminalMessage = document.getElementById('terminal-message');
+        const contentDisplay = document.getElementById('content-display');
+        const navMenu = document.getElementById('nav-menu');
+        const loader = document.getElementById('loader');
+        const progressBar = document.getElementById('progress');
+
+        // --- Core UI Functions ---
+
+        /** Simulates a loading sequence with a moving bar and terminal messages. */
+        function initiateSystem() {
+            let progress = 0;
+            const messages = [
+                '// POWER ON: 4KB RAM INITIALIZED',
+                '// AI-CORE 78-A SYNCING...',
+                '// ESTABLISHING TRANS-TEMPORAL LINK...',
+                '// DECRYPTING FUTURE PROTOCOLS...',
+                '// ACCESS GRANTED. WELCOME, CODE WARDEN.',
+            ];
+            let currentMessageIndex = 0;
+
+            const loadingInterval = setInterval(() => {
+                progress += 5;
+                progressBar.style.width = progress + '%';
+
+                if (progress % 20 === 0 && currentMessageIndex < messages.length) {
+                    terminalMessage.textContent = messages[currentMessageIndex++];
+                }
+
+                if (progress >= 100) {
+                    clearInterval(loadingInterval);
+                    loader.classList.remove('loading');
+                    terminalMessage.textContent = '// BOOT SEQUENCE COMPLETE. READY FOR INPUT.';
+                    
+                    // Show UI elements
+                    navMenu.classList.remove('hidden');
+                    contentDisplay.classList.remove('hidden');
+                    loadSection('Manifesto'); // Load the first section automatically
+                }
+            }, 100);
+        }
+
+        /** Loads content into the main display area. */
+        function loadSection(sectionName) {
+            // Find the button and highlight it (optional: reset others)
+            document.querySelectorAll('#nav-menu button').forEach(btn => {
+                btn.classList.remove('bg-atari-neon', 'text-void-black');
+                btn.classList.add('bg-void-black', 'text-atari-neon');
+                if (btn.textContent.includes(sectionName)) {
+                    btn.classList.add('bg-atari-neon', 'text-void-black');
+                    btn.classList.remove('bg-void-black', 'text-atari-neon');
+                }
+            });
+
+            // Set content and update terminal message
+            contentDisplay.innerHTML = contentData[sectionName];
+            terminalMessage.textContent = `// DATASET LOADED: ${sectionName} READY.`;
+        }
+
+        /** Handles the Comm-Log form submission. */
+        function handleCommLog(event) {
+            event.preventDefault();
+            const input = document.getElementById('comm-input');
+            const message = input.value.trim();
+
+            if (message.length > 0) {
+                // Simple feedback for the 1978 UI
+                terminalMessage.textContent = `// TRANSMISSION RECEIVED: "${message.substring(0, 15)}..." PULSE SENT.`;
+                input.value = '';
+                
+                // Show a fake success message
+                contentDisplay.innerHTML = `
+                    <h2 class="text-2xl mb-4 text-atari-red">TRANSMISSION CONFIRMED</h2>
+                    <p class="mb-4 text-crt-blue">The message pulse has been sent across the temporal line. Your query will be registered in the 2025 Comm-Log.</p>
+                    <p>STAND BY FOR POTENTIAL ECHO RETURN...</p>
+                    <p class="mt-4 text-sm text-atari-red">"You can't stop the signal." - The Code Warden</p>
+                `;
+            } else {
+                terminalMessage.textContent = '// ERROR: INPUT BUFFER EMPTY. RETRY COMM-LOG.';
+            }
+        }
+
+        // Start the UI simulation when the page loads
+        window.onload = initiateSystem;
+
+    </script>
+</body>
+</html>
