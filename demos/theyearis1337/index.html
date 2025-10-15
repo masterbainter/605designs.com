@@ -24,6 +24,7 @@
             color: var(--ink);
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
             overflow-x: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%234a2c2a" d="M3 3 L3 18 L7 14 L10 21 L12 20 L9 13 L15 13 Z"/></svg>'), auto;
         }
 
         /* --- Seal Animation --- */
@@ -76,13 +77,16 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid var(--border-gold);
-            padding-bottom: 0.5rem;
+            padding: 0.8rem;
             margin-top: 3rem;
             margin-bottom: 1rem;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            border-radius: 8px;
         }
         .accordion-header:hover {
-            background-color: rgba(200, 163, 121, 0.1);
+            background-color: rgba(200, 163, 121, 0.2);
+            transform: translateX(8px);
+            box-shadow: -4px 0 12px rgba(140, 56, 56, 0.2);
         }
         .accordion-header .icon {
             transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -127,6 +131,7 @@
             background-image: linear-gradient(rgba(243, 233, 210, 0.85), rgba(243, 233, 210, 0.85)), url('./images/wizard-tower-new.jpg');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             border: 4px solid var(--border-gold);
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
@@ -148,9 +153,81 @@
             color: var(--border-gold);
             font-size: 2rem;
         }
+
+        /* --- Magical Particle Effects --- */
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, var(--border-gold), transparent);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: float 15s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(100vh) translateX(0) scale(0);
+            }
+            10% {
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(-20vh) translateX(100px) scale(1);
+            }
+            90% {
+                opacity: 0.3;
+            }
+        }
+
+        .particle:nth-child(2n) { animation-duration: 18s; animation-delay: -5s; }
+        .particle:nth-child(3n) { animation-duration: 12s; animation-delay: -8s; }
+        .particle:nth-child(4n) { animation-duration: 20s; animation-delay: -2s; }
+        .particle:nth-child(5n) { animation-duration: 14s; animation-delay: -10s; }
+
+        /* --- Music Toggle Button --- */
+        #music-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            background: var(--border-gold);
+            color: var(--ink);
+            border: 3px solid var(--ornament);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #music-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(140, 56, 56, 0.5);
+        }
+        #music-toggle.playing {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+            50% { box-shadow: 0 4px 25px rgba(200, 163, 121, 0.8); }
+        }
     </style>
 </head>
 <body class="antialiased">
+
+    <!-- Music Toggle Button -->
+    <button id="music-toggle" title="Toggle Medieval Music" aria-label="Toggle background music">
+        ♫
+    </button>
 
     <!-- The Seal -->
     <div id="seal-container" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-parchment/80 backdrop-blur-sm text-center p-4">
@@ -255,6 +332,39 @@
             const grimoireContent = document.getElementById('grimoire-content');
             let hasBeenUnsealed = false;
 
+            // --- Create Magical Particles ---
+            function createParticles() {
+                const numParticles = 25;
+                for (let i = 0; i < numParticles; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = -Math.random() * 15 + 's';
+                    document.body.appendChild(particle);
+                }
+            }
+            createParticles();
+
+            // --- Background Music ---
+            const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/05/13/audio_1808fbf07a.mp3');
+            bgMusic.loop = true;
+            bgMusic.volume = 0.2;
+            let musicPlaying = false;
+
+            const musicToggle = document.getElementById('music-toggle');
+            musicToggle.addEventListener('click', () => {
+                if (musicPlaying) {
+                    bgMusic.pause();
+                    musicToggle.classList.remove('playing');
+                    musicToggle.textContent = '♫';
+                } else {
+                    bgMusic.play().catch(e => console.log('Music play prevented:', e));
+                    musicToggle.classList.add('playing');
+                    musicToggle.textContent = '♪';
+                }
+                musicPlaying = !musicPlaying;
+            });
+
             // --- Sound Synthesis ---
             const synth = new Tone.MembraneSynth().toDestination();
             const parchmentSound = new Tone.Player({
@@ -262,6 +372,17 @@
                 autostart: false,
             }).toDestination();
             parchmentSound.volume.value = -6;
+
+            // Additional sound effects
+            const sealClickSound = new Tone.Synth({
+                oscillator: { type: 'triangle' },
+                envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.1 }
+            }).toDestination();
+
+            const accordionSound = new Tone.Synth({
+                oscillator: { type: 'sine' },
+                envelope: { attack: 0.1, decay: 0.3, sustain: 0, release: 0.2 }
+            }).toDestination();
 
 
             // --- Interactions ---
@@ -279,6 +400,10 @@
                     try {
                         await Tone.start();
                         await Tone.loaded();
+                        // Play seal click sound
+                        sealClickSound.triggerAttackRelease("G4", "0.2");
+                        setTimeout(() => sealClickSound.triggerAttackRelease("D4", "0.3"), 100);
+                        // Play parchment unrolling sound
                         parchmentSound.start();
                     } catch (error) {
                         console.error("Audio could not be initialized or played, but the site will continue to function.", error);
@@ -408,10 +533,15 @@
                     if (content.style.maxHeight) {
                         content.style.maxHeight = null;
                         content.style.padding = "0 1rem";
-                    } else {
-                        // Only play sound if Tone.js is ready
+                        // Closing sound
                         if (Tone.context.state === 'running') {
-                            synth.triggerAttackRelease("C2", "8n");
+                            accordionSound.triggerAttackRelease("F3", "0.1");
+                        }
+                    } else {
+                        // Opening sound - more elaborate
+                        if (Tone.context.state === 'running') {
+                            accordionSound.triggerAttackRelease("C4", "0.15");
+                            setTimeout(() => accordionSound.triggerAttackRelease("E4", "0.15"), 100);
                         }
                         content.style.maxHeight = content.scrollHeight + "px";
                         content.style.padding = "1.5rem 1rem";
