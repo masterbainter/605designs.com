@@ -296,45 +296,61 @@
                 // Initialize Web Speech API
                 const speechSynth = window.speechSynthesis;
 
-                elementsToType.forEach(el => {
-                    setTimeout(() => {
-                        el.style.opacity = 1;
-                        let text = el.textContent;
-                        el.textContent = '';
-
-                        // Create speech utterance for this text
-                        const utterance = new SpeechSynthesisUtterance(text);
-                        utterance.rate = 1.1; // Slightly faster
-                        utterance.pitch = 0.9; // Slightly lower pitch for wizard gravitas
-                        utterance.volume = 0.7;
-
-                        // Try to find a British English voice for wizard authenticity
-                        const voices = speechSynth.getVoices();
-                        const preferredVoice = voices.find(v => v.lang.includes('en-GB')) ||
-                                             voices.find(v => v.lang.includes('en-US')) ||
-                                             voices[0];
-                        if (preferredVoice) {
-                            utterance.voice = preferredVoice;
+                // Wait for voices to load
+                function loadVoices() {
+                    return new Promise((resolve) => {
+                        let voices = speechSynth.getVoices();
+                        if (voices.length) {
+                            resolve(voices);
+                        } else {
+                            speechSynth.addEventListener('voiceschanged', () => {
+                                resolve(speechSynth.getVoices());
+                            }, { once: true });
                         }
+                    });
+                }
 
-                        // Start speaking
-                        speechSynth.speak(utterance);
+                loadVoices().then(voices => {
+                    elementsToType.forEach(el => {
+                        setTimeout(() => {
+                            el.style.opacity = 1;
+                            let text = el.textContent;
+                            el.textContent = '';
 
-                        // Type text to match speech duration
-                        const textLength = text.length;
-                        const typingSpeed = 50; // ms per character
+                            // Create speech utterance for this text
+                            const utterance = new SpeechSynthesisUtterance(text);
+                            utterance.rate = 1.0;
+                            utterance.pitch = 0.85; // Lower pitch for wizard gravitas
+                            utterance.volume = 0.8;
 
-                        let i = 0;
-                        function typeWriter() {
-                            if (i < text.length) {
-                                el.textContent += text.charAt(i);
-                                i++;
-                                setTimeout(typeWriter, typingSpeed);
+                            // Try to find a good voice
+                            const preferredVoice = voices.find(v => v.lang.includes('en-GB')) ||
+                                                 voices.find(v => v.lang.includes('en-US')) ||
+                                                 voices[0];
+                            if (preferredVoice) {
+                                utterance.voice = preferredVoice;
                             }
-                        }
-                        typeWriter();
-                    }, delay);
-                    delay += 1000; // Stagger start times for each element
+
+                            console.log('Speaking with voice:', preferredVoice?.name || 'default');
+
+                            // Start speaking
+                            speechSynth.speak(utterance);
+
+                            // Type text to match speech duration
+                            const typingSpeed = 50; // ms per character
+
+                            let i = 0;
+                            function typeWriter() {
+                                if (i < text.length) {
+                                    el.textContent += text.charAt(i);
+                                    i++;
+                                    setTimeout(typeWriter, typingSpeed);
+                                }
+                            }
+                            typeWriter();
+                        }, delay);
+                        delay += 1000; // Stagger start times for each element
+                    });
                 });
             }
 
