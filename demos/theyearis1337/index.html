@@ -121,6 +121,33 @@
         .typing-effect {
             opacity: 0;
         }
+
+        /* --- Hero Image Section --- */
+        .hero-banner {
+            background-image: linear-gradient(rgba(243, 233, 210, 0.85), rgba(243, 233, 210, 0.85)), url('images/wizard-tower.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 4px solid var(--border-gold);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            margin-bottom: 2rem;
+        }
+
+        .grimoire-image {
+            max-width: 100%;
+            border: 8px solid var(--border-gold);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            margin: 2rem auto;
+            display: block;
+        }
+
+        .decorative-divider {
+            text-align: center;
+            margin: 3rem 0;
+            color: var(--border-gold);
+            font-size: 2rem;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -135,17 +162,22 @@
     <div id="grimoire-content" class="container mx-auto px-4 sm:px-6 py-12">
         <main class="max-w-4xl mx-auto">
             
-            <!-- Header -->
-            <header class="mb-12 text-center">
+            <!-- Header with Hero Banner -->
+            <header class="mb-12 text-center hero-banner p-12">
                 <h1 class="text-ornament typing-effect">Grand Magus Alistair's</h1>
                 <h1 class="typing-effect">Digital Grimoire</h1>
                 <p class="text-2xl mt-4 tracking-widest text-gray-700 typing-effect">Undoubtedly one of the five greatest wizards of our time.</p>
             </header>
 
+            <!-- Grimoire Image -->
+            <img src="images/old-books.jpg" alt="Ancient Grimoire" class="grimoire-image typing-effect" style="max-width: 600px;">
+
             <!-- Bio Section -->
             <section id="bio" class="mb-12 text-center text-lg leading-relaxed typing-effect">
                 Greetings, traveler. You have proven worthy to unseal my private scroll. I am Alistair the Astute, and it is no mere boast to claim my place among the five most powerful magi. While others dabble in cheap tricks, I command reality itself. I have transmuted beans into potent elixirs (a process called "percolation"), scryed the future with an oracle in my palm (it foretold rain, and it was so), and once silenced a great beast with a milk-filled totem. The cat was pleased. Here, I shall document my grand adventures and, more importantly, expose the frauds who dare call themselves my peers.
             </section>
+
+            <div class="decorative-divider typing-effect">✦ ✦ ✦</div>
 
             <!-- Accordion 1: The Fools -->
             <div>
@@ -199,9 +231,15 @@
                         <h3 class="text-2xl font-bold">An Encounter with the Iron Beast</h3>
                         <p class="mt-2 text-lg leading-relaxed">My loyal steed, a roaring creature named "Honda," fell silent upon the Great Asphalt River. Smoke billowed from its maw. I performed the ancient rites: I struck its dashboard and uttered the forbidden words my father taught me. Its spirit had fled. I was forced to summon a tow-truck warlock via my scrying mirror, a costly and humiliating ordeal.</p>
                      </div>
+
+                    <!-- Mystical Image -->
+                    <img src="images/mystical.jpg" alt="Mystical Artifacts" class="grimoire-image" style="max-width: 700px;">
+
                 </div>
             </div>
-            
+
+            <div class="decorative-divider">✦ ✦ ✦</div>
+
             <!-- Footer -->
             <footer class="mt-16 text-lg text-center border-t-2 border-dashed border-border-gold pt-8">
                 <p>Copyright 1337, by order of the Grand Magus Alistair</p>
