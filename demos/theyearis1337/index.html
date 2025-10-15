@@ -312,20 +312,35 @@
                         console.log('Initial voices count:', voices.length);
 
                         if (voices.length) {
+                            console.log('Voices already loaded');
                             resolve(voices);
                         } else {
-                            // Wait for voices with timeout
+                            console.log('Waiting for voices to load...');
+                            // Wait for voices with longer timeout
                             const timeout = setTimeout(() => {
-                                console.warn('Voice loading timeout, using default');
-                                resolve(speechSynth.getVoices());
-                            }, 1000);
+                                const voicesNow = speechSynth.getVoices();
+                                console.warn('Voice loading timeout. Voices now:', voicesNow.length);
+                                if (voicesNow.length === 0) {
+                                    // Force a short delay and try again
+                                    setTimeout(() => {
+                                        resolve(speechSynth.getVoices());
+                                    }, 100);
+                                } else {
+                                    resolve(voicesNow);
+                                }
+                            }, 2000);
 
                             speechSynth.addEventListener('voiceschanged', () => {
                                 clearTimeout(timeout);
                                 const loadedVoices = speechSynth.getVoices();
-                                console.log('Voices loaded:', loadedVoices.length);
+                                console.log('Voices loaded via event:', loadedVoices.length);
                                 resolve(loadedVoices);
                             }, { once: true });
+
+                            // Also try manually triggering getVoices() which can sometimes help
+                            setTimeout(() => {
+                                speechSynth.getVoices();
+                            }, 100);
                         }
                     });
                 }
