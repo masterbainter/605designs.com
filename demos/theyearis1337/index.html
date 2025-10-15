@@ -293,52 +293,81 @@
                 const elementsToType = document.querySelectorAll('.typing-effect');
                 let delay = 0;
 
-                // Initialize Web Speech API
+                // Check if speech synthesis is available
                 const speechSynth = window.speechSynthesis;
+                const speechAvailable = 'speechSynthesis' in window;
 
-                // Wait for voices to load
+                console.log('Speech Synthesis available:', speechAvailable);
+
+                // Wait for voices to load with timeout
                 function loadVoices() {
                     return new Promise((resolve) => {
+                        if (!speechAvailable) {
+                            console.warn('Speech synthesis not available');
+                            resolve([]);
+                            return;
+                        }
+
                         let voices = speechSynth.getVoices();
+                        console.log('Initial voices count:', voices.length);
+
                         if (voices.length) {
                             resolve(voices);
                         } else {
-                            speechSynth.addEventListener('voiceschanged', () => {
+                            // Wait for voices with timeout
+                            const timeout = setTimeout(() => {
+                                console.warn('Voice loading timeout, using default');
                                 resolve(speechSynth.getVoices());
+                            }, 1000);
+
+                            speechSynth.addEventListener('voiceschanged', () => {
+                                clearTimeout(timeout);
+                                const loadedVoices = speechSynth.getVoices();
+                                console.log('Voices loaded:', loadedVoices.length);
+                                resolve(loadedVoices);
                             }, { once: true });
                         }
                     });
                 }
 
                 loadVoices().then(voices => {
+                    console.log('Starting typing with', voices.length, 'voices available');
+
                     elementsToType.forEach(el => {
                         setTimeout(() => {
                             el.style.opacity = 1;
                             let text = el.textContent;
                             el.textContent = '';
 
-                            // Create speech utterance for this text
-                            const utterance = new SpeechSynthesisUtterance(text);
-                            utterance.rate = 1.0;
-                            utterance.pitch = 0.85; // Lower pitch for wizard gravitas
-                            utterance.volume = 0.8;
+                            // Try to use voice narration if available
+                            if (speechAvailable && voices.length > 0) {
+                                const utterance = new SpeechSynthesisUtterance(text);
+                                utterance.rate = 0.95;
+                                utterance.pitch = 0.85;
+                                utterance.volume = 0.85;
 
-                            // Try to find a good voice
-                            const preferredVoice = voices.find(v => v.lang.includes('en-GB')) ||
-                                                 voices.find(v => v.lang.includes('en-US')) ||
-                                                 voices[0];
-                            if (preferredVoice) {
-                                utterance.voice = preferredVoice;
+                                // Find best voice
+                                const preferredVoice = voices.find(v => v.lang.includes('en-GB')) ||
+                                                     voices.find(v => v.lang.includes('en-US')) ||
+                                                     voices[0];
+
+                                if (preferredVoice) {
+                                    utterance.voice = preferredVoice;
+                                    console.log('Using voice:', preferredVoice.name, preferredVoice.lang);
+                                }
+
+                                try {
+                                    speechSynth.speak(utterance);
+                                    console.log('Started speaking:', text.substring(0, 50) + '...');
+                                } catch (e) {
+                                    console.error('Speech error:', e);
+                                }
+                            } else {
+                                console.warn('Skipping voice narration - not available');
                             }
 
-                            console.log('Speaking with voice:', preferredVoice?.name || 'default');
-
-                            // Start speaking
-                            speechSynth.speak(utterance);
-
-                            // Type text to match speech duration
-                            const typingSpeed = 50; // ms per character
-
+                            // Type text
+                            const typingSpeed = 50;
                             let i = 0;
                             function typeWriter() {
                                 if (i < text.length) {
@@ -349,7 +378,7 @@
                             }
                             typeWriter();
                         }, delay);
-                        delay += 1000; // Stagger start times for each element
+                        delay += 1000;
                     });
                 });
             }
