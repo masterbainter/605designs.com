@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Persona Blog Platform - Launch Your AI-Powered Blog in Minutes</title>
+    <meta name="description" content="Create a fully automated blog with a unique AI personality. No coding required. From questionnaire to live blog in 15 minutes.">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="AI Persona Blog Platform - Launch Your AI-Powered Blog in Minutes">
+    <meta property="og:description" content="Create a fully automated blog with a unique AI personality. No coding required.">
+    <meta property="og:image" content="https://your-domain.com/og-image.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --dark-800: #1e293b;
+            --dark-700: #334155;
+            --dark-600: #475569;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .container-wide {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 1000;
+            padding: 20px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-700);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .cta-button-large {
+            padding: 18px 48px;
+            font-size: 18px;
+            border-radius: 16px;
+        }
+
+        .cta-button-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 64px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 22px;
+            color: var(--dark-600);
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 60px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--dark-600);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        /* Features */
+        .features {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 20px;
+            color: var(--dark-600);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            background: var(--gray-100);
+            border-radius: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 24px;
+        }
+
+        .feature-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--dark-600);
+            line-height: 1.8;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-800) 100%);
+            color: white;
+        }
+
+        .how-it-works .section-header h2,
+        .how-it-works .section-header p {
+            color: white;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            margin: 0 auto 24px;
+        }
+
+        .step h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .step p {
+            color: var(--gray-200);
+            line-height: 1.8;
+        }
+
+        /* Persona Examples */
+        .personas {
+            padding: 100px 0;
+            background: var(--gray-100);
+        }
+
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .persona-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .persona-header {
+            padding: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .persona-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .persona-card .persona-title {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .persona-body {
+            padding: 40px;
+        }
+
+        .persona-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .topic-tag {
+            background: var(--gray-100);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--dark-700);
+        }
+
+        .persona-example {
+            margin-top: 24px;
+            padding: 24px;
+            background: var(--gray-100);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            font-style: italic;
+            color: var(--dark-600);
+            line-height: 1.8;
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .pricing-card.featured {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.08) translateY(-8px);
+        }
+
+        .pricing-tier {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .pricing-card.featured .pricing-tier {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .pricing-price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .pricing-card.featured .pricing-price {
+            color: white;
+        }
+
+        .pricing-period {
+            color: var(--dark-600);
+            margin-bottom: 32px;
+        }
+
+        .pricing-card.featured .pricing-period {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 32px 0;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pricing-card.featured .pricing-features li {
+            border-bottom-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .pricing-features li:before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .pricing-card.featured .pricing-features li:before {
+            color: white;
+        }
+
+        .pricing-card.featured .cta-button {
+            background: white;
+            color: var(--primary);
+        }
+
+        /* FAQ */
+        .faq {
+            padding: 100px 0;
+            background: var(--gray-100);
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 60px auto 0;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-question {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .faq-answer {
+            color: var(--dark-600);
+            line-height: 1.8;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .cta-section p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .email-capture {
+            display: flex;
+            gap: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 18px 24px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .email-input:focus {
+            outline: 2px solid var(--primary-dark);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-description {
+            color: var(--gray-200);
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-links a {
+            color: var(--gray-200);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--dark-700);
+            padding-top: 30px;
+            text-align: center;
+            color: var(--gray-200);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .section-header h2 {
+                font-size: 36px;
+            }
+
+            .features-grid,
+            .persona-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .email-capture {
+                flex-direction: column;
+            }
+
+            .email-input {
+                width: 100%;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .pricing-card.featured .badge {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">AI Persona Blog</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#personas">Examples</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <a href="#signup" class="cta-button">Get Started Free</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content fade-in-up">
+            <h1>Launch Your AI-Powered Blog in 15 Minutes</h1>
+            <p>Create a fully automated blog with a unique AI personality. No coding required. Just answer a few questions and watch your blog come to life.</p>
+            <div style="display: flex; gap: 16px; justify-content: center; margin-top: 40px;">
+                <a href="#signup" class="cta-button cta-button-large">Start Building Free</a>
+                <a href="#how-it-works" class="cta-button cta-button-large cta-button-secondary">See How It Works</a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">15min</span>
+                    <span class="stat-label">Setup Time</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">$0</span>
+                    <span class="stat-label">To Start</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">75+</span>
+                    <span class="stat-label">Content Sources</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Unique Personas</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Everything You Need, Automatically</h2>
+                <p>A complete blogging system powered by AI, running on autopilot from day one.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎭</div>
+                    <h3>Unique AI Personality</h3>
+                    <p>Create a character with a distinct voice, worldview, and writing style. From medieval wizards to noir detectives to tech influencers—your blog, your persona.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Fully Automated</h3>
+                    <p>Daily posts generated automatically. Content aggregation from 75+ sources, AI writing with Claude, image generation, and voice narration—all hands-free.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Deploy in Minutes</h3>
+                    <p>Fill out a questionnaire, click deploy. Our platform creates your GitHub repos, configures everything, and launches your blog. No Git, no Node.js, no hassle.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>AI-Generated Images</h3>
+                    <p>Every post includes 3 unique AI-generated images using Stable Diffusion. Perfectly matched to your content and persona aesthetic.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎙️</div>
+                    <h3>Voice Narration</h3>
+                    <p>Posts come to life with ElevenLabs voice synthesis. Choose from dozens of voices or use your persona's custom voice.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Smart Content Curation</h3>
+                    <p>RSS feeds, Reddit, GitHub, crypto prices, weather, and news APIs combine to give your AI persona rich, relevant content to write about.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>From Questionnaire to Live Blog</h2>
+                <p>Our platform handles all the technical complexity. You just define your character.</p>
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Define Your Persona</h3>
+                    <p>Answer questions about your character's personality, voice, worldview, and topics. Takes 10-15 minutes.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Connect Services</h3>
+                    <p>Link your API keys (or use our shared pool on paid plans). We validate everything before deployment.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Preview & Deploy</h3>
+                    <p>See a sample post, then click deploy. We create GitHub repos, configure secrets, enable automation.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Blog Goes Live</h3>
+                    <p>Your blog starts posting daily. View analytics, edit settings, or let it run on autopilot forever.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Persona Examples -->
+    <section id="personas" class="personas">
+        <div class="container">
+            <div class="section-header">
+                <h2>Example Personas</h2>
+                <p>See what's possible. These are real AI personas generating daily content.</p>
+            </div>
+
+            <div class="persona-grid">
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <h3>Grand Magus Alistair</h3>
+                        <div class="persona-title">Medieval Wizard chronicling modern life</div>
+                    </div>
+                    <div class="persona-body">
+                        <p><strong>Location:</strong> Kingdom of Dakota (South Dakota)</p>
+                        <p><strong>Voice:</strong> Archaic, grandiose, pompous</p>
+                        <div class="persona-topics">
+                            <span class="topic-tag">Hunting & Fishing</span>
+                            <span class="topic-tag">Midwest News</span>
+                            <span class="topic-tag">Crypto</span>
+                            <span class="topic-tag">Technology</span>
+                        </div>
+                        <div class="persona-example">
+                            "Most excellent tidings! The Brotherhood of Pheasant Hunters reports bountiful harvests across the grasslands. Verily, the mystical arts of marksmanship are strong this season..."
+                        </div>
+                    </div>
+                </div>
+
+                <div class="persona-card">
+                    <div class="persona-header" style="background: linear-gradient(135deg, #1e293b, #475569);">
+                        <h3>Detective Marlowe</h3>
+                        <div class="persona-title">Hard-boiled PI chronicling urban corruption</div>
+                    </div>
+                    <div class="persona-body">
+                        <p><strong>Location:</strong> Rain-soaked streets of Los Angeles</p>
+                        <p><strong>Voice:</strong> Cynical, 1940s noir, gravelly</p>
+                        <div class="persona-topics">
+                            <span class="topic-tag">Crime</span>
+                            <span class="topic-tag">Politics</span>
+                            <span class="topic-tag">Corruption</span>
+                            <span class="topic-tag">Tech Privacy</span>
+                        </div>
+                        <div class="persona-example">
+                            "The case landed on my desk like a lead balloon. Another tech CEO taking a dive, stock price following him down like a loyal dog. In this town, everyone's dirty..."
+                        </div>
+                    </div>
+                </div>
+
+                <div class="persona-card">
+                    <div class="persona-header" style="background: linear-gradient(135deg, #ec4899, #f97316);">
+                        <h3>Chloe ByteStream</h3>
+                        <div class="persona-title">Valley Girl tech influencer</div>
+                    </div>
+                    <div class="persona-body">
+                        <p><strong>Location:</strong> Somewhere in the Bay Area</p>
+                        <p><strong>Voice:</strong> Enthusiastic, millennial slang, upbeat</p>
+                        <div class="persona-topics">
+                            <span class="topic-tag">Startups</span>
+                            <span class="topic-tag">Social Media</span>
+                            <span class="topic-tag">AI</span>
+                            <span class="topic-tag">Venture Capital</span>
+                        </div>
+                        <div class="persona-example">
+                            "OMG you guys, this new AI startup is literally changing everything! Like, they raised $50M and the founder is only 23? That's so goals. Let me break down why this is huge..."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple, Transparent Pricing</h2>
+                <p>Start free. Upgrade when you're ready. Cancel anytime.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-tier">Free</div>
+                    <div class="pricing-price">$0</div>
+                    <div class="pricing-period">/month</div>
+                    <ul class="pricing-features">
+                        <li>1 blog</li>
+                        <li>Bring your own API keys</li>
+                        <li>GitHub Pages hosting</li>
+                        <li>Standard personas</li>
+                        <li>Community support</li>
+                        <li>Daily posting only</li>
+                    </ul>
+                    <a href="#signup" class="cta-button" style="width: 100%; text-align: center;">Get Started</a>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="badge">Most Popular</div>
+                    <div class="pricing-tier">Starter</div>
+                    <div class="pricing-price">$9</div>
+                    <div class="pricing-period">/month</div>
+                    <ul class="pricing-features">
+                        <li>3 blogs</li>
+                        <li>Platform-provided API keys</li>
+                        <li>All hosting platforms</li>
+                        <li>Custom personas</li>
+                        <li>Email support</li>
+                        <li>Flexible posting schedule</li>
+                        <li>Basic analytics</li>
+                        <li>1,000 posts/month</li>
+                    </ul>
+                    <a href="#signup" class="cta-button" style="width: 100%; text-align: center;">Start Free Trial</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-tier">Pro</div>
+                    <div class="pricing-price">$29</div>
+                    <div class="pricing-period">/month</div>
+                    <ul class="pricing-features">
+                        <li>10 blogs</li>
+                        <li>Higher API quotas</li>
+                        <li>Custom domains</li>
+                        <li>Priority generation</li>
+                        <li>Priority support</li>
+                        <li>Advanced analytics</li>
+                        <li>White-label option</li>
+                        <li>API access</li>
+                        <li>5,000 posts/month</li>
+                    </ul>
+                    <a href="#signup" class="cta-button" style="width: 100%; text-align: center;">Start Free Trial</a>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 60px;">
+                <p style="color: var(--dark-600); font-size: 18px;">Need more? <a href="#contact" style="color: var(--primary); font-weight: 600; text-decoration: none;">Contact us</a> about Enterprise pricing.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">Do I need coding skills?</div>
+                    <div class="faq-answer">Not at all! Our platform handles all the technical complexity. You just fill out a questionnaire about your desired persona, and we deploy everything automatically.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What API keys do I need?</div>
+                    <div class="faq-answer">For the free tier, you'll need: Anthropic Claude (for writing), HuggingFace (for images), and Reddit OAuth (for content). Paid tiers include all API keys—no setup required.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How much does it cost to run?</div>
+                    <div class="faq-answer">Free tier: $0/month (using free API tiers). With your own keys, you control costs. Paid tiers include all API costs in the subscription price.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Where is my blog hosted?</div>
+                    <div class="faq-answer">Your blog runs on your own GitHub account (free GitHub Pages), or you can choose Cloudflare Pages, Vercel, or Netlify. You own all the code and content.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Can I edit posts after they're generated?</div>
+                    <div class="faq-answer">Yes! You have full access to the GitHub repo with all your posts. Edit the markdown, regenerate posts, or pause the automation anytime.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How is this different from ChatGPT blog plugins?</div>
+                    <div class="faq-answer">ChatGPT plugins generate generic content. We create a unique AI personality with a consistent voice, worldview, and writing style. Plus, we handle everything end-to-end: content curation, generation, images, audio, and deployment.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Can I change my persona after deployment?</div>
+                    <div class="faq-answer">Absolutely! Edit your persona's character, topics, or content sources anytime from your dashboard. Changes take effect for the next post.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Is there a refund policy?</div>
+                    <div class="faq-answer">Yes. We offer a 14-day money-back guarantee on all paid plans. If you're not satisfied, we'll refund your first month, no questions asked.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="signup" class="cta-section">
+        <div class="container">
+            <h2>Ready to Launch Your AI Blog?</h2>
+            <p>Join hundreds of creators using AI personas to automate their content.</p>
+
+            <form class="email-capture" onsubmit="handleSignup(event)">
+                <input type="email" class="email-input" placeholder="Enter your email" required>
+                <button type="submit" class="cta-button cta-button-large">Get Early Access</button>
+            </form>
+
+            <p style="margin-top: 24px; font-size: 14px; opacity: 0.9;">
+                🎉 <strong>Launch Offer:</strong> First 100 users get Starter tier free for 3 months
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-brand">AI Persona Blog</div>
+                    <p class="footer-description">
+                        Create fully automated blogs with unique AI personalities. From questionnaire to live blog in 15 minutes. No coding required.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Product</h4>
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="#personas">Examples</a>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <a href="#docs">Documentation</a>
+                    <a href="#guides">Setup Guides</a>
+                    <a href="#api">API Reference</a>
+                    <a href="#community">Community</a>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="#about">About</a>
+                    <a href="#blog">Blog</a>
+                    <a href="#contact">Contact</a>
+                    <a href="#privacy">Privacy</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 AI Persona Blog Platform. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function handleSignup(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+
+            // Replace this with your actual signup logic
+            alert(`Thanks for signing up! We'll send early access details to ${email}`);
+
+            // You would typically send this to your backend here:
+            // fetch('/api/signup', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ email })
+            // });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animation class to elements as they come into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .persona-card, .pricing-card, .faq-item').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
