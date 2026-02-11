@@ -12,6 +12,9 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://images.bluecrane.pro/favicon-16x16.png">
     <link rel="icon" href="https://images.bluecrane.pro/favicon.ico">
 
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -411,6 +414,13 @@
                         <label class="block text-sm font-medium text-gray-300 mb-2">Please tell us a little more about your project and anticipated needs</label>
                         <textarea name="details" rows="4" class="w-full bg-[#1e1e1e] border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-[#0091C6] focus:ring-1 focus:ring-[#0091C6] outline-none transition-colors resize-vertical"></textarea>
                     </div>
+                    <!-- Honeypot - hidden from real users -->
+                    <div style="position:absolute;left:-9999px;" aria-hidden="true">
+                        <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+                    </div>
+                    <!-- Turnstile invisible widget -->
+                    <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="dark"></div>
+                    <div id="consulting-form-status" class="text-center text-sm hidden"></div>
                     <button type="submit" class="w-full bg-[#0091C6] hover:bg-[#007aa8] text-white font-semibold py-3 rounded-lg transition-transform duration-300 hover:scale-[1.02]">Submit Consulting Inquiry</button>
                 </form>
 
@@ -452,6 +462,13 @@
                         <label class="block text-sm font-medium text-gray-300 mb-2">Please tell us a little more about how we can serve you</label>
                         <textarea name="details" rows="4" class="w-full bg-[#1e1e1e] border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-[#0091C6] focus:ring-1 focus:ring-[#0091C6] outline-none transition-colors resize-vertical"></textarea>
                     </div>
+                    <!-- Honeypot - hidden from real users -->
+                    <div style="position:absolute;left:-9999px;" aria-hidden="true">
+                        <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+                    </div>
+                    <!-- Turnstile invisible widget -->
+                    <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="dark"></div>
+                    <div id="service-form-status" class="text-center text-sm hidden"></div>
                     <button type="submit" class="w-full bg-[#0091C6] hover:bg-[#007aa8] text-white font-semibold py-3 rounded-lg transition-transform duration-300 hover:scale-[1.02]">Submit Service Inquiry</button>
                 </form>
             </div>
@@ -608,6 +625,60 @@
                 consultingFormToggle.classList.remove('bg-[#0091C6]', 'text-white');
                 consultingFormToggle.classList.add('hover:bg-gray-700/50', 'text-gray-300');
             });
+
+            // Form Submission Handler
+            function handleFormSubmit(form, formType) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+
+                    const statusEl = document.getElementById(formType + '-form-status');
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+
+                    // Show loading state
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Submitting...';
+                    submitBtn.classList.add('opacity-70');
+                    statusEl.classList.add('hidden');
+
+                    try {
+                        const formData = new FormData(form);
+                        const endpoint = formType === 'consulting' ? '/submit/consulting' : '/submit/service';
+                        const resp = await fetch('https://forms.bluecrane.pro' + endpoint, {
+                            method: 'POST',
+                            body: formData,
+                        });
+
+                        const result = await resp.json();
+
+                        statusEl.classList.remove('hidden');
+                        if (resp.ok && result.success) {
+                            statusEl.textContent = result.message;
+                            statusEl.className = 'text-center text-sm text-green-400 py-2';
+                            form.reset();
+                            // Reset Turnstile widget
+                            if (window.turnstile) {
+                                const widget = form.querySelector('.cf-turnstile');
+                                if (widget) turnstile.reset(widget);
+                            }
+                        } else {
+                            statusEl.textContent = result.error || 'Something went wrong. Please try again.';
+                            statusEl.className = 'text-center text-sm text-red-400 py-2';
+                        }
+                    } catch (err) {
+                        statusEl.classList.remove('hidden');
+                        statusEl.textContent = 'Network error. Please check your connection and try again.';
+                        statusEl.className = 'text-center text-sm text-red-400 py-2';
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                        submitBtn.classList.remove('opacity-70');
+                    }
+                });
+            }
+
+            handleFormSubmit(consultingForm, 'consulting');
+            handleFormSubmit(serviceForm, 'service');
 
         });
     </script>
