@@ -29,9 +29,17 @@
             color: #E0E0E0;
         }
 
-        /* Hero section background image with overlay */
-        .hero-section {
-            background-image: linear-gradient(rgba(0, 31, 63, 0.7), rgba(18, 18, 18, 0.9)), url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+        /* Main/Offerings section background */
+        .main-section {
+            background-image: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.7)), url('https://images.bluecrane.pro/commons01.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* About section background */
+        .about-section {
+            background-image: linear-gradient(rgba(24, 24, 24, 0.85), rgba(24, 24, 24, 0.85)), url('https://images.bluecrane.pro/arial01cut.webp');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -140,8 +148,8 @@
     </header>
 
     <main>
-        <!-- Hero Section -->
-        <section id="home" class="hero-section h-screen flex items-center justify-center text-center">
+        <!-- Hero/Offerings Section -->
+        <section id="home" class="main-section py-20 md:py-32 text-center">
             <div class="max-w-4xl mx-auto px-6">
                 <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-4 reveal">Blue Crane</h1>
                 <p class="text-lg md:text-2xl text-gray-300 reveal" style="transition-delay: 200ms;">High-Level Project Consulting and Hands-On Building Services for Efficient, Sustainable Outcomes.</p>
@@ -150,7 +158,7 @@
         </section>
 
         <!-- About Section -->
-        <section id="about" class="py-20 md:py-32 bg-[#181818]">
+        <section id="about" class="about-section py-20 md:py-32">
             <div class="container mx-auto px-6 max-w-4xl text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 reveal">My Approach to Construction Solutions</h2>
                 <div class="w-24 h-1 bg-[#0091C6] mx-auto mb-8 reveal"></div>
@@ -308,9 +316,15 @@
                     <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 reveal">Get in Touch</h2>
                     <p class="text-lg text-gray-400 max-w-2xl mx-auto reveal">Have a project in mind? I'd love to hear from you. Let's build something great together.</p>
                 </div>
-                <!-- Contact Info -->
-                <div class="max-w-lg mx-auto flex justify-center mb-16">
-                    <div class="space-y-8 text-gray-300 reveal" style="transition-delay: 200ms;">
+                <!-- Contact Info with Headshot -->
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center mb-16">
+                    <!-- Headshot & Message -->
+                    <div class="text-center reveal" style="transition-delay: 200ms;">
+                        <img src="https://images.bluecrane.pro/chadheadshot.webp" alt="Headshot of the consultant" class="w-48 h-48 rounded-full mx-auto mb-6 object-cover border-4 border-[#0091C6]/50">
+                        <p class="text-lg text-gray-300 italic">"I am personally invested in the success of every project. I look forward to understanding your vision and collaborating to achieve exceptional results."</p>
+                    </div>
+                    <!-- Contact Details -->
+                    <div class="space-y-8 text-gray-300 reveal" style="transition-delay: 400ms;">
                         <div class="flex items-start space-x-4">
                             <div class="bg-[#0091C6]/10 text-[#0091C6] rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -330,7 +344,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div><!-- end grid -->
 
                 <!-- Form Toggle -->
                 <div class="flex justify-center mb-10 reveal">
