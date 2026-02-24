@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canada Goose Lodge - Private Vacation Log Home | Winner, SD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://images.canadagooselodge.com/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://images.canadagooselodge.com/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://images.canadagooselodge.com/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://images.canadagooselodge.com/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="https://images.canadagooselodge.com/android-chrome-512x512.png">
+    <!-- SEO -->
+    <meta name="description" content="Canada Goose Lodge is a private vacation log home in the pheasant hunting capital of the world, Winner, SD. Thousands of Canadian geese and world-class pheasant hunting await.">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://canadagooselodge.com/">
+    <meta property="og:title" content="Canada Goose Lodge | Private Vacation Log Home in Winner, SD">
+    <meta property="og:description" content="Canada Goose Lodge is a private vacation log home in the pheasant hunting capital of the world, Winner, SD. Thousands of Canadian geese and world-class pheasant hunting await.">
+    <meta property="og:image" content="https://images.canadagooselodge.com/og-preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Canada Goose Lodge | Private Vacation Log Home in Winner, SD">
+    <meta name="twitter:description" content="Canada Goose Lodge is a private vacation log home in the pheasant hunting capital of the world, Winner, SD. Thousands of Canadian geese and world-class pheasant hunting await.">
+    <meta name="twitter:image" content="https://images.canadagooselodge.com/og-preview.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(27, 67, 50, 0.6), rgba(0, 0, 0, 0.5));
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .mobile-nav {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .mobile-nav.open {
+            transform: translateX(0);
+        }
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        img {
+            background-color: #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-gray-800">
+    <!-- Facebook SDK -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0" nonce="cgl_nonce"></script>
+
+    <!-- Header & Navigation -->
+    <header id="header" class="bg-white/90 backdrop-blur-md fixed top-0 left-0 right-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-emerald-900 playfair">Canada Goose Lodge</a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#about" class="text-gray-600 hover:text-emerald-800 transition">About</a>
+                <a href="#experience" class="text-gray-600 hover:text-emerald-800 transition">Experience</a>
+                <a href="#location" class="text-gray-600 hover:text-emerald-800 transition">Location</a>
+                <a href="#contact" class="text-gray-600 hover:text-emerald-800 transition">Contact</a>
+                <a href="https://www.facebook.com/canadagooselodge" target="_blank" class="text-gray-600 hover:text-blue-600 transition" aria-label="Facebook">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                </a>
+                <a href="tel:605-840-1079" class="bg-emerald-800 text-white px-5 py-2 rounded-full hover:bg-emerald-900 transition shadow">Call Us</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-800 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="mobile-nav fixed top-0 right-0 h-full w-64 bg-white/95 backdrop-blur-md z-50 shadow-lg p-8 md:hidden">
+        <button id="close-mobile-menu" class="absolute top-4 right-4 text-gray-800">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <div class="flex flex-col space-y-6 mt-10">
+            <a href="#about" class="text-gray-800 hover:text-emerald-800 text-lg mobile-nav-link">About</a>
+            <a href="#experience" class="text-gray-800 hover:text-emerald-800 text-lg mobile-nav-link">Experience</a>
+            <a href="#location" class="text-gray-800 hover:text-emerald-800 text-lg mobile-nav-link">Location</a>
+            <a href="#contact" class="text-gray-800 hover:text-emerald-800 text-lg mobile-nav-link">Contact</a>
+            <a href="https://www.facebook.com/canadagooselodge" target="_blank" class="text-gray-800 hover:text-blue-600 text-lg mobile-nav-link flex items-center">
+                <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                Facebook
+            </a>
+            <a href="tel:605-840-1079" class="bg-emerald-800 text-white px-6 py-3 rounded-full hover:bg-emerald-900 transition shadow-lg text-center mt-4">Call Us</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center text-white text-center overflow-hidden bg-cover bg-center" style="background-image: url('https://images.canadagooselodge.com/hero-lodge.webp');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content px-4">
+            <p class="text-amber-300 text-lg md:text-xl font-semibold tracking-widest uppercase mb-4">Winner, South Dakota</p>
+            <h1 class="text-4xl md:text-7xl font-bold playfair mb-6 leading-tight">Canada Goose Lodge</h1>
+            <p class="text-lg md:text-2xl mb-8 max-w-3xl mx-auto text-gray-200">A private vacation log home in the pheasant hunting capital of the world</p>
+            <a href="#contact" class="bg-amber-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-amber-700 transition-transform transform hover:scale-105 shadow-2xl inline-block">Plan Your Stay</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold playfair mb-6 text-emerald-900">Welcome to Canada Goose Lodge</h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-8">
+                    Nestled in the heart of Winner, South Dakota, Canada Goose Lodge is a private vacation log home built for those who love the outdoors. Whether you're here for world-class pheasant hunting, chasing thousands of Canadian geese on their migration route, or simply looking for a peaceful retreat in the South Dakota countryside, our lodge is your home away from home.
+                </p>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    Winner sits at the crossroads of some of the finest upland bird hunting in North America. Our log home offers a warm, comfortable base for your group — a place to gather after a day in the field, share stories, and plan tomorrow's adventure.
+                </p>
+            </div>
+            <div class="mt-16 grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="rounded-xl overflow-hidden shadow-xl">
+                    <img src="https://images.canadagooselodge.com/log-cabin.webp" alt="Canada Goose Lodge log home" class="w-full h-72 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1B4332/FFFFFF?text=Lodge+Photo';">
+                </div>
+                <div class="rounded-xl overflow-hidden shadow-xl">
+                    <img src="https://images.canadagooselodge.com/geese-flight.webp" alt="Canadian geese in flight over South Dakota" class="w-full h-72 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1B4332/FFFFFF?text=Geese+Photo';">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parallax Divider -->
+    <div class="py-40 parallax" style="background-image: url('https://images.canadagooselodge.com/geese-flight.webp');">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-4xl text-white font-bold playfair bg-black/50 p-6 rounded-lg inline-block">The Pheasant Hunting Capital of the World</h3>
+        </div>
+    </div>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 bg-stone-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center playfair mb-4 text-emerald-900">The Experience</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Everything you need for an unforgettable South Dakota hunting trip</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="feature-card bg-white p-8 rounded-xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 playfair text-emerald-900">Private Log Home</h3>
+                    <p class="text-gray-600">A spacious, authentic log cabin that's all yours — fully furnished with everything your group needs for a comfortable stay.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 playfair text-emerald-900">World-Class Pheasant Hunting</h3>
+                    <p class="text-gray-600">Winner, SD is renowned as the pheasant hunting capital of the world. Miles of prime habitat and abundant bird populations await.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 playfair text-emerald-900">Canadian Geese Migration</h3>
+                    <p class="text-gray-600">Thousands of Canadian geese pass through the Winner area each season, making it a premier destination for waterfowl enthusiasts.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 playfair text-emerald-900">Group Getaway</h3>
+                    <p class="text-gray-600">Perfect for hunting parties, family reunions, or a weekend with friends. The whole lodge is yours — no shared spaces, no strangers.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 playfair text-emerald-900">Prime Location</h3>
+                    <p class="text-gray-600">Located on Country Club Road in Winner — easy to find, close to town, and surrounded by South Dakota's beautiful open prairies.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-xl shadow-lg text-center">
+                    <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 playfair text-emerald-900">South Dakota Hospitality</h3>
+                    <p class="text-gray-600">Experience the warmth and friendliness that the Midwest is known for. We're here to help make your trip one to remember.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parallax Divider 2 -->
+    <div class="py-40 parallax" style="background-image: url('https://images.canadagooselodge.com/prairie-sunset.webp');">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-4xl text-white font-bold playfair bg-black/50 p-6 rounded-lg inline-block">Your South Dakota Adventure Awaits</h3>
+        </div>
+    </div>
+
+    <!-- Location Section -->
+    <section id="location" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center playfair mb-4 text-emerald-900">Find Us in Winner, SD</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Located in the heart of Tripp County, Winner is easy to reach and hard to leave</p>
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <div class="bg-stone-50 p-8 rounded-xl">
+                        <h3 class="text-2xl font-bold playfair text-emerald-900 mb-4">Getting Here</h3>
+                        <p class="text-gray-600 mb-4">
+                            Winner is located in south-central South Dakota along US Highway 18 and SD Highway 44. The lodge sits on Country Club Road, just minutes from downtown Winner.
+                        </p>
+                        <div class="space-y-3 text-gray-600">
+                            <p><span class="font-semibold text-gray-800">From Sioux Falls:</span> ~3 hours west on I-90 to Murdo, then south on US-83</p>
+                            <p><span class="font-semibold text-gray-800">From Rapid City:</span> ~3.5 hours east on I-90 to Murdo, then south on US-83</p>
+                            <p><span class="font-semibold text-gray-800">From Omaha:</span> ~5 hours north on US-281 to US-18</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-xl overflow-hidden shadow-xl">
+                    <iframe src="https://maps.google.com/maps?q=1253%20Country%20Club%20Rd%2C%20Winner%2C%20SD%2057580&t=&z=14&ie=UTF8&iwloc=&output=embed" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facebook Section -->
+    <section id="facebook-feed" class="py-20 bg-stone-50">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold playfair mb-6 text-emerald-900">Follow Us on Facebook</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 leading-relaxed mb-12">
+                Stay up to date with lodge availability, hunting season news, and photos from our guests.
+            </p>
+            <div class="flex justify-center">
+                <div class="w-full max-w-lg">
+                    <div class="fb-page"
+                         data-href="https://www.facebook.com/canadagooselodge"
+                         data-tabs="timeline"
+                         data-adapt-container-width="true"
+                         data-hide-cover="false"
+                         data-show-facepile="true">
+                        <blockquote cite="https://www.facebook.com/canadagooselodge" class="fb-xfbml-parse-ignore">
+                            <a href="https://www.facebook.com/canadagooselodge">Canada Goose Lodge, LLC</a>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-emerald-900 text-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <h2 class="text-4xl font-bold playfair mb-4">Plan Your Stay</h2>
+                <p class="text-lg text-emerald-200 mb-10">Ready for the ultimate South Dakota hunting experience? Give us a call to book your dates.</p>
+            </div>
+            <div class="flex flex-wrap justify-around items-start max-w-5xl mx-auto">
+                <div class="w-full md:w-1/2 lg:w-1/3 p-4 text-center md:text-left">
+                    <h3 class="text-2xl font-bold mb-4 playfair text-amber-400">Contact Info</h3>
+                    <p class="text-emerald-200 mb-2">1253 Country Club Rd<br>Winner, SD 57580</p>
+                    <a href="tel:605-840-1079" class="text-xl text-white hover:text-amber-300 transition block mb-6">(605) 840-1079</a>
+                    <a href="tel:605-840-1079" class="bg-amber-600 text-white px-6 py-3 rounded-full hover:bg-amber-700 transition shadow inline-block font-semibold">Call to Book</a>
+                </div>
+                <div class="w-full md:w-1/2 lg:w-1/3 p-4 text-center md:text-left">
+                    <h3 class="text-2xl font-bold mb-4 playfair text-amber-400">Connect Online</h3>
+                    <p class="text-emerald-200 mb-4">Follow us on Facebook for the latest updates, availability, and photos from the lodge.</p>
+                    <a href="https://www.facebook.com/canadagooselodge" target="_blank" class="inline-flex items-center text-white hover:text-amber-300 transition text-lg">
+                        <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                        Facebook Page
+                    </a>
+                </div>
+                <div class="w-full lg:w-1/3 p-4 mt-8 lg:mt-0">
+                    <div class="rounded-xl overflow-hidden shadow-2xl">
+                        <iframe src="https://maps.google.com/maps?q=1253%20Country%20Club%20Rd%2C%20Winner%2C%20SD%2057580&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p class="mb-2">Follow us on <a href="https://www.facebook.com/canadagooselodge" target="_blank" class="text-amber-400 hover:underline">Facebook</a> for the latest updates.</p>
+            <p>&copy; <span id="year"></span> Canada Goose Lodge, LLC. All Rights Reserved.</p>
+            <p class="text-sm mt-2">Powered by <a href="https://605designs.com" class="text-gray-500 hover:text-gray-300">605designs.com</a></p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        mobileMenuButton.addEventListener('click', () => mobileMenu.classList.add('open'));
+        closeMobileMenuButton.addEventListener('click', () => mobileMenu.classList.remove('open'));
+        mobileNavLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const headerOffset = document.getElementById('header').offsetHeight;
+                    const position = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: position, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
