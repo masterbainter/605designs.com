@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FortiGate 7.6+: DNS vs. Web Filtering Strategy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Chosen Palette: Professional Slate & Safety Indigo -->
+    <!-- Application Structure Plan: 
+         - A multi-tab dashboard designed for "Educational Selling."
+         - Section 1: "The Strategy Matrix" - High-level comparison of DNS vs Web Filtering.
+         - Section 2: "Implementation Methods" - Interactive breakdown of how each is configured (NXDOMAIN, SNI, Deep Inspection).
+         - Section 3: "The Friction Visualization" - Chart.js data showing the inverse relationship between filtering depth and network stability.
+         - Section 4: "Residential Playbook" - Final recommendations for a 'set-and-forget' home installation.
+         This structure helps the admin move the customer away from 'Deep Inspection' (high friction) toward 'DNS + SNI' (low friction) by showing the consequences visually. -->
+    <!-- Visualization & Content Choices: 
+         - Goal: Compare Technologies -> Presentation: Side-by-side Pro/Con cards -> Method: Tailwind Grid -> Interaction: Hover states.
+         - Goal: Simulate Browser Behavior -> Presentation: Mock Browser UI -> Method: Dynamic JS -> Interaction: Switching between DNS/Web modes.
+         - Goal: Manage Expectations -> Presentation: Stability vs Depth -> Method: Chart.js Line Chart -> Interaction: Hover tooltips.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #1E293B;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            height: 350px;
+        }
+
+        .browser-mockup {
+            background: #FFFFFF;
+            border-radius: 12px;
+            border: 1px solid #CBD5E1;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .tab-btn-active {
+            border-bottom: 3px solid #4F46E5;
+            color: #4F46E5;
+            font-weight: 700;
+        }
+
+        .method-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .method-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50">
+
+    <!-- Navigation Header -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🛡️</span>
+                    <span class="font-bold text-xl tracking-tight">FortiGate <span class="text-indigo-600">7.6+</span> Security Advisor</span>
+                </div>
+                <div class="hidden md:flex gap-8">
+                    <button onclick="switchSection('matrix')" id="nav-matrix" class="nav-link tab-btn-active py-5 text-sm uppercase tracking-wider">The Matrix</button>
+                    <button onclick="switchSection('methods')" id="nav-methods" class="nav-link py-5 text-sm uppercase tracking-wider text-slate-500 hover:text-indigo-600">Implementation</button>
+                    <button onclick="switchSection('impact')" id="nav-impact" class="nav-link py-5 text-sm uppercase tracking-wider text-slate-500 hover:text-indigo-600">Reality Check</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 md:py-12">
+
+        <!-- SECTION: THE MATRIX (Comparison) -->
+        <section id="section-matrix" class="section-content block animate-in fade-in duration-500">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-slate-900">Comparing Filtering Technologies</h2>
+                <p class="text-slate-500 mt-2 max-w-2xl mx-auto">DNS and Web Filtering are often confused. In FortiOS 7.6, they work together, but have very different impacts on the "Family Experience."</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- DNS Filtering Card -->
+                <div class="bg-white rounded-3xl p-8 border border-slate-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-6 opacity-5 text-8xl">🌐</div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-indigo-100 text-indigo-600 p-2 rounded-lg font-bold">DNS Layer</span>
+                        <h3 class="text-2xl font-bold">DNS Filtering</h3>
+                    </div>
+                    <p class="text-slate-600 mb-6 leading-relaxed">
+                        Stops the request before it even starts. The browser asks "Where is badsite.com?" and the FortiGate gives a false or empty answer.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="text-green-500">➕</span>
+                            <div>
+                                <strong class="text-sm">Pros:</strong>
+                                <p class="text-xs text-slate-500">Fastest method. No browser certificate errors. Works on "dumb" devices like Smart TVs and Game Consoles.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-red-500">➖</span>
+                            <div>
+                                <strong class="text-sm">Cons:</strong>
+                                <p class="text-xs text-slate-500">All or nothing. You can't block just "Youtube.com/BadChannel"—you have to block all of Youtube.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Web Filtering Card -->
+                <div class="bg-white rounded-3xl p-8 border border-slate-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-6 opacity-5 text-8xl">🕸️</div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-emerald-100 text-emerald-600 p-2 rounded-lg font-bold">L7 Layer</span>
+                        <h3 class="text-2xl font-bold">Web Filtering</h3>
+                    </div>
+                    <p class="text-slate-600 mb-6 leading-relaxed">
+                        Inspects the actual traffic as it flows. It looks at the website addresses and the content inside the pages.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="text-green-500">➕</span>
+                            <div>
+                                <strong class="text-sm">Pros:</strong>
+                                <p class="text-xs text-slate-500">High precision. Can block specific pages, scan for files, and enforce Safe Search across different browsers.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-red-500">➖</span>
+                            <div>
+                                <strong class="text-sm">Cons:</strong>
+                                <p class="text-xs text-slate-500">Certificate friction. Without manual device setup, it triggers "Privacy Warnings" that scare the family.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: IMPLEMENTATION METHODS -->
+        <section id="section-methods" class="section-content hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-slate-900">Four Ways to Filter</h2>
+                <p class="text-slate-500 mt-2 max-w-2xl mx-auto">Different configurations lead to different user outcomes. Select a method to simulate the result.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Method Selection -->
+                <div class="lg:col-span-1 space-y-3">
+                    <button onclick="simulate('nxdomain')" id="m-nxdomain" class="method-card w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-indigo-500 transition-all">
+                        <div class="font-bold text-indigo-600">1. DNS NXDOMAIN</div>
+                        <div class="text-xs text-slate-400">DNS: Tells browser "Site doesn't exist"</div>
+                    </button>
+                    <button onclick="simulate('dns-redirect')" id="m-dns-redirect" class="method-card w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-indigo-500 transition-all">
+                        <div class="font-bold text-slate-700">2. DNS Redirect</div>
+                        <div class="text-xs text-slate-400">DNS: Sends user to FortiGate Block Page</div>
+                    </button>
+                    <button onclick="simulate('web-sni')" id="m-web-sni" class="method-card w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-indigo-500 transition-all">
+                        <div class="font-bold text-slate-700">3. Web SNI (Cert Inspection)</div>
+                        <div class="text-xs text-slate-400">WEB: Checks domain only, no decryption</div>
+                    </button>
+                    <button onclick="simulate('web-deep')" id="m-web-deep" class="method-card w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-indigo-500 transition-all">
+                        <div class="font-bold text-red-600">4. Web Deep Inspection</div>
+                        <div class="text-xs text-slate-400">WEB: Full decryption of all traffic</div>
+                    </button>
+                </div>
+
+                <!-- Simulation Output -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="browser-mockup">
+                        <div class="bg-slate-200 px-4 py-2 flex items-center gap-2 border-b border-slate-300">
+                            <div class="flex gap-1.5">
+                                <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                            </div>
+                            <div class="bg-white rounded px-3 py-1 text-xs flex-1 text-slate-400 truncate">
+                                <span id="sim-lock">🔒</span> https://blocked-social-media.com
+                            </div>
+                        </div>
+                        <div id="sim-display" class="p-12 min-h-[300px] flex flex-col items-center justify-center text-center">
+                            <div class="text-6xl mb-4">🔍</div>
+                            <h3 class="text-xl font-bold">This site can’t be reached</h3>
+                            <p class="text-sm text-slate-500 mt-2">Check if there is a typo in blocked-social-media.com.</p>
+                            <code class="mt-6 text-xs bg-slate-100 p-2 rounded text-slate-400">DNS_PROBE_FINISHED_NXDOMAIN</code>
+                        </div>
+                    </div>
+
+                    <div id="sim-verdict" class="bg-indigo-50 border border-indigo-100 p-6 rounded-2xl">
+                        <h4 class="font-bold text-indigo-900 mb-2">Technical Verdict:</h4>
+                        <p id="sim-verdict-text" class="text-sm text-indigo-800 leading-relaxed">
+                            This is the cleanest experience. The family sees a standard "Site not found" error. It doesn't look like a "Hack," it just looks like the internet is having a moment. No certificate errors.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: REALITY CHECK -->
+        <section id="section-impact" class="section-content hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-slate-900">Stability vs. Perfection</h2>
+                <p class="text-slate-500 mt-2 max-w-2xl mx-auto">The "Paradox of Choice" in home security: The better the filtering, the more likely you are to break the internet.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="bg-white p-8 rounded-3xl border border-slate-200">
+                    <h3 class="text-center font-bold text-slate-700 mb-6 uppercase tracking-widest text-sm">Long-Term Impact Comparison</h3>
+                    <div class="chart-container">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-full bg-indigo-600 text-white flex-shrink-0 flex items-center justify-center font-bold">1</div>
+                        <div>
+                            <h4 class="font-bold text-lg">The "Set & Forget" Zone</h4>
+                            <p class="text-sm text-slate-500 mt-1">Using <strong>DNS NXDOMAIN</strong> or <strong>Web SNI</strong> provides high stability. Most apps work perfectly, and no one calls you to complain about "Privacy Warnings."</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-full bg-red-600 text-white flex-shrink-0 flex items-center justify-center font-bold">2</div>
+                        <div>
+                            <h4 class="font-bold text-lg">The "Support Call" Zone</h4>
+                            <p class="text-sm text-slate-500 mt-1"><strong>Deep Inspection</strong> offers the most perfection but breaks banking apps, streaming services, and mobile updates unless you spend hours bypass-listing them.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-900 text-white p-8 rounded-3xl shadow-xl">
+                        <h4 class="text-xl font-bold mb-4 flex items-center gap-2">
+                            <span class="text-yellow-400">📢</span> The Expert Advice
+                        </h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-6">
+                            "For a family home, we recommend <strong>DNS Filtering with NXDOMAIN</strong> combined with <strong>Web Filter in Certificate-Inspection mode</strong>. This blocks 98% of bad sites with 0% certificate errors. If you want the remaining 2%, be prepared to act as a 24/7 IT helpdesk for your family."
+                        </p>
+                        <div class="p-4 bg-white/10 rounded-xl border border-white/10 text-xs italic text-slate-400">
+                            "Perfect is the enemy of Good in residential security."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-100 py-12 border-t border-slate-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-400 text-sm">Technical Briefing: FortiGate 7.6 Traffic Filtering Architecture</p>
+        </div>
+    </footer>
+
+    <script>
+        // Section Switching
+        function switchSection(sectionId) {
+            document.querySelectorAll('.section-content').forEach(s => s.classList.add('hidden'));
+            document.getElementById('section-' + sectionId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('tab-btn-active', 'text-indigo-600'));
+            document.getElementById('nav-' + sectionId).classList.add('tab-btn-active');
+        }
+
+        // Simulation Logic
+        function simulate(method) {
+            const display = document.getElementById('sim-display');
+            const verdictText = document.getElementById('sim-verdict-text');
+            const lock = document.getElementById('sim-lock');
+
+            // Reset buttons
+            document.querySelectorAll('.method-card').forEach(c => c.classList.replace('border-indigo-500', 'border-slate-200'));
+            document.getElementById('m-' + method).classList.replace('border-slate-200', 'border-indigo-500');
+
+            if (method === 'nxdomain') {
+                display.innerHTML = `
+                    <div class="text-6xl mb-4">🔍</div>
+                    <h3 class="text-xl font-bold">This site can’t be reached</h3>
+                    <p class="text-sm text-slate-500 mt-2">Check if there is a typo in blocked-social-media.com.</p>
+                    <code class="mt-6 text-xs bg-slate-100 p-2 rounded text-slate-400">DNS_PROBE_FINISHED_NXDOMAIN</code>
+                `;
+                lock.innerText = '🔒';
+                verdictText.innerText = "Cleanest result. No scary warnings. Browser simply thinks the site is down. Recommended for families.";
+            } else if (method === 'dns-redirect') {
+                display.innerHTML = `
+                    <div class="text-6xl mb-4">⚠️</div>
+                    <h3 class="text-xl font-bold text-red-600">Your connection is not private</h3>
+                    <p class="text-sm text-slate-500 mt-2">Attackers might be trying to steal your information.</p>
+                    <code class="mt-6 text-xs bg-red-50 p-2 rounded text-red-500 font-bold">NET::ERR_CERT_COMMON_NAME_INVALID</code>
+                `;
+                lock.innerText = '🔓';
+                verdictText.innerText = "Triggers a browser error. The FortiGate tried to show a block page, but the browser blocked it as a security risk.";
+            } else if (method === 'web-sni') {
+                display.innerHTML = `
+                    <div class="text-6xl mb-4">🛑</div>
+                    <h3 class="text-xl font-bold text-slate-800">Connection Closed</h3>
+                    <p class="text-sm text-slate-500 mt-2">The server at blocked-social-media.com unexpectedly closed the connection.</p>
+                    <code class="mt-6 text-xs bg-slate-100 p-2 rounded text-slate-400">ERR_CONNECTION_CLOSED</code>
+                `;
+                lock.innerText = '🔒';
+                verdictText.innerText = "FortiGate kills the connection immediately after seeing the domain name. Secure and low friction.";
+            } else if (method === 'web-deep') {
+                display.innerHTML = `
+                    <div class="text-6xl mb-4">🚫</div>
+                    <h3 class="text-xl font-bold text-red-700">Web Site Blocked</h3>
+                    <p class="text-sm text-slate-600 mt-2">Access to this website is restricted by the Family Safety Policy.</p>
+                    <p class="text-xs text-slate-400 mt-4 italic">Category: Social Media</p>
+                `;
+                lock.innerText = '🔒';
+                verdictText.innerText = "The 'Perfect' result. Shows a real block page. BUT—this only works if you've manually installed certificates on every single family device.";
+            }
+        }
+
+        // Initialize Impact Chart
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('impactChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['DNS (NX)', 'DNS (Redirect)', 'Web (SNI)', 'Web (Deep)'],
+                    datasets: [
+                        {
+                            label: 'Filtering Depth (Perfection)',
+                            data: [60, 65, 80, 100],
+                            borderColor: '#4F46E5',
+                            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Stability (No Error Screens)',
+                            data: [100, 20, 95, 10],
+                            borderColor: '#10B981',
+                            borderDash: [5, 5],
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: { mode: 'index', intersect: false }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            max: 110,
+                            ticks: { display: false },
+                            grid: { color: '#F1F5F9' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
